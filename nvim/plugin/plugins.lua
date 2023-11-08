@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 if vim.g.did_load_plugins_plugin then
   return
 end
