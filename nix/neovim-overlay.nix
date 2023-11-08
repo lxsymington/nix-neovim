@@ -1,4 +1,4 @@
-{inputs}: final: prev:
+{ inputs }: final: prev:
 with final.pkgs.lib; let
   pkgs = final;
 
@@ -9,7 +9,7 @@ with final.pkgs.lib; let
       version = src.lastModifiedDate;
     };
 
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix {};
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix { };
 
   all-plugins = with pkgs.vimPlugins; [
     # plugins from nixpkgs go in here.
@@ -40,6 +40,7 @@ with final.pkgs.lib; let
     # telescope-smart-history-nvim # https://github.com/nvim-telescope/telescope-smart-history.nvim
     # ^ telescope and extensions
     # UI
+    everforest # colorscheme | https://github.com/sainnhe/everforest/
     lualine-nvim # Status line | https://github.com/nvim-lualine/lualine.nvim/
     nvim-navic # Add LSP location to lualine | https://github.com/SmiteshP/nvim-navic
     statuscol-nvim # Status column | https://github.com/luukvbaal/statuscol.nvim/
@@ -74,7 +75,8 @@ with final.pkgs.lib; let
     lua-language-server
     nil # nix LSP
   ];
-in {
+in
+{
   # This is the neovim derivation
   # returned by the overlay
   nvim-pkg = mkNeovim {

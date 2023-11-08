@@ -1,4 +1,4 @@
----@mod user.lsp
+---@mod lxs.lsp
 ---
 ---@brief [[
 ---LSP related functions

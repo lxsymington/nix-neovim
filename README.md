@@ -65,7 +65,7 @@ nix run "github:mrcjkb/kickstart-nix.nvim"
 ## Usage
 
 1. Click on [Use this template](https://github.com/mrcjkb/kickstart-nix.nvim/generate)
-to start a repo based on this template. **Do _not_ fork it**.
+   to start a repo based on this template. **Do _not_ fork it**.
 1. Add/remove plugins to/from the [Neovim overlay](./nix/neovim-overlay.nix).
 1. Add/remove plugin configs to/from the `nvim/plugin` directory.
 1. Modify as you wish (you will probably want to add a color theme, ...).
@@ -112,13 +112,15 @@ nix profile install .#nvim
 - Ability to create multiple derivations with different sets of plugins.
 - Use either nixpkgs or flake inputs as plugin source.
 - Use Neovim's built-in loading mechanisms.
-    - See [`:h initializaion`](https://neovim.io/doc/user/starting.html#initialization)
-      and [`:h runtimepath`](https://neovim.io/doc/user/options.html#'runtimepath').
+  - See [`:h initializaion`](https://neovim.io/doc/user/starting.html#initialization)
+    and [`:h runtimepath`](https://neovim.io/doc/user/options.html#'runtimepath').
 - Use Neovim's built-in LSP client.
 
-[^1]: The absence of a Nix module DSL for Neovim configuration is deliberate.
-      If you were to copy the `nvim` directory to `$XDG_CONFIG_HOME`,
-      it would work out of the box.
+[^1]:
+    The absence of a Nix module DSL for Neovim configuration is deliberate.
+    If you were to copy the `nvim` directory to `$XDG_CONFIG_HOME`,
+    it would work out of the box.
+
 [^2]: Caveat: `after/` directories are not sourced in the Nix derivation.
 
 ## Design
@@ -139,7 +141,7 @@ Directory structure:
   │  └── <filetype>.lua
   ├── init.lua # Always sourced
   ├── lua # Shared library modules
-  │  └── user
+  │  └── lxs
   │     └── <lib>.lua
   └── plugin # Automatically sourced at startup
      ├── autocommands.lua
@@ -220,6 +222,7 @@ You can add or remove plugins by
 > (though they are more minimal by default).
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [neovim-shield]: https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white
 [neovim-url]: https://neovim.io/
 [nix-shield]: https://img.shields.io/badge/nix-0175C2?style=for-the-badge&logo=NixOS&logoColor=white
