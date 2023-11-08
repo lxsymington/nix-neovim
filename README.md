@@ -174,7 +174,7 @@ Directory structure:
   │  └── <filetype>.lua
   ├── init.lua # Always sourced
   ├── lua # Shared library modules
-  │  └── user
+  │  └── lxs
   │     └── <lib>.lua
   ├── plugin # Automatically sourced at startup
   │  ├── autocommands.lua
@@ -318,6 +318,7 @@ To work around this, you can put scripts in the `plugin` or `after/plugin` direc
 > (though they are far more minimal by default).
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [neovim-shield]: https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white
 [neovim-url]: https://neovim.io/
 [nix-shield]: https://img.shields.io/badge/nix-0175C2?style=for-the-badge&logo=NixOS&logoColor=white
