@@ -13,7 +13,7 @@ cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 opt.compatible = false
 
 -- Config ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-require('lxs.config').setup()
+require('lxs.config.init').setup()
 
 -- Configure Neovim diagnostic messages
 local function prefix_diagnostic(prefix, diagnostic)
