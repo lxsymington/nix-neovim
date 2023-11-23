@@ -4,10 +4,12 @@ end
 vim.g.did_load_completion_plugin = true
 
 local cmp = require('cmp')
+local copilot_comparators = require('copilot_cmp.comparators')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.o.completefunc = "v:lua.require(\"cmp\").complete()"
 
 local function has_words_before()
   local unpack_ = unpack or table.unpack
@@ -38,6 +40,7 @@ cmp.setup {
 
       menu = {
         buffer = '[BUF]',
+        copilot = '[COP]',
         nvim_lsp = '[LSP]',
         nvim_lsp_signature_help = '[LSP]',
         nvim_lsp_document_symbol = '[LSP]',
@@ -46,6 +49,23 @@ cmp.setup {
         luasnip = '[SNIP]',
       },
     },
+  },
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      -- Below is the default comparator list and order for nvim-cmp
+      cmp.config.compare.offset,
+      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+      cmp.config.compare.exact,
+      copilot_comparators.prioritize,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    }
   },
   snippet = {
     expand = function(args)
@@ -103,6 +123,7 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     -- The insertion order influences the priority of the sources
+    { name = 'copilot', group_index = 2 },
     { name = 'nvim_lsp', keyword_length = 3 },
     { name = 'nvim_lsp_signature_help', keyword_length = 3 },
     { name = 'buffer' },
@@ -119,6 +140,7 @@ cmp.setup {
 
 cmp.setup.filetype('lua', {
   sources = cmp.config.sources {
+    { name = 'copilot', group_index = 2 },
     { name = 'nvim_lua' },
     { name = 'nvim_lsp', keyword_length = 3 },
     { name = 'path' },
@@ -132,6 +154,7 @@ cmp.setup.cmdline({ '/', '?' }, {
     { name = 'nvim_lsp_document_symbol', keyword_length = 3 },
     { name = 'buffer' },
     { name = 'cmdline_history' },
+    { name = 'copilot', group_index = 2 },
   },
   view = {
     entries = { name = 'wildmenu', separator = '|' },
@@ -145,6 +168,7 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' },
     { name = 'cmdline_history' },
     { name = 'path' },
+    { name = 'copilot', group_index = 2 },
   },
 })
 

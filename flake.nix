@@ -6,12 +6,25 @@
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
-    # Add bleeding-edge plugins here.
-    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
-    # wf-nvim = {
-    #   url = "github:Cassin01/wf.nvim";
-    #   flake = false;
-    # };
+    copilot = {
+      url = "github:zbirenbaum/copilot.lua";
+      flake = false;
+    };
+
+    copilot-cmp = {
+      url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    tslint = {
+      url = "github:palantir/tslint";
+      flake = false;
+    };
+
+    wf-nvim = {
+      url = "github:Cassin01/wf.nvim";
+      flake = false;
+    };
   };
 
   outputs =
@@ -19,6 +32,10 @@
     , nixpkgs
     , flake-utils
     , gen-luarc
+    , copilot
+    , copilot-cmp
+    , tslint
+    , wf-nvim
     , ...
     }:
     let

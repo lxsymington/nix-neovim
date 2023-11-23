@@ -42,6 +42,8 @@ with final.pkgs.lib; let
     cmp-cmdline # cmp command line suggestions
     cmp-cmdline-history # cmp command line history suggestions
     # ^ nvim-cmp extensions
+    (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
+    (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
     # git integration plugins
     diffview-nvim # https://github.com/sindrets/diffview.nvim/
     neogit # https://github.com/TimUntersberger/neogit/
@@ -56,14 +58,18 @@ with final.pkgs.lib; let
     # UI
     everforest # colorscheme | https://github.com/sainnhe/everforest/
     lualine-nvim # Status line | https://github.com/nvim-lualine/lualine.nvim/
-    nvim-navic # Add LSP location to lualine | https://github.com/SmiteshP/nvim-navic
+    aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     statuscol-nvim # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
+    nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify
     # ^ UI
     # language support
+    nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
+    refactoring-nvim # Language agnostic refactors | https://github.com/ThePrimeagen/refactoring.nvim/
     # ^ language support
     # navigation/editing enhancement plugins
     vim-unimpaired # predefined ] and [ navigation keymaps | https://github.com/tpope/vim-unimpaired/
+    oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
     eyeliner-nvim # Highlights unique characters for f/F and t/T motions | https://github.com/jinh0/eyeliner.nvim
     nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
@@ -71,6 +77,7 @@ with final.pkgs.lib; let
     # ^ navigation/editing enhancement plugins
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
+    vim-startuptime # Profile startup time | https://github.com/dstein64/vim-startuptime
     # ^ Useful utilities
     # libraries that other plugins depend on
     sqlite-lua
@@ -79,15 +86,38 @@ with final.pkgs.lib; let
     vim-repeat
     # ^ libraries that other plugins depend on
     # bleeding-edge plugins from flake inputs
-    # (mkNvimPlugin inputs.wf-nvim "wf.nvim") # (example) keymap hints | https://github.com/Cassin01/wf.nvim
     # ^ bleeding-edge plugins from flake inputs
     which-key-nvim
   ];
 
   extraPackages = with pkgs; [
     # language servers, etc.
+    deno
+    gopls
     lua-language-server
-    nil # nix LSP
+    nil # Nix LSP
+    nodePackages_latest.typescript-language-server
+    nodePackages_latest.vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
+    nodePackages_latest.yaml-language-server
+    rust-analyzer # Rust LSP
+    selene # Lua linter
+    # TODO: Sort this out!
+    # (mkYarnPackage {
+    #   name = "tslint";
+
+    #   src = inputs.tslint.outPath;
+
+    #   packageJSON = builtins.trace "${inputs.tslint.outPath}/package.json" "${inputs.tslint.outPath}/package.json";
+
+    #   yarnLock = builtins.trace "${inputs.tslint.outPath}/yarn.lock" "${inputs.tslint.outPath}/yarn.lock";
+
+    #   buildPhase = ''
+    #     echo "BUILDING"
+    #     export HOME=$(mktemp -d)
+    #     yarn --offline compile:core
+    #   '';
+    # })
+    vim-vint # Vim linter
   ];
 in
 {

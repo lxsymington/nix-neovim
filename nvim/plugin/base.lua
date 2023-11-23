@@ -43,13 +43,13 @@ opt.list = true
 
 -- Sets characters to display for invisible characters
 opt.listchars = {
-	space = '⎯',
+	space = '┈',
 	tab = '╾┈╼',
 	eol = '␤',
-	nbsp = '⎽',
+	nbsp = '␠',
 	extends = '↩',
 	precedes = '↪',
-	conceal = '⎀',
+	conceal = '⊹',
 }
 
 -- Sets ambiguous width characters to be double width

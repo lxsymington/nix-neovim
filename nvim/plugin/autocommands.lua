@@ -62,9 +62,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local bufnr = ev.buf
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
 
-    -- Attach plugins
-    require('nvim-navic').attach(client, bufnr)
-
     vim.cmd.setlocal('signcolumn=yes')
     vim.bo[bufnr].bufhidden = 'hide'
 
@@ -151,4 +148,33 @@ api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter'
       vim.cmd.redraw()
     end
   end,
+})
+
+local highlight_yank = api.nvim_create_augroup('highlight_yank', { clear = true })
+api.nvim_create_autocmd('TextYankPost', {
+  pattern = '*',
+  group = highlight_yank,
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = 'IncSearch',
+      timeout = 150,
+    })
+  end,
+})
+
+local terminal_style = api.nvim_create_augroup('terminal_style', { clear = true })
+api.nvim_create_autocmd({ 'TermOpen', 'TermEnter' }, {
+  pattern = '*',
+  group = terminal_style,
+  callback = function ()
+    -- Disables line numbers
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+
+    -- Remove the signcolumn
+    vim.opt.signcolumn = 'no'
+
+    -- Remove the foldcolumn
+    vim.opt.foldcolumn = '0'
+  end
 })
