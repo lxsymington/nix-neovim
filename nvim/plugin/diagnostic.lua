@@ -1,4 +1,9 @@
 -- Diagnostic –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Configure Neovim diagnostic messages
+local function prefix_diagnostic(prefix, diagnostic)
+  return string.format(prefix .. ' %s', diagnostic.message)
+end
+
 vim.diagnostic.config {
   virtual_text = {
     prefix = '',
@@ -11,7 +16,7 @@ vim.diagnostic.config {
         return prefix_diagnostic('⚠', diagnostic)
       end
       if severity == vim.diagnostic.severity.INFO then
-        return prefix_diagnostic('ⓘ', diagnostic)
+        return prefix_diagnostic('⚐', diagnostic)
       end
       if severity == vim.diagnostic.severity.HINT then
         return prefix_diagnostic('󰌶', diagnostic)

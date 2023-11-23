@@ -184,14 +184,6 @@ keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up half-page and center' })
 keymap.set('n', '<C-f>', '<C-f>zz', { desc = 'move down full-page and center' })
 keymap.set('n', '<C-b>', '<C-b>zz', { desc = 'move up full-page and center' })
 
--- Open init.vim in a tab
-keymap.set(
-  'n',
-  '<Leader>ev',
-  '<cmd>tabedit $MYVIMRC<cr>',
-  { silent = true, desc = 'Open $MYVIMRC in a tab' }
-)
-
 -- Clear highlighting
 keymap.set(
   'n',

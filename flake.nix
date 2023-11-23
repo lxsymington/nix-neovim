@@ -5,18 +5,35 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # Add bleeding-edge plugins here.
-    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
-    # wf-nvim = {
-    #   url = "github:Cassin01/wf.nvim";
-    #   flake = false;
-    # };
+    copilot = {
+      url = "github:zbirenbaum/copilot.lua";
+      flake = false;
+    };
+
+    copilot-cmp = {
+      url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    tslint = {
+      url = "github:palantir/tslint";
+      flake = false;
+    };
+
+    wf-nvim = {
+      url = "github:Cassin01/wf.nvim";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     flake-utils,
+    copilot,
+    copilot-cmp,
+    tslint,
+    wf-nvim,
     ...
   }: let
     supportedSystems = [

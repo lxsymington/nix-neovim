@@ -138,6 +138,13 @@ telescope.setup {
     },
   },
   extensions = {
+    aerial = {
+      show_nesting = {
+        ["_"] = false, -- This key will be the default
+        json = true, -- You can set the option for specific filetypes
+        yaml = true,
+      },
+    },
     fzy_native = {
       override_generic_sorter = false,
       override_file_sorter = true,
@@ -146,4 +153,5 @@ telescope.setup {
 }
 
 telescope.load_extension('fzy_native')
+telescope.load_extension('aerial')
 -- telescope.load_extension('smart_history')
