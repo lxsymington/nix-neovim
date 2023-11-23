@@ -189,12 +189,29 @@
         "type": "github"
       }
     },
+    "nvim-luaref": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1645064202,
+        "narHash": "sha256-nmsKg1Ah67fhGzevTFMlncwLX9gN0JkR7Woi0T5On34=",
+        "owner": "milisims",
+        "repo": "nvim-luaref",
+        "rev": "9cd3ed50d5752ffd56d88dd9e395ddd3dc2c7127",
+        "type": "github"
+      },
+      "original": {
+        "owner": "milisims",
+        "repo": "nvim-luaref",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "copilot": "copilot",
         "copilot-cmp": "copilot-cmp",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
+        "nvim-luaref": "nvim-luaref",
         "tslint": "tslint",
         "wf-nvim": "wf-nvim"
       }

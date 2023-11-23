@@ -61,11 +61,13 @@ with final.pkgs.lib; let
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     statuscol-nvim # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
-    nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify
+    nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
+    dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
     refactoring-nvim # Language agnostic refactors | https://github.com/ThePrimeagen/refactoring.nvim/
+    SchemaStore-nvim # JSON Schema support | https://github.com/b0o/SchemaStore.nvim/
     # ^ language support
     # navigation/editing enhancement plugins
     vim-unimpaired # predefined ] and [ navigation keymaps | https://github.com/tpope/vim-unimpaired/
@@ -88,6 +90,8 @@ with final.pkgs.lib; let
     # bleeding-edge plugins from flake inputs
     # ^ bleeding-edge plugins from flake inputs
     which-key-nvim
+    # Vim utilities
+    (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
   ];
 
   extraPackages = with pkgs; [
