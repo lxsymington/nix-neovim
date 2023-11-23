@@ -15,6 +15,11 @@
       flake = false;
     };
 
+    nvim-luaref = {
+      url = "github:milisims/nvim-luaref";
+      flake = false;
+    };
+
     tslint = {
       url = "github:palantir/tslint";
       flake = false;
@@ -32,6 +37,7 @@
     flake-utils,
     copilot,
     copilot-cmp,
+    nvim-luaref,
     tslint,
     wf-nvim,
     ...
