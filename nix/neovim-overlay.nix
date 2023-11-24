@@ -49,7 +49,8 @@ with final.pkgs.lib; let
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
-    which-key-nvim  # keymap hints | https://github.com/folke/which-key.nvim/
+    which-key-nvim # keymap hints | https://github.com/folke/which-key.nvim/
+    lsp_lines-nvim # diagnostic display | https://git.sr.ht/~whynothugo/lsp_lines.nvim
     # ^ UI
     # language support
     neodev-nvim # adds support for Neovim's Lua API to lua-language-server | https://github.com/folke/neodev.nvim/
