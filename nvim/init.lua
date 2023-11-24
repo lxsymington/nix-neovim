@@ -18,15 +18,15 @@ opt.compatible = false
 require('lxs.config.init').setup()
 
 local sign = function(opts)
-  fn.sign_define(opts.name, {
-    texthl = opts.name,
-    text = opts.text,
-    numhl = '',
-  })
+	fn.sign_define(opts.name, {
+		texthl = opts.name,
+		text = opts.text,
+		numhl = '',
+	})
 end
 
 -- Requires Nerd fonts
-sign { name = 'DiagnosticSignError', text = '󰅚' }
-sign { name = 'DiagnosticSignWarn', text = '⚠' }
-sign { name = 'DiagnosticSignInfo', text = '⚐' }
-sign { name = 'DiagnosticSignHint', text = '󰌶' }
+sign({ name = 'DiagnosticSignError', text = '󰅚' })
+sign({ name = 'DiagnosticSignWarn', text = '⚠' })
+sign({ name = 'DiagnosticSignInfo', text = '⚐' })
+sign({ name = 'DiagnosticSignHint', text = '󰌶' })

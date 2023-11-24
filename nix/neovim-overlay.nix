@@ -53,6 +53,7 @@ with final.pkgs.lib; let
     # language support
     neodev-nvim # adds support for Neovim's Lua API to lua-language-server | https://github.com/folke/neodev.nvim/
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
+    conform-nvim # An asynchronous formatter | https://github.com/stevearc/conform.nvim/
     refactoring-nvim # Language agnostic refactors | https://github.com/ThePrimeagen/refactoring.nvim/
     SchemaStore-nvim # JSON Schema support | https://github.com/b0o/SchemaStore.nvim/
     # ^ language support
@@ -87,11 +88,14 @@ with final.pkgs.lib; let
     gopls
     lua-language-server
     nil # Nix LSP
+    nodePackages_latest.prettier
     nodePackages_latest.typescript-language-server
     nodePackages_latest.vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     nodePackages_latest.yaml-language-server
+    prettierd
     rust-analyzer # Rust LSP
     selene # Lua linter
+    stylua
     # TODO: Sort this out!
     # (mkYarnPackage {
     #   name = "tslint";
