@@ -130,7 +130,7 @@ in
 {
   # This is the neovim derivation
   # returned by the overlay
-  nvim-pkg = mkNeovim {
+  lxs-nvim = mkNeovim {
     plugins = all-plugins;
     inherit extraPackages;
   };
