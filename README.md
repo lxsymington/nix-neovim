@@ -89,7 +89,7 @@ You can then add the overlay's output(s) to the `systemPackages`:
 
 ```nix
 environment.systemPackages = with pkgs; [
-    nvim-pkg # The default package added by the overlay
+    lxs-nvim # The default package added by the overlay
 ];
 ```
 
