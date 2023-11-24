@@ -6,9 +6,10 @@ local ignore_filetypes = { 'sql', 'java' }
 local slow_format_filetypes = {}
 conform.setup({
 	formatters_by_ft = {
-		lua = { 'stylua' },
 		-- Use a sub-list to run only the first available formatter
 		javascript = { { 'prettierd', 'prettier' } },
+		lua = { 'stylua' },
+		nix = { 'nixpkgs_fmt' },
 	},
 	format_on_save = function(bufnr)
 		if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then

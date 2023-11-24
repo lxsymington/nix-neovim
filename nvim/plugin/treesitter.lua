@@ -26,25 +26,29 @@ configs.setup({
 			-- Automatically jump forward to textobject, similar to targets.vim
 			lookahead = true,
 			keymaps = {
-				['af'] = '@function.outer',
-				['if'] = '@function.inner',
-				['ac'] = '@class.outer',
-				['ic'] = '@class.inner',
-				['aC'] = '@call.outer',
-				['iC'] = '@call.inner',
 				['a#'] = '@comment.outer',
-				['i#'] = '@comment.outer',
-				['ai'] = '@conditional.outer',
-				['ii'] = '@conditional.outer',
-				['al'] = '@loop.outer',
-				['il'] = '@loop.inner',
+				['aC'] = '@call.outer',
 				['aP'] = '@parameter.outer',
+				['aa'] = '@assignment.outer',
+				['ac'] = '@class.outer',
+				['af'] = '@function.outer',
+				['ai'] = '@conditional.outer',
+				['al'] = '@loop.outer',
+				['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
+				['i#'] = '@comment.outer',
+				['iC'] = '@call.inner',
 				['iP'] = '@parameter.inner',
+				['ia'] = '@assignment.inner',
+				['ic'] = '@class.inner',
+				['if'] = '@function.inner',
+				['ii'] = '@conditional.outer',
+				['il'] = '@loop.inner',
+				['is'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
 			},
 			selection_modes = {
 				['@parameter.outer'] = 'v', -- charwise
 				['@function.outer'] = 'V', -- linewise
-				['@class.outer'] = '<c-v>', -- blockwise
+				['@class.outer'] = 'V', -- blockwise
 			},
 		},
 		swap = {
@@ -62,9 +66,11 @@ configs.setup({
 			goto_next_start = {
 				[']m'] = '@function.outer',
 				[']P'] = '@parameter.outer',
+				[']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
+				[']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
 			},
 			goto_next_end = {
-				[']m'] = '@function.outer',
+				[']M'] = '@function.outer',
 				[']P'] = '@parameter.outer',
 			},
 			goto_previous_start = {
@@ -72,11 +78,11 @@ configs.setup({
 				['[P'] = '@parameter.outer',
 			},
 			goto_previous_end = {
-				['[m'] = '@function.outer',
+				['[M'] = '@function.outer',
 				['[P'] = '@parameter.outer',
 			},
 		},
-		nsp_interop = {
+		lsp_interop = {
 			enable = true,
 			peek_definition_code = {
 				['df'] = '@function.outer',
