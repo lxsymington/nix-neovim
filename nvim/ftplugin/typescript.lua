@@ -2,16 +2,16 @@ local lint = require('lint')
 
 -- TypeScript Configuration –––––––––––––––––––––––––––––––––––––––––––––––––––
 local root_files = {
-  'package.json',
-  'tsconfig.json'
+	'package.json',
+	'tsconfig.json',
 }
 
-vim.lsp.start {
-  name = 'tsserver',
-  cmd = { 'tsserver' },
-  root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true })[1]),
-  capabilities = require('lxs.lsp').make_client_capabilities(),
-}
+vim.lsp.start({
+	name = 'tsserver',
+	cmd = { 'tsserver' },
+	root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true })[1]),
+	capabilities = require('lxs.lsp').make_client_capabilities(),
+})
 
 -- local tslint_parser = function(output, bufnr)
 --   local json_results = string.match(output, '(.-)\n')
@@ -68,4 +68,3 @@ vim.lsp.start {
 --     parser = tslint_parser,
 --   }
 -- end
-

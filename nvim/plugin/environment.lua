@@ -16,7 +16,7 @@ if g.env == nil then
 	end
 end
 
--- Example 
+-- Example
 -- if g.env == 'WINDOWS' then
 --   Enable Windows specific settings/plugins
 -- end
