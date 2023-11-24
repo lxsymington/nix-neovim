@@ -49,6 +49,7 @@ with final.pkgs.lib; let
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
+    which-key-nvim  # keymap hints | https://github.com/folke/which-key.nvim/
     # ^ UI
     # language support
     neodev-nvim # adds support for Neovim's Lua API to lua-language-server | https://github.com/folke/neodev.nvim/
@@ -60,10 +61,10 @@ with final.pkgs.lib; let
     # navigation/editing enhancement plugins
     vim-unimpaired # predefined ] and [ navigation keymaps | https://github.com/tpope/vim-unimpaired/
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
-    eyeliner-nvim # Highlights unique characters for f/F and t/T motions | https://github.com/jinh0/eyeliner.nvim
     nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
+    flash-nvim
     # ^ navigation/editing enhancement plugins
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
@@ -75,9 +76,6 @@ with final.pkgs.lib; let
     nvim-web-devicons
     vim-repeat
     # ^ libraries that other plugins depend on
-    # bleeding-edge plugins from flake inputs
-    (mkNvimPlugin inputs.wf-nvim "wf.nvim") # (example) keymap hints | https://github.com/Cassin01/wf.nvim
-    # ^ bleeding-edge plugins from flake inputs
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
   ];
