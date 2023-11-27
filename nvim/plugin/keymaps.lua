@@ -194,6 +194,8 @@ keymap.set(
 	{ noremap = true, silent = true, desc = 'toggle spell' }
 )
 
+keymap.set('n', '<C-e>', '<C-e>zz', { desc = 'move down one line and center' })
+keymap.set('n', '<C-y>', '<C-y>zz', { desc = 'move up one line and center' })
 keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move down half-page and center' })
 keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up half-page and center' })
 keymap.set('n', '<C-f>', '<C-f>zz', { desc = 'move down full-page and center' })
@@ -214,16 +216,3 @@ keymap.set(
 	'<cmd>TSHighlightCapturesUnderCursor<cr>',
 	{ silent = true, desc = 'Show treesitter highlight information' }
 )
-
---- Disabled keymaps [enable at your own risk]
-
--- Automatic management of search highlight
--- XXX: This is not so nice if you use j/k for navigation
--- (you should be using <C-d>/<C-u> and relative line numbers instead ;)
---
--- local auto_hlsearch_namespace = vim.api.nvim_create_namespace('auto_hlsearch')
--- vim.on_key(function(char)
---   if vim.fn.mode() == 'n' then
---     vim.opt.hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
---   end
--- end, auto_hlsearch_namespace)

@@ -3,6 +3,7 @@ local g = vim.g
 -- even with default configs
 
 require('nvim-surround').setup()
+require('Comment').setup()
 
 -- Enable EditorConfig
 g.editorconfig = true

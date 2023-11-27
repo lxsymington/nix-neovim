@@ -1,7 +1,7 @@
 local telescope = require('telescope')
 local actions = require('telescope.actions')
-
 local builtin = require('telescope.builtin')
+local keymap = vim.keymap
 
 local layout_config = {
 	vertical = {
@@ -64,54 +64,51 @@ local function fuzzy_grep_current_file_type()
 	grep_current_file_type(fuzzy_grep)
 end
 
-vim.keymap.set('n', '<leader>tp', function()
+keymap.set('n', '<leader>tp', function()
 	builtin.find_files()
 end, { desc = '[telescope] find files' })
-vim.keymap.set('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
-vim.keymap.set('n', '<C-g>', builtin.live_grep, { desc = '[telescope] live grep' })
-vim.keymap.set('n', '<leader>tf', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
-vim.keymap.set(
-	'n',
-	'<M-f>',
-	fuzzy_grep_current_file_type,
-	{ desc = '[telescope] fuzzy grep filetype' }
-)
-vim.keymap.set(
-	'n',
-	'<M-g>',
-	live_grep_current_file_type,
-	{ desc = '[telescope] live grep filetype' }
-)
-vim.keymap.set(
+keymap.set('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
+keymap.set('n', '<C-g>', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap.set('n', '<leader>tf', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
+keymap.set('n', '<M-f>', fuzzy_grep_current_file_type, { desc = '[telescope] fuzzy grep filetype' })
+keymap.set('n', '<M-g>', live_grep_current_file_type, { desc = '[telescope] live grep filetype' })
+keymap.set(
 	'n',
 	'<leader>t*',
 	grep_string_current_file_type,
 	{ desc = '[telescope] grep string filetype' }
 )
-vim.keymap.set('n', '<leader>*', builtin.grep_string, { desc = '[telescope] grep string' })
-vim.keymap.set('n', '<leader>tg', project_files, { desc = '[telescope] project files' })
-vim.keymap.set('n', '<leader>tc', builtin.quickfix, { desc = '[telescope] quickfix list' })
-vim.keymap.set('n', '<leader>tq', builtin.command_history, { desc = '[telescope] command history' })
-vim.keymap.set('n', '<leader>tl', builtin.loclist, { desc = '[telescope] loclist' })
-vim.keymap.set('n', '<leader>tr', builtin.registers, { desc = '[telescope] registers' })
-vim.keymap.set('n', '<leader>tbb', builtin.buffers, { desc = '[telescope] buffers' })
-vim.keymap.set(
+keymap.set('n', '<leader>*', builtin.grep_string, { desc = '[telescope] grep string' })
+keymap.set('n', '<leader>tg', project_files, { desc = '[telescope] project files' })
+keymap.set('n', '<leader>tc', builtin.quickfix, { desc = '[telescope] quickfix list' })
+keymap.set('n', '<leader>tq', builtin.command_history, { desc = '[telescope] command history' })
+keymap.set('n', '<leader>tl', builtin.loclist, { desc = '[telescope] loclist' })
+keymap.set('n', '<leader>tr', builtin.registers, { desc = '[telescope] registers' })
+keymap.set('n', '<leader>tbb', builtin.buffers, { desc = '[telescope] buffers' })
+keymap.set(
 	'n',
 	'<leader>tbf',
 	builtin.current_buffer_fuzzy_find,
 	{ desc = '[telescope] fuzzy find (current buffer)' }
 )
-vim.keymap.set(
+keymap.set(
 	'n',
 	'<leader>td',
 	builtin.lsp_document_symbols,
 	{ desc = '[telescope] lsp document symbols' }
 )
-vim.keymap.set(
+keymap.set(
 	'n',
 	'<leader>to',
 	builtin.lsp_dynamic_workspace_symbols,
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
+)
+
+keymap.set(
+	'n',
+	'<leader><leader>',
+	'<Cmd>Telescope frecency workspace=CWD<CR>',
+	{ desc = '[telescope] frecent files' }
 )
 
 telescope.setup({
@@ -165,6 +162,12 @@ telescope.setup({
 				yaml = true,
 			},
 		},
+		frecency = {
+			workspaces = {
+				['conf'] = '/home/my_username/.config',
+				['data'] = '/home/my_username/.local/share',
+			},
+		},
 		fzy_native = {
 			override_generic_sorter = false,
 			override_file_sorter = true,
@@ -174,4 +177,4 @@ telescope.setup({
 
 telescope.load_extension('fzy_native')
 telescope.load_extension('aerial')
--- telescope.load_extension('smart_history')
+telescope.load_extension('frecency')
