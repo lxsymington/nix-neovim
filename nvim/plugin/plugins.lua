@@ -1,7 +1,7 @@
 local g = vim.g
 
 if g.did_load_plugins_plugin then
-  return
+	return
 end
 g.did_load_plugins_plugin = true
 
@@ -9,6 +9,7 @@ g.did_load_plugins_plugin = true
 -- even with default configs
 require('nvim-surround').setup()
 require('which-key').setup()
+require('Comment').setup()
 
 -- Enable EditorConfig
 g.editorconfig = true

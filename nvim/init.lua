@@ -1,7 +1,5 @@
 local cmd = vim.cmd
-local fn = vim.fn
 local opt = vim.o
-local g = vim.g
 
 -- Builtin –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 cmd.runtime('ftplugin/man.vim')

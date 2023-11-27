@@ -227,16 +227,3 @@ keymap.set(
 	'<cmd>TSHighlightCapturesUnderCursor<cr>',
 	{ silent = true, desc = 'Show treesitter highlight information' }
 )
-
---- Disabled keymaps [enable at your own risk]
-
--- Automatic management of search highlight
--- XXX: This is not so nice if you use j/k for navigation
--- (you should be using <C-d>/<C-u> and relative line numbers instead ;)
---
--- local auto_hlsearch_namespace = vim.api.nvim_create_namespace('auto_hlsearch')
--- vim.on_key(function(char)
---   if vim.fn.mode() == 'n' then
---     vim.opt.hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
---   end
--- end, auto_hlsearch_namespace)

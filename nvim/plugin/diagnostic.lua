@@ -1,4 +1,7 @@
 local lsp_lines = require('lsp_lines')
+local trouble = require('trouble')
+local keymap = vim.keymap
+local fn = vim.fn
 
 -- Diagnostic –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 lsp_lines.setup()
@@ -57,4 +60,36 @@ end
 
 vim.diagnostic.config(defaults)
 
-vim.keymap.set('', '<Leader>L', toggle_lsp_lines, { desc = 'Toggle lsp_lines' })
+keymap.set('', '<Leader>L', toggle_lsp_lines, { desc = 'Toggle lsp_lines' })
+
+-- Lua
+keymap.set('n', '<leader>xx', trouble.toggle)
+keymap.set('n', '<leader>xw', function()
+	trouble.toggle('workspace_diagnostics')
+end)
+keymap.set('n', '<leader>xd', function()
+	trouble.toggle('document_diagnostics')
+end)
+keymap.set('n', '<leader>xq', function()
+	trouble.toggle('quickfix')
+end)
+keymap.set('n', '<leader>xl', function()
+	trouble.toggle('loclist')
+end)
+keymap.set('n', 'gR', function()
+	trouble.toggle('lsp_references')
+end)
+
+local sign = function(opts)
+	fn.sign_define(opts.name, {
+		texthl = opts.name,
+		text = opts.text,
+		numhl = '',
+	})
+end
+
+-- Requires Nerd fonts
+sign({ name = 'DiagnosticSignError', text = '󰅚' })
+sign({ name = 'DiagnosticSignWarn', text = '⚠' })
+sign({ name = 'DiagnosticSignInfo', text = '⚐' })
+sign({ name = 'DiagnosticSignHint', text = '󰌶' })

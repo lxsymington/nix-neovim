@@ -5,8 +5,8 @@ vim.g.did_load_telescope_plugin = true
 
 local telescope = require('telescope')
 local actions = require('telescope.actions')
-
 local builtin = require('telescope.builtin')
+local keymap = vim.keymap
 
 local layout_config = {
 	vertical = {
@@ -69,7 +69,7 @@ local function fuzzy_grep_current_file_type()
 	grep_current_file_type(fuzzy_grep)
 end
 
-vim.keymap.set('n', '<leader>tp', function()
+keymap.set('n', '<leader>tp', function()
 	builtin.find_files()
 end, { desc = '[t]elescope find files - ctrl[p] style' })
 vim.keymap.set('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
@@ -93,12 +93,6 @@ vim.keymap.set(
 	grep_string_current_file_type,
 	{ desc = '[t]elescope grep current string [*] in current filetype' }
 )
-vim.keymap.set(
-	'n',
-	'<leader>*',
-	builtin.grep_string,
-	{ desc = '[telescope] grep current string [*]' }
-)
 vim.keymap.set('n', '<leader>tg', project_files, { desc = '[t]elescope project files [g]' })
 vim.keymap.set('n', '<leader>tc', builtin.quickfix, { desc = '[t]elescope quickfix list [c]' })
 vim.keymap.set(
@@ -116,17 +110,24 @@ vim.keymap.set(
 	builtin.current_buffer_fuzzy_find,
 	{ desc = '[t]elescope current [b]uffer [f]uzzy find' }
 )
-vim.keymap.set(
+keymap.set(
 	'n',
 	'<leader>td',
 	builtin.lsp_document_symbols,
 	{ desc = '[t]elescope lsp [d]ocument symbols' }
 )
-vim.keymap.set(
+keymap.set(
 	'n',
 	'<leader>to',
 	builtin.lsp_dynamic_workspace_symbols,
 	{ desc = '[t]elescope lsp dynamic w[o]rkspace symbols' }
+)
+
+keymap.set(
+	'n',
+	'<leader><leader>',
+	'<Cmd>Telescope frecency workspace=CWD<CR>',
+	{ desc = '[telescope] frecent files' }
 )
 
 telescope.setup({
@@ -180,6 +181,12 @@ telescope.setup({
 				yaml = true,
 			},
 		},
+		frecency = {
+			workspaces = {
+				['conf'] = '/home/my_username/.config',
+				['data'] = '/home/my_username/.local/share',
+			},
+		},
 		fzy_native = {
 			override_generic_sorter = false,
 			override_file_sorter = true,
@@ -189,4 +196,4 @@ telescope.setup({
 
 telescope.load_extension('fzy_native')
 telescope.load_extension('aerial')
--- telescope.load_extension('smart_history')
+telescope.load_extension('frecency')

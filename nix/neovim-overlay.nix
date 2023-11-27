@@ -53,7 +53,7 @@ with final.pkgs.lib; let
     # telescope and extensions
     telescope-nvim # https://github.com/nvim-telescope/telescope.nvim/
     telescope-fzy-native-nvim # https://github.com/nvim-telescope/telescope-fzy-native.nvim
-    # telescope-smart-history-nvim # https://github.com/nvim-telescope/telescope-smart-history.nvim
+    telescope-frecency-nvim # https://github.com/nvim-telescope/telescope-frecency.nvim/
     # ^ telescope and extensions
     # UI
     everforest # colorscheme | https://github.com/sainnhe/everforest/
@@ -65,20 +65,22 @@ with final.pkgs.lib; let
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
     which-key-nvim # keymap hints | https://github.com/folke/which-key.nvim/
     lsp_lines-nvim # diagnostic display | https://git.sr.ht/~whynothugo/lsp_lines.nvim
+    todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
     conform-nvim # An asynchronous formatter | https://github.com/stevearc/conform.nvim/
     refactoring-nvim # Language agnostic refactors | https://github.com/ThePrimeagen/refactoring.nvim/
     SchemaStore-nvim # JSON Schema support | https://github.com/b0o/SchemaStore.nvim/
+    trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
+    comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     # ^ language support
     # navigation/editing enhancement plugins
-    vim-unimpaired # predefined ] and [ navigation keymaps | https://github.com/tpope/vim-unimpaired/
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
     nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
-    flash-nvim
+    flash-nvim # search/highlight/jump | https://github.com/folke/flash.nvim/
     # ^ navigation/editing enhancement plugins
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
