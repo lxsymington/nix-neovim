@@ -1,4 +1,5 @@
 local configs = require('nvim-treesitter.configs')
+
 configs.setup({
 	-- ensure_installed = 'all',
 	-- auto_install = false, -- Do not automatically install missing parsers when entering buffer
@@ -76,9 +77,10 @@ configs.setup({
 		},
 		lsp_interop = {
 			enable = true,
+			border = 'rounded',
 			peek_definition_code = {
-				['df'] = '@function.outer',
-				['dF'] = '@class.outer',
+				['<leader>fo'] = '@function.outer',
+				['<leader>Fo'] = '@class.outer',
 			},
 		},
 	},
@@ -92,5 +94,5 @@ require('treesitter-context').setup({
 })
 
 -- Tree-sitter based folding
--- vim.opt.foldmethod = 'expr'
+vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
