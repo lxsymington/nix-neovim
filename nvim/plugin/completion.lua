@@ -7,9 +7,35 @@ local cmp = require('cmp')
 local copilot_comparators = require('copilot_cmp.comparators')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
+local types = require('luasnip.util.types')
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.o.completefunc = 'v:lua.require("cmp").complete()'
+
+lspkind.init({
+	symbol_map = {
+		Copilot = '',
+	},
+})
+
+luasnip.config.set_config({
+	history = true,
+})
+
+luasnip.config.setup({
+	ext_opts = {
+		[types.choiceNode] = {
+			active = {
+				virt_text = { { '●', 'Orange' } },
+			},
+		},
+		[types.insertNode] = {
+			active = {
+				virt_text = { { '●', 'LightBlue' } },
+			},
+		},
+	},
+})
 
 local function has_words_before()
 	local unpack_ = unpack or table.unpack
@@ -30,26 +56,23 @@ end
 cmp.setup({
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
-		-- autocomplete = false,
+		autocomplete = false,
 	},
 	formatting = {
-		format = lspkind.cmp_format({
-			mode = 'symbol_text',
-			with_text = true,
-			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-			ellipsis_char = '…', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+		fields = { 'kind', 'abbr', 'menu' },
+		format = function(entry, vim_item)
+			local kind = lspkind.cmp_format({
+				ellipsis_char = '…', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+				maxwidth = 50,
+				mode = 'symbol_text',
+				with_text = true,
+			})(entry, vim_item)
+			local strings = vim.split(kind.kind, '%s', { trimempty = true })
+			kind.kind = ' ' .. (strings[1] or '') .. ' '
+			kind.menu = '    (' .. (strings[2] or '') .. ')'
 
-			menu = {
-				buffer = '[BUF]',
-				copilot = '[COP]',
-				nvim_lsp = '[LSP]',
-				nvim_lsp_signature_help = '[LSP]',
-				nvim_lsp_document_symbol = '[LSP]',
-				nvim_lua = '[API]',
-				path = '[PATH]',
-				luasnip = '[SNIP]',
-			},
-		}),
+			return kind
+		end,
 	},
 	sorting = {
 		priority_weight = 2,
@@ -124,10 +147,11 @@ cmp.setup({
 	},
 	sources = cmp.config.sources({
 		-- The insertion order influences the priority of the sources
-		{ name = 'copilot', group_index = 2 },
+		{ name = 'copilot', max_item_count = 2 },
 		{ name = 'nvim_lsp', keyword_length = 3 },
-		{ name = 'nvim_lsp_signature_help', keyword_length = 3 },
-		{ name = 'buffer' },
+		{ name = 'nvim_lsp_signature_help', keyword_length = 2 },
+		{ name = 'luasnip' },
+		{ name = 'buffer', keyword_length = 4 },
 		{ name = 'path' },
 	}),
 	enabled = function()
@@ -137,11 +161,19 @@ cmp.setup({
 		native_menu = false,
 		ghost_text = true,
 	},
+	window = {
+		completion = cmp.config.window.bordered({
+			winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
+			col_offset = -3,
+			side_padding = 0,
+		}),
+		documentation = cmp.config.window.bordered(),
+	},
 })
 
 cmp.setup.filetype('lua', {
 	sources = cmp.config.sources({
-		{ name = 'copilot', group_index = 2 },
+		{ name = 'copilot', max_item_count = 2 },
 		{ name = 'nvim_lua' },
 		{ name = 'nvim_lsp', keyword_length = 3 },
 		{ name = 'path' },
@@ -155,10 +187,10 @@ cmp.setup.cmdline({ '/', '?' }, {
 		{ name = 'nvim_lsp_document_symbol', keyword_length = 3 },
 		{ name = 'buffer' },
 		{ name = 'cmdline_history' },
-		{ name = 'copilot', group_index = 2 },
+		{ name = 'copilot', max_item_count = 2 },
 	},
 	view = {
-		entries = { name = 'wildmenu', separator = '|' },
+		entries = { name = 'wildmenu', separator = ' ※ ' },
 	},
 })
 
@@ -169,7 +201,7 @@ cmp.setup.cmdline(':', {
 		{ name = 'cmdline' },
 		{ name = 'cmdline_history' },
 		{ name = 'path' },
-		{ name = 'copilot', group_index = 2 },
+		{ name = 'copilot', max_item_count = 2 },
 	}),
 })
 

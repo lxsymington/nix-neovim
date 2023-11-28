@@ -1,6 +1,6 @@
 local lint = require('lint')
 
--- TypeScript Configuration –––––––––––––––––––––––––––––––––––––––––––––––––––
+-- TypeScript Configuration ––––––––––––––––––––––––––––––––––––––––––––––––––––
 local root_files = {
 	'package.json',
 	'tsconfig.json',

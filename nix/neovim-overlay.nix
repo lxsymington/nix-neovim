@@ -66,6 +66,7 @@ with final.pkgs.lib; let
     which-key-nvim # keymap hints | https://github.com/folke/which-key.nvim/
     lsp_lines-nvim # diagnostic display | https://git.sr.ht/~whynothugo/lsp_lines.nvim
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
+    indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -74,6 +75,7 @@ with final.pkgs.lib; let
     SchemaStore-nvim # JSON Schema support | https://github.com/b0o/SchemaStore.nvim/
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
+    neogen # Doc comment helper | https://github.com/danymat/neogen/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
@@ -82,6 +84,10 @@ with final.pkgs.lib; let
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
     flash-nvim # search/highlight/jump | https://github.com/folke/flash.nvim/
     # ^ navigation/editing enhancement plugins
+    # Code running
+    neotest # Testing framework | https://github.com/nvim-neotest/neotest/
+    neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
+    # ^ Code running
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
     vim-startuptime # Profile startup time | https://github.com/dstein64/vim-startuptime

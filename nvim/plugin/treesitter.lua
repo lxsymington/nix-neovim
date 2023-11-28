@@ -84,9 +84,10 @@ configs.setup({
 		},
 		lsp_interop = {
 			enable = true,
+			border = 'rounded',
 			peek_definition_code = {
-				['df'] = '@function.outer',
-				['dF'] = '@class.outer',
+				['<leader>fo'] = '@function.outer',
+				['<leader>Fo'] = '@class.outer',
 			},
 		},
 	},
@@ -99,5 +100,5 @@ require('treesitter-context').setup({
 require('ts_context_commentstring').setup()
 
 -- Tree-sitter based folding
--- vim.opt.foldmethod = 'expr'
+vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'

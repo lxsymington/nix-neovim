@@ -100,7 +100,7 @@ function M.attach(ev)
 	vim.bo[bufnr].bufhidden = 'hide'
 
 	-- Enable completion triggered by <c-x><c-o>
-	vim.bo[bufnr].omnifunc = 'v:lua.lsp.omnifunc'
+	vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 	local function desc(description)
 		return { noremap = true, silent = true, buffer = bufnr, desc = description }

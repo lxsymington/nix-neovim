@@ -5,10 +5,15 @@ vim.g.did_load_gitsigns_plugin = true
 
 vim.schedule(function()
 	require('gitsigns').setup({
-		current_line_blame = false,
+		current_line_blame = true,
 		current_line_blame_opts = {
 			ignore_whitespace = true,
+			virt_text_pos = 'eol',
 		},
+		current_line_blame_formatter_opts = {
+			relative_time = true,
+		},
+		numhl = true,
 		on_attach = function(bufnr)
 			local gs = package.loaded.gitsigns
 
@@ -67,5 +72,8 @@ vim.schedule(function()
 			-- Text object
 			map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = '[git] stage buffer' })
 		end,
+		preview_config = {
+			border = 'rounded',
+		},
 	})
 end)

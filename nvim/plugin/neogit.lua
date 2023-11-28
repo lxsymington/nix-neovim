@@ -19,6 +19,12 @@ neogit.setup({
 			folded = false,
 		},
 	},
+	signs = {
+		-- { CLOSED, OPENED }
+		section = { '▶', '▼' },
+		item = { '▷', '▽' },
+		hunk = { '▸', '▾' },
+	},
 })
 
 vim.keymap.set(

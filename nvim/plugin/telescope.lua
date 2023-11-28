@@ -9,15 +9,27 @@ local builtin = require('telescope.builtin')
 local keymap = vim.keymap
 
 local layout_config = {
-	vertical = {
-		width = function(_, max_columns)
-			return math.floor(max_columns * 0.99)
-		end,
-		height = function(_, _, max_lines)
-			return math.floor(max_lines * 0.99)
-		end,
-		prompt_position = 'bottom',
-		preview_cutoff = 0,
+	width = function(_, cols, _)
+		return math.min(240, math.floor(cols * 0.8))
+	end,
+	height = function(_, _, lines)
+		return math.min(60, math.floor(lines * 0.75))
+	end,
+	prompt_position = 'top',
+	flex = {
+		horizontal = {
+			preview_width = function(_, cols, _)
+				return math.min(120, math.floor(cols * 0.6 * 0.8))
+			end,
+		},
+		vertical = {
+			width = function(_, cols, _)
+				return math.min(120, math.floor(cols * 0.8))
+			end,
+			preview_height = function(_, _, lines)
+				return math.min(45, math.floor(lines * 0.5))
+			end,
+		},
 	},
 }
 
@@ -135,7 +147,7 @@ telescope.setup({
 		path_display = {
 			'truncate',
 		},
-		layout_strategy = 'vertical',
+		layout_strategy = 'flex',
 		layout_config = layout_config,
 		mappings = {
 			i = {
@@ -147,6 +159,7 @@ telescope.setup({
 			},
 			n = {
 				q = actions.close,
+				['<Leader>q'] = actions.send_selected_to_qflist + actions.open_qflist,
 			},
 		},
 		preview = {
@@ -159,7 +172,7 @@ telescope.setup({
 		color_devicons = true,
 		set_env = { ['COLORTERM'] = 'truecolor' },
 		prompt_prefix = '   ',
-		selection_caret = '  ',
+		selection_caret = '➜ ',
 		entry_prefix = '  ',
 		initial_mode = 'insert',
 		vimgrep_arguments = {
@@ -172,6 +185,7 @@ telescope.setup({
 			'--column',
 			'--smart-case',
 		},
+		winblend = 10,
 	},
 	extensions = {
 		aerial = {

@@ -33,7 +33,7 @@ opt.inccommand = 'split'
 opt.wildmenu = true
 
 -- Wildmode settings
-opt.wildmode = { longest = 'full', 'full' }
+opt.wildmode = { 'longest:full', 'full' }
 
 -- Wild options
 opt.wildoptions = 'pum'
@@ -71,7 +71,7 @@ opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
 -- stylua: ignore
 -- Match the indent for the fold display
--- opt.foldtext = 'v:lua.require(\"lxs.utils\").foldtext()'
+opt.foldtext = 'v:lua.require"lxs.folds".foldtext()'
 
 -- Set maximum nesting of folds
 opt.foldnestmax = 20
@@ -96,7 +96,7 @@ opt.fillchars = {
 	stl = ' ', -- ' ' or '^' statusline of the current window
 	stlnc = ' ', -- ' ' or '=' statusline of the non-current windows
 	vert = '│', -- '│' or '|' vertical separators |:vsplit|
-	fold = ' ', -- '·' or '-' filling 'foldtext'
+	fold = '╍', -- '·' or '-' filling 'foldtext'
 	foldopen = '▽', -- '-' mark the beginning of a fold
 	foldclose = '▶', -- '+' show a closed fold
 	foldsep = '│', -- '│' or '|' open fold middle marker
