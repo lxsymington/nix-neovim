@@ -54,9 +54,7 @@ local function initialise_worksapces()
 		end
 	end
 
-	vim.print(vim.inspect(projects))
-
-	return tbl_extend('keep', {
+	return tbl_extend('error', {
 		['conf'] = fs.normalize(loop.os_homedir() .. '/.config'),
 		['data'] = fs.normalize(loop.os_homedir() .. '/.local/share'),
 	}, projects)
@@ -231,6 +229,8 @@ telescope.setup({
 			},
 		},
 		frecency = {
+			show_scores = true,
+			ignore_patterns = { '*.git/*', '*/node_modules/*', '*/tmp/*' },
 			workspaces = initialise_worksapces(),
 		},
 		fzy_native = {
