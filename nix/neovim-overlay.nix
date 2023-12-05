@@ -1,6 +1,10 @@
-{ inputs }: final: prev:
+{ inputs, system }: final: prev:
 with final.pkgs.lib; let
   pkgs = final;
+
+  inherit (builtins) elem;
+
+  isDarwin = elem system pkgs.lib.platforms.darwin;
 
   # Use this to create a plugin from an input
   mkNvimPlugin = src: pname:
@@ -127,7 +131,7 @@ in
   # returned by the overlay
   lxs-nvim = mkNeovim {
     plugins = all-plugins;
-    inherit extraPackages;
+    inherit extraPackages isDarwin;
   };
 
   # You can add as many derivations as you like.

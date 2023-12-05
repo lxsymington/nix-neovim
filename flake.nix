@@ -43,23 +43,17 @@
     , ...
     }:
     let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-
       # This is where the Neovim derivation is built.
-      neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+      neovim-overlay = { system ? "x86_64-linux" }:
+        (import ./nix/neovim-overlay.nix { inherit inputs system; });
     in
-    flake-utils.lib.eachSystem supportedSystems
+    flake-utils.lib.eachDefaultSystem
       (system:
       let
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
-            neovim-overlay
+            (neovim-overlay { inherit system; })
           ];
         };
         shell = pkgs.mkShell {
@@ -73,16 +67,16 @@
         };
       in
       {
+        devShells = {
+          default = shell;
+        };
         packages = rec {
           default = nvim;
           nvim = pkgs.lxs-nvim;
         };
-        devShells = {
-          default = shell;
-        };
       })
     // {
       # You can add this overlay to your NixOS configuration
-      overlays.default = neovim-overlay;
+      overlays.default = (neovim-overlay { });
     };
 }
