@@ -120,6 +120,7 @@ with final.pkgs.lib; let
     rust-analyzer # Rust LSP
     selene # Lua linter
     stylua
+    typescript
     # TODO: Sort this out!
     # (mkYarnPackage {
     #   name = "tslint";
