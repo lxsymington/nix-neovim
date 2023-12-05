@@ -1,7 +1,11 @@
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
+local fn = vim.fn
+local fs = vim.fs
 local keymap = vim.keymap
+local loop = vim.loop
+local tbl_extend = vim.tbl_extend
 
 local layout_config = {
 	width = function(_, cols, _)
@@ -27,6 +31,31 @@ local layout_config = {
 		},
 	},
 }
+
+local function initialise_worksapces()
+	local seccl_directory = fs.normalize(loop.os_homedir() .. '/Development/Seccl')
+	local development_directory = fs.normalize(loop.os_homedir() .. '/Development')
+	local base_dir = (fn.isdirectory(seccl_directory) == 1) and seccl_directory
+		or development_directory
+
+	local directory_iterator = fs.dir(base_dir)
+	local projects = {}
+
+	for name, type in directory_iterator do
+		if type == 'directory' then
+			projects = tbl_extend('error', projects, {
+				[name] = fs.normalize(base_dir .. '/' .. name),
+			})
+		end
+	end
+
+	vim.print(vim.inspect(projects))
+
+	return tbl_extend('keep', {
+		['conf'] = fs.normalize(loop.os_homedir() .. '/.config'),
+		['data'] = fs.normalize(loop.os_homedir() .. '/.local/share'),
+	}, projects)
+end
 
 -- Fall back to find_files if not in a git repo
 local project_files = function()
@@ -116,6 +145,12 @@ keymap.set(
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
 )
 
+keymap.set('n', '<leader>;', builtin.symbols, { desc = '[telescope] find symbols' })
+
+keymap.set('n', '<leader>vm', builtin.marks, { desc = '[telescope] find marks' })
+
+keymap.set('n', '<leader>vh', builtin.help_tags, { desc = '[telescope] find help tags' })
+
 keymap.set(
 	'n',
 	'<leader><leader>',
@@ -177,10 +212,7 @@ telescope.setup({
 			},
 		},
 		frecency = {
-			workspaces = {
-				['conf'] = '/home/my_username/.config',
-				['data'] = '/home/my_username/.local/share',
-			},
+			workspaces = initialise_worksapces(),
 		},
 		fzy_native = {
 			override_generic_sorter = false,
