@@ -169,10 +169,12 @@ let
       ''--prefix PATH : "${makeBinPath externalPackages}"'')
     # Set the LIBSQLITE_CLIB_PATH if sqlite is enabled
     ++ (optional withSqlite
-      ''--set LIBSQLITE_CLIB_PATH "${pkgs.sqlite.out}/lib/libsqlite3.so"'')
+      ''--set LIBSQLITE_CLIB_PATH "${pkgs.sqlite.out}/lib/${if isDarwin then "libsqlite3.dylib" else
+      "libsqlite3.so"}"'')
     # Set the LIBSQLITE environment variable if sqlite is enabled
     ++ (optional withSqlite
-      ''--set LIBSQLITE "${pkgs.sqlite.out}/lib/libsqlite3.so"'')
+      ''--set LIBSQLITE "${pkgs.sqlite.out}/lib/${if isDarwin then "libsqlite3.dylib" else
+      "libsqlite3.so"}"'')
   );
 
   luaPackages = neovim-unwrapped.lua.pkgs;

@@ -1,7 +1,11 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{ inputs }: final: prev:
+{ inputs, system }: final: prev:
 with final.pkgs.lib; let
   pkgs = final;
+
+  inherit (builtins) elem;
+
+  isDarwin = elem system pkgs.lib.platforms.darwin;
 
   # Use this to create a plugin from a flake input
   mkNvimPlugin = src: pname:
@@ -140,7 +144,7 @@ in
   # returned by the overlay
   lxs-nvim = mkNeovim {
     plugins = all-plugins;
-    inherit extraPackages;
+    inherit extraPackages isDarwin;
   };
 
   # This can be symlinked in the devShell's shellHook
