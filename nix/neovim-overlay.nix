@@ -78,6 +78,7 @@ with final.pkgs.lib; let
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
+    sniprun # Repl | https://github.com/michaelb/sniprun 
     # ^ Code running
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
@@ -100,6 +101,7 @@ with final.pkgs.lib; let
     lua-language-server
     nil # Nix LSP
     nodePackages_latest.prettier
+    nodePackages_latest.ts-node
     nodePackages_latest.typescript-language-server
     nodePackages_latest.vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     nodePackages_latest.yaml-language-server
