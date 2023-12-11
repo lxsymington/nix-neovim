@@ -58,6 +58,7 @@ with final.pkgs.lib; let
     telescope-nvim # https://github.com/nvim-telescope/telescope.nvim/
     telescope-fzy-native-nvim # https://github.com/nvim-telescope/telescope-fzy-native.nvim
     telescope-frecency-nvim # https://github.com/nvim-telescope/telescope-frecency.nvim/
+    telescope-symbols-nvim # https://github.com/nvim-telescope/telescope-symbols.nvim/
     # ^ telescope and extensions
     # UI
     everforest # colorscheme | https://github.com/sainnhe/everforest/

@@ -26,7 +26,7 @@ luasnip.config.setup({
 	ext_opts = {
 		[types.choiceNode] = {
 			active = {
-				virt_text = { { '●', 'Orange' } },
+				virt_text = { { '⦿', 'Orange' } },
 			},
 		},
 		[types.insertNode] = {
@@ -56,9 +56,13 @@ end
 cmp.setup({
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
-		autocomplete = false,
+		autocomplete = {
+			cmp.TriggerEvent.InsertEnter,
+			cmp.TriggerEvent.TextChanged,
+		},
 	},
 	formatting = {
+		expandable_indicator = true,
 		fields = { 'kind', 'abbr', 'menu' },
 		format = function(entry, vim_item)
 			local kind = lspkind.cmp_format({
@@ -74,6 +78,7 @@ cmp.setup({
 			return kind
 		end,
 	},
+	preselect = cmp.PreselectMode.None,
 	sorting = {
 		priority_weight = 2,
 		comparators = {
@@ -160,6 +165,11 @@ cmp.setup({
 	experimental = {
 		native_menu = false,
 		ghost_text = true,
+	},
+	view = {
+		docs = {
+			auto_open = true,
+		},
 	},
 	window = {
 		completion = cmp.config.window.bordered({
