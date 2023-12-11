@@ -1,18 +1,8 @@
 local lint = require('lint')
+local ecmascript = require('lxs.ecmascript')
 
 -- TypeScript Configuration ––––––––––––––––––––––––––––––––––––––––––––––––––––
-local root_files = {
-	'package.json',
-	'tsconfig.json',
-}
-
-vim.lsp.start({
-	name = 'tsserver',
-	cmd = { 'tsserver' },
-	root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true })[1]),
-	capabilities = require('lxs.lsp').make_client_capabilities(),
-})
-
+ecmascript.start()
 -- local tslint_parser = function(output, bufnr)
 --   local json_results = string.match(output, '(.-)\n')
 --   local results_ok, tslint_results = pcall(vim.json.decode, json_results)

@@ -211,7 +211,7 @@ telescope.setup({
 		},
 		frecency = {
 			show_scores = true,
-			ignore_patterns = { '*.git/*', '*/node_modules/*', '*/tmp/*' },
+			ignore_patterns = { '*/.git/*', '*/node_modules/*', '*/tmp/*' },
 			workspaces = initialise_worksapces(),
 		},
 		fzy_native = {
