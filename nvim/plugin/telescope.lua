@@ -107,7 +107,6 @@ end
 local function frecent()
 	local opts = themes.get_dropdown({
 		border = true,
-		layout_strategy = 'vertical',
 		path_display = { shorten = 3 },
 	})
 

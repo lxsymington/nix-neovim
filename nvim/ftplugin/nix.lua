@@ -1,3 +1,5 @@
+local lint = require('lint')
+
 -- Exit if the language server isn't available
 if vim.fn.executable('nil') ~= 1 then
 	return
@@ -16,3 +18,7 @@ vim.lsp.start({
 	root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true })[1]),
 	capabilities = require('lxs.lsp').make_client_capabilities(),
 })
+
+lint.linters_by_ft = {
+	nix = { 'nix' },
+}

@@ -52,6 +52,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
+          config = { allowUnfree = true; };
           overlays = [
             (neovim-overlay { inherit system; })
           ];

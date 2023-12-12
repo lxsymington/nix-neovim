@@ -1,3 +1,5 @@
+local lint = require('lint')
+
 vim.bo.comments = ':---,:--'
 
 local lua_ls_cmd = 'lua-language-server'
@@ -54,3 +56,7 @@ vim.lsp.start({
 		},
 	},
 })
+
+lint.linters_by_ft = {
+	lua = { 'selene' },
+}

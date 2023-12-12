@@ -1,8 +1,8 @@
 { inputs, system }: final: prev:
 with final.pkgs.lib; let
-  pkgs = final;
-
   inherit (builtins) elem;
+
+  pkgs = final;
 
   isDarwin = elem system pkgs.lib.platforms.darwin;
 
@@ -110,6 +110,7 @@ with final.pkgs.lib; let
     rust-analyzer # Rust LSP
     selene # Lua linter
     stylua
+    terraform
     terraform-ls
     typescript
     # TODO: Sort this out!
