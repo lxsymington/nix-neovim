@@ -4,6 +4,7 @@ end
 vim.g.did_load_telescope_plugin = true
 
 local telescope = require('telescope')
+local themes = require('telescope.themes')
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
 local fn = vim.fn
@@ -108,6 +109,16 @@ local function fuzzy_grep_current_file_type()
 	grep_current_file_type(fuzzy_grep)
 end
 
+local function frecent()
+	local opts = themes.get_dropdown({
+		border = true,
+		layout_strategy = 'vertical',
+		path_display = { shorten = 3 },
+	})
+
+	telescope.extensions.frecency.frecency(opts)
+end
+
 keymap.set('n', '<leader>tp', function()
 	builtin.find_files()
 end, { desc = '[t]elescope find files - ctrl[p] style' })
@@ -168,12 +179,7 @@ keymap.set('n', '<leader>vm', builtin.marks, { desc = '[telescope] find marks' }
 
 keymap.set('n', '<leader>vh', builtin.help_tags, { desc = '[telescope] find help tags' })
 
-keymap.set(
-	'n',
-	'<leader><leader>',
-	'<Cmd>Telescope frecency workspace=CWD<CR>',
-	{ desc = '[telescope] frecent files' }
-)
+keymap.set('n', '<leader><leader>', frecent, { desc = '[telescope] frecent files' })
 
 telescope.setup({
 	defaults = {
@@ -229,6 +235,7 @@ telescope.setup({
 			},
 		},
 		frecency = {
+			default_workspace = 'CWD',
 			show_scores = true,
 			ignore_patterns = { '*/.git/*', '*/node_modules/*', '*/tmp/*' },
 			workspaces = initialise_worksapces(),

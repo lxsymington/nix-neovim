@@ -123,6 +123,7 @@ with final.pkgs.lib; let
     rust-analyzer # Rust LSP
     selene # Lua linter
     stylua
+    terraform-ls
     typescript
     # TODO: Sort this out!
     # (mkYarnPackage {
