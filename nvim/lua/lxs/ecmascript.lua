@@ -3,6 +3,7 @@
 ---@brief [[
 ---ECMAScript related functions
 ---@brief ]]
+local lint = require('lint')
 
 local api = vim.api
 local fs = vim.fs
@@ -41,6 +42,12 @@ function M.start()
 			end, { buffer = buf, desc = 'Organise imports' })
 		end,
 	})
+
+	lint.linters_by_ft = {
+		-- typescript = { 'tslint' },
+		-- typescriptreact = { 'tslint' },
+		-- ['typescript.tsx'] = { 'tslint' },
+	}
 end
 
 return M

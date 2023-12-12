@@ -4,6 +4,8 @@
 ---Terraform related function
 ---@brief ]]
 
+local lint = require('lint')
+
 local fs = vim.fs
 local lsp = vim.lsp
 
@@ -21,6 +23,12 @@ function M.start()
 		root_dir = fs.dirname(fs.find(root_files, { upward = true })[1]),
 		capabilities = require('lxs.lsp').make_client_capabilities(),
 	})
+
+	lint.linters_by_ft = {
+		tf = { 'terraform_validate' },
+		terraform = { 'terraform_validate' },
+		['terraform-vars'] = { 'terraform_validate' },
+	}
 end
 
 return M

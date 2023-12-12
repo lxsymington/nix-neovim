@@ -9,11 +9,3 @@ api.nvim_create_autocmd({ 'FileReadPost', 'TextChanged', 'ModeChanged', 'FocusGa
 		lint.try_lint()
 	end,
 })
-
-lint.linters_by_ft = {
-	lua = { 'selene' },
-	nix = { 'nix' },
-	-- typescript = { 'tslint' },
-	-- typescriptreact = { 'tslint' },
-	-- ['typescript.tsx'] = { 'tslint' },
-}

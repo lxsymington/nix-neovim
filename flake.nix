@@ -54,6 +54,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
+          config = { allowUnfree = true; };
           overlays = [
             # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
             (neovim-overlay { inherit system; })
