@@ -142,3 +142,6 @@ opt.spelllang = 'en_gb'
 
 -- Add sub folders to vim's search path
 opt.path = vim.o.path .. '**'
+
+-- Enable project specific settings
+opt.exrc = true

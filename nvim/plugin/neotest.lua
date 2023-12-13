@@ -61,16 +61,12 @@ neotest.setup({
 	},
 })
 
-keymap.set('n', '<Leader>tn', function()
-	require('neotest').run.run()
-end, {
+keymap.set('n', '<Leader>tn', neotest.run.run, {
 	desc = 'Test » Nearest',
 	silent = true,
 })
 
-keymap.set('n', '<Leader>tl', function()
-	require('neotest').run.run_last()
-end, {
+keymap.set('n', '<Leader>tl', neotest.run.run_last, {
 	desc = 'Test » Last',
 	silent = true,
 })
@@ -89,30 +85,27 @@ end, {
 	silent = true,
 })
 
-keymap.set('n', '<Leader>t!', function()
-	require('neotest').run.stop()
-end, {
+keymap.set('n', '<Leader>t!', neotest.run.stop, {
 	desc = 'Test » Stop',
 	silent = true,
 })
 
-keymap.set('n', '<Leader>ts', function()
-	require('neotest').summary.toggle()
-end, {
+keymap.set('n', '<Leader>ts', neotest.summary.toggle, {
 	desc = 'Test » Summary',
 	silent = true,
 })
 
-keymap.set('n', '<Leader>to', function()
-	require('neotest').output.open()
-end, {
+keymap.set('n', '<Leader>to', neotest.output_panel.open, {
 	desc = 'Test » Output',
 	silent = true,
 })
 
-keymap.set('n', '<Leader>ta', function()
-	require('neotest').run.attach()
-end, {
+keymap.set('n', '<Leader>tO', neotest.output.open, {
+	desc = 'Test » Output',
+	silent = true,
+})
+
+keymap.set('n', '<Leader>ta', neotest.run.attach, {
 	desc = 'Test » Attach',
 	silent = true,
 })

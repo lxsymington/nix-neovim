@@ -106,6 +106,10 @@ with final.pkgs.lib; let
     # ^ libraries that other plugins depend on
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
+    # ^ Vim utilities
+    # Miscellaneous
+    vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
+    # ^ Miscellaneous
   ];
 
   extraPackages = with pkgs; [
