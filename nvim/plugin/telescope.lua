@@ -1,5 +1,4 @@
 local telescope = require('telescope')
-local themes = require('telescope.themes')
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
 local fn = vim.fn
@@ -105,59 +104,63 @@ local function fuzzy_grep_current_file_type()
 end
 
 local function frecent()
-	local opts = themes.get_dropdown({
+	local opts = {
 		border = true,
+		layout_strategy = 'vertical',
+		layout_config = {
+			anchor = 'CENTER',
+			height = function(_, _, lines)
+				return math.min(30, math.floor(lines * 0.75))
+			end,
+			mirror = 'true',
+			preview_height = function(_, _, lines)
+				return math.min(10, math.floor(lines * 0.75))
+			end,
+			prompt_position = 'bottom',
+			width = function(_, cols, _)
+				return math.min(100, math.floor(cols * 0.8))
+			end,
+		},
 		path_display = { shorten = 3 },
-	})
+	}
 
 	telescope.extensions.frecency.frecency(opts)
 end
 
-keymap.set('n', '<leader>tp', function()
-	builtin.find_files()
-end, { desc = '[telescope] find files' })
-keymap.set('n', '<M-p>', builtin.oldfiles, { desc = '[telescope] old files' })
-keymap.set('n', '<C-g>', builtin.live_grep, { desc = '[telescope] live grep' })
-keymap.set('n', '<leader>tf', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
-keymap.set('n', '<M-f>', fuzzy_grep_current_file_type, { desc = '[telescope] fuzzy grep filetype' })
-keymap.set('n', '<M-g>', live_grep_current_file_type, { desc = '[telescope] live grep filetype' })
+keymap.set('n', '<leader>/', builtin.find_files, { desc = '[telescope] find files' })
+keymap.set('n', '<leader>/O', builtin.oldfiles, { desc = '[telescope] old files' })
+keymap.set('n', '<leader>/g', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap.set('n', '<leader>/fg', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
 keymap.set(
 	'n',
-	'<leader>t*',
-	grep_string_current_file_type,
-	{ desc = '[telescope] grep string filetype' }
+	'<leader>/ft',
+	fuzzy_grep_current_file_type,
+	{ desc = '[telescope] fuzzy grep filetype' }
 )
-keymap.set('n', '<leader>*', builtin.grep_string, { desc = '[telescope] grep string' })
-keymap.set('n', '<leader>tg', project_files, { desc = '[telescope] project files' })
-keymap.set('n', '<leader>tc', builtin.quickfix, { desc = '[telescope] quickfix list' })
-keymap.set('n', '<leader>tq', builtin.command_history, { desc = '[telescope] command history' })
-keymap.set('n', '<leader>tl', builtin.loclist, { desc = '[telescope] loclist' })
-keymap.set('n', '<leader>tr', builtin.registers, { desc = '[telescope] registers' })
-keymap.set('n', '<leader>tbb', builtin.buffers, { desc = '[telescope] buffers' })
+keymap.set('n', '<leader>/p', project_files, { desc = '[telescope] project files' })
+keymap.set('n', '<leader>/q', builtin.quickfix, { desc = '[telescope] quickfix list' })
+keymap.set('n', '<leader>/c', builtin.command_history, { desc = '[telescope] command history' })
+keymap.set('n', '<leader>/l', builtin.loclist, { desc = '[telescope] loclist' })
+keymap.set('n', '<leader>/r', builtin.registers, { desc = '[telescope] registers' })
+keymap.set('n', '<leader>/b', builtin.buffers, { desc = '[telescope] buffers' })
 keymap.set(
 	'n',
-	'<leader>tbf',
-	builtin.current_buffer_fuzzy_find,
-	{ desc = '[telescope] fuzzy find (current buffer)' }
-)
-keymap.set(
-	'n',
-	'<leader>td',
+	'<leader>/s',
 	builtin.lsp_document_symbols,
 	{ desc = '[telescope] lsp document symbols' }
 )
 keymap.set(
 	'n',
-	'<leader>to',
+	'<leader>/S',
 	builtin.lsp_dynamic_workspace_symbols,
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
 )
 
-keymap.set('n', '<leader>;', builtin.symbols, { desc = '[telescope] find symbols' })
+keymap.set('n', '<leader>/;', builtin.symbols, { desc = '[telescope] find symbols' })
 
-keymap.set('n', '<leader>vm', builtin.marks, { desc = '[telescope] find marks' })
+keymap.set('n', '<leader>/vm', builtin.marks, { desc = '[telescope] find marks' })
 
-keymap.set('n', '<leader>vh', builtin.help_tags, { desc = '[telescope] find help tags' })
+keymap.set('n', '<leader>/vh', builtin.help_tags, { desc = '[telescope] find help tags' })
 
 keymap.set('n', '<leader><leader>', frecent, { desc = '[telescope] frecent files' })
 
