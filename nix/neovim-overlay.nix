@@ -146,6 +146,7 @@ with final.pkgs.lib; let
     #     yarn --offline compile:core
     #   '';
     # })
+    vale
     vim-vint # Vim linter
   ];
 in
