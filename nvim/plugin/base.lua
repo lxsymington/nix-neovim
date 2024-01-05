@@ -99,7 +99,7 @@ opt.updatetime = 300
 opt.shortmess:append('c')
 
 -- Improve mergetool and diff experience by using git's built in diff
-opt.diffopt = { 'filler', 'iblank', 'iwhite', 'indent-heuristic', algorithm = 'patience' }
+opt.diffopt = { 'filler', 'iblank', 'iwhite', 'indent-heuristic', 'algorithm:patience' }
 
 -- Keep an undo file (undo changes after closing)
 if fn.has('persistent_undo') then
@@ -141,7 +141,10 @@ opt.spell = true
 opt.spelllang = 'en_gb'
 
 -- Add sub folders to vim's search path
-opt.path = vim.o.path .. '**'
+opt.path:append('**')
+
+-- Enable virtual editing
+opt.virtualedit = 'all'
 
 -- Enable project specific settings
 opt.exrc = true

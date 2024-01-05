@@ -9,6 +9,7 @@ local api = vim.api
 local fs = vim.fs
 local keymap = vim.keymap
 local lsp = vim.lsp
+local opt = vim.opt
 
 local M = {}
 
@@ -97,6 +98,8 @@ function M.start()
 		-- typescriptreact = { 'tslint' },
 		-- ['typescript.tsx'] = { 'tslint' },
 	}
+
+	opt.wildignore:append('*/node_modules/*')
 end
 
 return M
