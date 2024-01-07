@@ -8,10 +8,19 @@ g.did_load_plugins_plugin = true
 -- many plugins annoyingly require a call to a 'setup' function to be loaded,
 -- even with default configs
 
+-- Satellite –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+require('satellite').setup({})
+
+-- Hover Hints –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+require('hoverhints').setup({})
+
+-- Indent Blankline ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 require('ibl').setup()
 
+-- Nvim Surround –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 require('nvim-surround').setup()
-require('which-key').setup()
+
+-- Comment –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 require('Comment').setup({
 	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
 })

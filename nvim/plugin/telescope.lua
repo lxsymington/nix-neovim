@@ -132,41 +132,32 @@ local function frecent()
 	telescope.extensions.frecency.frecency(opts)
 end
 
-keymap.set('n', '<leader>/', builtin.find_files, { desc = '[telescope] find files' })
-keymap.set('n', '<leader>/O', builtin.oldfiles, { desc = '[telescope] old files' })
-keymap.set('n', '<leader>/g', builtin.live_grep, { desc = '[telescope] live grep' })
-keymap.set('n', '<leader>/fg', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
+keymap.set('n', '?f', builtin.find_files, { desc = '[telescope] find files' })
+keymap.set('n', '?O', builtin.oldfiles, { desc = '[telescope] old files' })
+keymap.set('n', '?g', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap.set('n', '?G', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
+keymap.set('n', '?ft', fuzzy_grep_current_file_type, { desc = '[telescope] fuzzy grep filetype' })
+keymap.set('n', '?p', project_files, { desc = '[telescope] project files' })
+keymap.set('n', '?q', builtin.quickfix, { desc = '[telescope] quickfix list' })
+keymap.set('n', '?c', builtin.command_history, { desc = '[telescope] command history' })
+keymap.set('n', '?l', builtin.loclist, { desc = '[telescope] loclist' })
+keymap.set('n', '?r', builtin.registers, { desc = '[telescope] registers' })
+keymap.set('n', '?b', builtin.buffers, { desc = '[telescope] buffers' })
+keymap.set('n', '?s', builtin.lsp_document_symbols, { desc = '[telescope] lsp document symbols' })
 keymap.set(
 	'n',
-	'<leader>/ft',
-	fuzzy_grep_current_file_type,
-	{ desc = '[telescope] fuzzy grep filetype' }
-)
-keymap.set('n', '<leader>/p', project_files, { desc = '[telescope] project files' })
-keymap.set('n', '<leader>/q', builtin.quickfix, { desc = '[telescope] quickfix list' })
-keymap.set('n', '<leader>/c', builtin.command_history, { desc = '[telescope] command history' })
-keymap.set('n', '<leader>/l', builtin.loclist, { desc = '[telescope] loclist' })
-keymap.set('n', '<leader>/r', builtin.registers, { desc = '[telescope] registers' })
-keymap.set(
-	'n',
-	'<leader>/s',
-	builtin.lsp_document_symbols,
-	{ desc = '[telescope] lsp document symbols' }
-)
-keymap.set(
-	'n',
-	'<leader>/S',
+	'?S',
 	builtin.lsp_dynamic_workspace_symbols,
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
 )
 
-keymap.set('n', '<leader>/;', builtin.symbols, { desc = '[telescope] find symbols' })
+keymap.set('n', '?;', builtin.symbols, { desc = '[telescope] find symbols' })
 
-keymap.set('n', '<leader>/vm', builtin.marks, { desc = '[telescope] find marks' })
+keymap.set('n', '?vm', builtin.marks, { desc = '[telescope] find marks' })
 
-keymap.set('n', '<leader>/vh', builtin.help_tags, { desc = '[telescope] find help tags' })
+keymap.set('n', '?vh', builtin.help_tags, { desc = '[telescope] find help tags' })
 
-keymap.set('n', '<leader><leader>', frecent, { desc = '[telescope] frecent files' })
+keymap.set('n', '?hz', frecent, { desc = '[telescope] frecent files' })
 
 telescope.setup({
 	defaults = {

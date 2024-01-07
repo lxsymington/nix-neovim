@@ -45,6 +45,7 @@ with final.pkgs.lib; let
     cmp-nvim-lua # neovim lua API as completion source | https://github.com/hrsh7th/cmp-nvim-lua/
     cmp-cmdline # cmp command line suggestions
     cmp-cmdline-history # cmp command line history suggestions
+    cmp-git # cmp git suggestions | https://github.com/petertriho/cmp-git/
     # ^ nvim-cmp extensions
     (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
@@ -52,6 +53,8 @@ with final.pkgs.lib; let
     diffview-nvim # https://github.com/sindrets/diffview.nvim/
     neogit # https://github.com/TimUntersberger/neogit/
     gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
+    gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
+    octo-nvim # httpd://github.com/pwntester/octo.nvim/
     vim-fugitive # https://github.com/tpope/vim-fugitive/
     # ^ git integration plugins
     # telescope and extensions
@@ -72,6 +75,9 @@ with final.pkgs.lib; let
     lsp_lines-nvim # diagnostic display | https://git.sr.ht/~whynothugo/lsp_lines.nvim
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
+    marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
+    (mkNvimPlugin inputs.hover-hints "hover-hints") # Mouse hover | https://github.com/soulis-1256/hoverhints.nvim
+    satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -93,6 +99,8 @@ with final.pkgs.lib; let
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
     sniprun # Repl | https://github.com/michaelb/sniprun 
+    vim-test # Testing framework | https://github.com/vim-test/vim-test/
+    (mkNvimPlugin inputs.neotest-vim-test "neotest-vim-test") # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
     # ^ Code running
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
@@ -154,6 +162,7 @@ in
   # This is the neovim derivation
   # returned by the overlay
   lxs-nvim = mkNeovim {
+    neovimPackage = inputs.neovim-nightly.packages.${system}.default;
     plugins = all-plugins;
     inherit extraPackages isDarwin;
   };
