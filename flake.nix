@@ -5,6 +5,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
+    neovim-nightly = {
+      url = "github:neovim/neovim?dir=contrib";
+    };
+
     copilot = {
       url = "github:zbirenbaum/copilot.lua";
       flake = false;
@@ -12,6 +16,16 @@
 
     copilot-cmp = {
       url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    hover-hints = {
+      url = "github:soulis-1256/hoverhints.nvim";
+      flake = false;
+    };
+
+    neotest-vim-test = {
+      url = "github:vim-test/vim-test";
       flake = false;
     };
 
@@ -37,6 +51,9 @@
     , flake-utils
     , copilot
     , copilot-cmp
+    , hover-hints
+    , neotest-vim-test
+    , neovim-nightly
     , nvim-luaref
     , tslint
     , wf-nvim

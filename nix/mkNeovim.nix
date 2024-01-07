@@ -6,6 +6,8 @@
 with lib;
 { appName ? null
 , # NVIM_APPNAME - Defaults to 'nvim'
+  neovimPackage ? pkgs.neovim-unwrapped
+, # Neovim package to use
   plugins ? [ ]
 , # List of plugins
   devPlugins ? [ ]
@@ -111,7 +113,7 @@ let
           resolvedExtraLuaPackages
         }"'';
 in
-pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped (neovimConfig
+pkgs.wrapNeovimUnstable neovimPackage (neovimConfig
   // {
   wrapperArgs =
     escapeShellArgs neovimConfig.wrapperArgs
