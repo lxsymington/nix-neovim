@@ -302,8 +302,7 @@
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",
         "nvim-luaref": "nvim-luaref",
-        "tslint": "tslint",
-        "wf-nvim": "wf-nvim"
+        "tslint": "tslint"
       }
     },
     "systems": {
@@ -349,22 +348,6 @@
       "original": {
         "owner": "palantir",
         "repo": "tslint",
-        "type": "github"
-      }
-    },
-    "wf-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1701266157,
-        "narHash": "sha256-Avl0Xwd+HOAGCPTZZg/DnzcJVX3FgN0N2LCYzSPOy7k=",
-        "owner": "Cassin01",
-        "repo": "wf.nvim",
-        "rev": "f645ba2ec4cbb7ce9c9747fe500f0084a20fc360",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Cassin01",
-        "repo": "wf.nvim",
         "type": "github"
       }
     }

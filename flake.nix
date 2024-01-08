@@ -39,11 +39,6 @@
       url = "github:palantir/tslint";
       flake = false;
     };
-
-    wf-nvim = {
-      url = "github:Cassin01/wf.nvim";
-      flake = false;
-    };
   };
 
   outputs =
@@ -58,7 +53,6 @@
     , neovim-nightly
     , nvim-luaref
     , tslint
-    , wf-nvim
     , ...
     }:
     let
@@ -104,9 +98,9 @@
           default = nvim;
           nvim = pkgs.nvim-pkg;
         };
-      })
-    // {
-      # You can add this overlay to your NixOS configuration
-      overlays.default = (neovim-overlay { });
-    };
+        # You can add this overlay to your NixOS configuration
+        overlays = {
+          default = (neovim-overlay { inherit system; });
+        };
+      });
 }
