@@ -99,7 +99,14 @@ opt.updatetime = 300
 opt.shortmess:append('c')
 
 -- Improve mergetool and diff experience by using git's built in diff
-opt.diffopt = { 'filler', 'iblank', 'iwhite', 'indent-heuristic', 'algorithm:patience' }
+opt.diffopt = {
+	'filler',
+	'iblank',
+	'iwhite',
+	'indent-heuristic',
+	'linematch:60',
+	'algorithm:patience',
+}
 
 -- Keep an undo file (undo changes after closing)
 if fn.has('persistent_undo') then
@@ -144,7 +151,7 @@ opt.spelllang = 'en_gb'
 opt.path:append('**')
 
 -- Enable virtual editing
-opt.virtualedit = 'all'
+opt.virtualedit = 'block'
 
 -- Enable project specific settings
 opt.exrc = true

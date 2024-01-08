@@ -34,6 +34,11 @@
       flake = false;
     };
 
+    statuscol = {
+      url = "github:luukvbaal/statuscol.nvim";
+      flake = false;
+    };
+
     tslint = {
       url = "github:palantir/tslint";
       flake = false;

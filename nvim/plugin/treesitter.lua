@@ -88,10 +88,6 @@ require('treesitter-context').setup({
 	max_lines = 3,
 })
 
--- Tree-sitter based folding
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-
 vim.g.skip_ts_context_commentstring_module = true
 
 vim.treesitter.language.register('terraform', 'terraform-vars')
