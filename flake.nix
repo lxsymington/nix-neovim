@@ -63,7 +63,7 @@
     }:
     let
       # This is where the Neovim derivation is built.
-      neovim-overlay = { system ? "x86_64-linux" }:
+      neovim-overlay = { system ? builtins.currentSystem }:
         (import ./nix/neovim-overlay.nix { inherit inputs system; });
     in
     flake-utils.lib.eachDefaultSystem
