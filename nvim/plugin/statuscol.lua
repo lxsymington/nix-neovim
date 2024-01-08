@@ -11,18 +11,22 @@ require('statuscol').setup({
 	segments = {
 		{ text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
 		{
-			sign = { name = { 'Diagnostic' }, maxwidth = 2, auto = true },
+			sign = { name = { 'Diagnostic' }, maxwidth = 2, colwidth = 1, auto = true },
 			click = 'v:lua.ScSa',
 		},
+		{ text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
 		{
-			text = { builtin.lnumfunc, ' ' },
-			condition = { true, builtin.not_empty },
-			click = 'v:lua.ScLa',
-		},
-		{
-			sign = { name = { '.*' }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
+			sign = {
+				name = { '.*' },
+				namespace = { '.*' },
+				maxwidth = 2,
+				colwidth = 1,
+				wrap = true,
+				auto = true,
+			},
 			click = 'v:lua.ScSa',
 		},
+		{ text = { '┃' }, condition = { builtin.not_empty } },
 	},
 	setopt = true,
 	thousands = ',',

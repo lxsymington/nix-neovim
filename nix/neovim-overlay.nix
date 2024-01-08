@@ -67,7 +67,7 @@ with final.pkgs.lib; let
     everforest # colorscheme | https://github.com/sainnhe/everforest/
     lualine-nvim # Status line | https://github.com/nvim-lualine/lualine.nvim/
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
-    statuscol-nvim # Status column | https://github.com/luukvbaal/statuscol.nvim/
+    (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
