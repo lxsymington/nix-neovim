@@ -65,7 +65,7 @@ with final.pkgs.lib; let
     # ^ telescope and extensions
     # UI
     everforest # colorscheme | https://github.com/sainnhe/everforest/
-    lualine-nvim # Status line | https://github.com/nvim-lualine/lualine.nvim/
+    (mkNvimPlugin inputs.nougat "nougat") # A vim statusline plugin | https://github.com/MunifTanjim/nougat.nvim
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context

@@ -276,6 +276,22 @@
         "type": "github"
       }
     },
+    "nougat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1704667773,
+        "narHash": "sha256-0IM2P0SVYidknOei67DFOL+aPGQVsqTdIgZnyUHo4AU=",
+        "owner": "MunifTanjim",
+        "repo": "nougat.nvim",
+        "rev": "1c1cde6e53d7d7c2242d125fe67552b00e235876",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MunifTanjim",
+        "repo": "nougat.nvim",
+        "type": "github"
+      }
+    },
     "nvim-luaref": {
       "flake": false,
       "locked": {
@@ -301,6 +317,7 @@
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",
+        "nougat": "nougat",
         "nvim-luaref": "nvim-luaref",
         "statuscol": "statuscol",
         "tslint": "tslint"
