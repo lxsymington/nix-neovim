@@ -29,6 +29,11 @@
       flake = false;
     };
 
+    nougat = {
+      url = "github:MunifTanjim/nougat.nvim";
+      flake = false;
+    };
+
     nvim-luaref = {
       url = "github:milisims/nvim-luaref";
       flake = false;
@@ -53,6 +58,7 @@
     , copilot-cmp
     , hover-hints
     , neotest-vim-test
+    , nougat
     , neovim-nightly
     , nvim-luaref
     , tslint
