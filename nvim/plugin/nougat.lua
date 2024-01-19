@@ -28,9 +28,6 @@ local nut = {
 	truncation_point = require('nougat.nut.truncation_point').create,
 }
 
----@type nougat.color
-local color = require('nougat.color').get()
-
 local mode = nut.mode({
 	sep_left = sep.space(true),
 	sep_right = sep.space(true),
@@ -46,7 +43,6 @@ local filename = (function()
 		end,
 		content = {
 			Item({
-				hl = { fg = color.fg },
 				hidden = function(_, ctx)
 					return not ctx.ctx.readonly
 				end,
@@ -54,7 +50,6 @@ local filename = (function()
 				content = '󰏯 ',
 			}),
 			Item({
-				hl = { fg = color.fg },
 				hidden = function(_, ctx)
 					return ctx.ctx.modifiable
 				end,
@@ -62,7 +57,6 @@ local filename = (function()
 				suffix = ' ',
 			}),
 			nut.buf.filename({
-				hl = { fg = color.fg },
 				prefix = function(_, ctx)
 					local data = ctx.ctx
 					if data.readonly or not data.modifiable then
@@ -79,7 +73,6 @@ local filename = (function()
 				end,
 			}),
 			Item({
-				hl = { fg = color.fg },
 				hidden = function(_, ctx)
 					return not ctx.ctx.modified
 				end,
@@ -92,7 +85,6 @@ local filename = (function()
 end)()
 
 local macros = Item({
-	hl = { fg = color.green },
 	prepare = function(_, ctx)
 		local data = ctx.ctx
 		data.recording = vim.fn.reg_recording()
@@ -123,15 +115,11 @@ local macros = Item({
 })
 
 local ruler = (function()
-	local scroll_hl = {
-		[true] = { bg = color.bg3 },
-		[false] = { bg = color.bg4 },
-	}
+	local scroll_hl = {}
 
 	local item = Item({
 		content = {
 			Item({
-				hl = { fg = color.magenta },
 				sep_left = sep.none(true),
 				content = core.group({
 					core.code('l'),
@@ -155,6 +143,20 @@ local ruler = (function()
 	return item
 end)()
 
+local copilot = Item({
+	ctx = { value = nil },
+	init = function(item)
+		require('copilot.api').register_status_notification_handler(function(data)
+			item.ctx.value = data.status
+			require('nougat').refresh_statusline()
+		end)
+	end,
+	prefix = '  ⋅ ',
+	content = function(item)
+		return item.ctx.value
+	end,
+})
+
 -- renders space only when item is rendered
 ---@param item NougatItem
 local function paired_space(item)
@@ -168,30 +170,24 @@ local stl = Bar('statusline')
 stl:add_item(mode)
 stl:add_item(sep.space())
 stl:add_item(nut.git.branch({
-	hl = { fg = color.magenta },
 	prefix = ' ',
-	suffix = ' ',
 }))
 stl:add_item(sep.space())
 local gitstatus = stl:add_item(nut.git.status.create({
-	hl = { fg = color.fg },
 	content = {
 		nut.git.status.count('added', {
-			hl = { fg = color.green },
 			prefix = '󰐖 ',
 			suffix = function(_, ctx)
 				return (ctx.gitstatus.changed > 0 or ctx.gitstatus.removed > 0) and ' ' or ''
 			end,
 		}),
 		nut.git.status.count('changed', {
-			hl = { fg = color.blue },
 			prefix = '󱕍 ',
 			suffix = function(_, ctx)
 				return ctx.gitstatus.removed > 0 and ' ' or ''
 			end,
 		}),
 		nut.git.status.count('removed', {
-			hl = { fg = color.red },
 			prefix = '󰍵 ',
 		}),
 	},
@@ -201,10 +197,11 @@ stl:add_item(filename)
 stl:add_item(sep.space())
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
+stl:add_item(copilot)
+stl:add_item(paired_space(copilot))
 stl:add_item(macros)
-stl:add_item(nut.buf.filetype({
-	hl = { fg = color.blue },
-}))
+stl:add_item(paired_space(macros))
+stl:add_item(nut.buf.filetype({}))
 stl:add_item(sep.space())
 local diagnostic_count = stl:add_item(nut.buf.diagnostic_count({
 	config = {
@@ -233,7 +230,6 @@ local tal = Bar('tabline')
 
 tal:add_item(nut.tab.tablist.tabs({
 	active_tab = {
-		hl = { bg = color.bg, fg = color.blue },
 		prefix = ' ',
 		suffix = ' ',
 		content = {
@@ -246,7 +242,6 @@ tal:add_item(nut.tab.tablist.tabs({
 		sep_right = sep.space(),
 	},
 	inactive_tab = {
-		hl = { bg = color.bg2, fg = color.fg2 },
 		prefix = ' ',
 		suffix = ' ',
 		content = {

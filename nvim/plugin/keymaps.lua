@@ -37,7 +37,7 @@ local function toggle_qf_list()
 	end
 end
 
-keymap.set('n', '<C-c>', toggle_qf_list, { desc = 'toggle quickfix list' })
+keymap.set('n', '\\c', toggle_qf_list, { desc = 'toggle quickfix list' })
 
 local function try_fallback_notify(opts)
 	local success, _ = pcall(opts.try)
@@ -68,10 +68,10 @@ local function cright()
 	})
 end
 
-keymap.set('n', '[c', cleft, { silent = true, desc = '[c]ycle quickfix left' })
-keymap.set('n', ']c', cright, { silent = true, desc = '[c]ycle quickfix right' })
-keymap.set('n', '[C', vim.cmd.cfirst, { silent = true, desc = 'first quickfix entry' })
-keymap.set('n', ']C', vim.cmd.clast, { silent = true, desc = 'last quickfix entry' })
+keymap.set('n', '[q', cleft, { silent = true, desc = 'cycle [q]uickfix left' })
+keymap.set('n', ']q', cright, { silent = true, desc = 'cycle [q]uickfix right' })
+keymap.set('n', '[Q', vim.cmd.cfirst, { silent = true, desc = 'first [q]uickfix entry' })
+keymap.set('n', ']Q', vim.cmd.clast, { silent = true, desc = 'last [q]uickfix entry' })
 
 local function lleft()
 	try_fallback_notify({
@@ -197,19 +197,6 @@ keymap.set(
 	'<leader>S',
 	toggle_spell_check,
 	{ noremap = true, silent = true, desc = 'toggle [S]pell' }
-)
-
-keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move [d]own half-page and center' })
-keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move [u]p half-page and center' })
-keymap.set('n', '<C-f>', '<C-f>zz', { desc = 'move DOWN [f]ull-page and center' })
-keymap.set('n', '<C-b>', '<C-b>zz', { desc = 'move UP full-page and center' })
-
--- Open init.vim in a tab
-keymap.set(
-	'n',
-	'<Leader>ev',
-	'<cmd>tabedit $MYVIMRC<cr>',
-	{ silent = true, desc = 'Open $MYVIMRC in a tab' }
 )
 
 -- Clear highlighting

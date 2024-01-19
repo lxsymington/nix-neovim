@@ -64,7 +64,8 @@ with final.pkgs.lib; let
     telescope-symbols-nvim # https://github.com/nvim-telescope/telescope-symbols.nvim/
     # ^ telescope and extensions
     # UI
-    everforest # colorscheme | https://github.com/sainnhe/everforest/
+    lush-nvim # colorscheme | https://github.com/rktjmp/lush.nvim/
+    rose-pine # colorscheme | https://github.com/rose-pine/neovim
     (mkNvimPlugin inputs.nougat "nougat") # A vim statusline plugin | https://github.com/MunifTanjim/nougat.nvim
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
