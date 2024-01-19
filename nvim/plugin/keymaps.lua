@@ -32,7 +32,7 @@ local function toggle_qf_list()
 	end
 end
 
-keymap.set('n', '<C-c>', toggle_qf_list, { desc = 'toggle quickfix list' })
+keymap.set('n', '\\c', toggle_qf_list, { desc = 'toggle quickfix list' })
 
 local function try_fallback_notify(opts)
 	local success, _ = pcall(opts.try)
@@ -63,10 +63,10 @@ local function cright()
 	})
 end
 
-keymap.set('n', '[c', cleft, { silent = true, desc = 'cycle quickfix left' })
-keymap.set('n', ']c', cright, { silent = true, desc = 'cycle quickfix right' })
-keymap.set('n', '[C', vim.cmd.cfirst, { silent = true, desc = 'first quickfix entry' })
-keymap.set('n', ']C', vim.cmd.clast, { silent = true, desc = 'last quickfix entry' })
+keymap.set('n', '[q', cleft, { silent = true, desc = 'cycle quickfix left' })
+keymap.set('n', ']q', cright, { silent = true, desc = 'cycle quickfix right' })
+keymap.set('n', '[Q', vim.cmd.cfirst, { silent = true, desc = 'first quickfix entry' })
+keymap.set('n', ']Q', vim.cmd.clast, { silent = true, desc = 'last quickfix entry' })
 
 local function lleft()
 	try_fallback_notify({
@@ -171,12 +171,12 @@ keymap.set('n', ']w', function()
 		severity = severity.WARN,
 	})
 end, { noremap = true, silent = true, desc = 'next warning diagnostic' })
-keymap.set('n', '[h', function()
+keymap.set('n', '[?', function()
 	diagnostic.goto_prev({
 		severity = severity.HINT,
 	})
 end, { noremap = true, silent = true, desc = 'previous hint diagnostic' })
-keymap.set('n', ']h', function()
+keymap.set('n', ']?', function()
 	diagnostic.goto_next({
 		severity = severity.HINT,
 	})
@@ -193,13 +193,6 @@ keymap.set(
 	toggle_spell_check,
 	{ noremap = true, silent = true, desc = 'toggle spell' }
 )
-
-keymap.set('n', '<C-e>', '<C-e>zz', { desc = 'move down one line and center' })
-keymap.set('n', '<C-y>', '<C-y>zz', { desc = 'move up one line and center' })
-keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move down half-page and center' })
-keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up half-page and center' })
-keymap.set('n', '<C-f>', '<C-f>zz', { desc = 'move down full-page and center' })
-keymap.set('n', '<C-b>', '<C-b>zz', { desc = 'move up full-page and center' })
 
 -- Clear highlighting
 keymap.set(

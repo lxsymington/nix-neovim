@@ -100,7 +100,7 @@ opt.fillchars = {
 	fold = '╌', -- '·' or '-' filling 'foldtext'
 	foldopen = '▽', -- '-' mark the beginning of a fold
 	foldclose = '▶', -- '+' show a closed fold
-	foldsep = '┆', -- '│' or '|' open fold middle marker
+	foldsep = '┊', -- '│' or '|' open fold middle marker
 	diff = '▚', -- '-' deleted lines of the 'diff' option | alternatives = ⣿ ▒ ░ ░ ▚ ▞ ─ ╱ ╳
 	msgsep = '━', -- ' ' message separator 'display'
 	eob = '∅', -- '~' empty lines at the end of a buffer
@@ -113,7 +113,7 @@ opt.laststatus = 3
 opt.icon = true
 
 -- string to use for the Vim icon text
-opt.iconstring = ''
+opt.iconstring = ''
 
 -- whether concealable text is shown or hidden
 opt.conceallevel = 2
