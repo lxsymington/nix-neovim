@@ -7,6 +7,9 @@ neotest.setup({
 			jestCommand = 'npm test -- ',
 		}),
 	},
+	consumers = {
+		overseer = require('neotest.consumers.overseer'),
+	},
 	diagnostic = {
 		enabled = true,
 	},
@@ -17,8 +20,8 @@ neotest.setup({
 		failed = '✘',
 		passed = '✔',
 		running = '➜',
-		skipped = '⭕',
-		unknown = '❓',
+		skipped = '',
+		unknown = '',
 	},
 	jump = {
 		enabled = true,
