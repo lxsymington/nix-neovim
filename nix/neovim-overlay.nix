@@ -102,6 +102,7 @@ with final.pkgs.lib; let
     sniprun # Repl | https://github.com/michaelb/sniprun 
     vim-test # Testing framework | https://github.com/vim-test/vim-test/
     (mkNvimPlugin inputs.neotest-vim-test "neotest-vim-test") # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
+    overseer-nvim # task management | https://github.com/stevearc/overseer.nvim/
     # ^ Code running
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
