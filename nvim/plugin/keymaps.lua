@@ -37,7 +37,7 @@ local function toggle_qf_list()
 	end
 end
 
-keymap.set('n', '\\c', toggle_qf_list, { desc = 'toggle quickfix list' })
+keymap.set('n', '\\q', toggle_qf_list, { desc = 'toggle quickfix list' })
 
 local function try_fallback_notify(opts)
 	local success, _ = pcall(opts.try)

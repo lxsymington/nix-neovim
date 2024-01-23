@@ -40,6 +40,11 @@
       flake = false;
     };
 
+    reactive = {
+      url = "github:rasulomaroff/reactive.nvim";
+      flake = false;
+    };
+
     statuscol = {
       url = "github:luukvbaal/statuscol.nvim";
       flake = false;
@@ -56,13 +61,7 @@
     , nixpkgs
     , flake-utils
     , gen-luarc
-    , copilot
-    , copilot-cmp
-    , hover-hints
-    , neotest-vim-test
-    , nougat
     , neovim-nightly
-    , nvim-luaref
     , tslint
     , ...
     }:
