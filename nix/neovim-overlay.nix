@@ -65,6 +65,8 @@ with final.pkgs.lib; let
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
     (mkNvimPlugin inputs.hover-hints "hover-hints") # Mouse hover | https://github.com/soulis-1256/hoverhints.nvim
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
+    nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
+    (mkNvimPlugin inputs.reactive "reactive") # Mode visualiser | https://github.com/rasulomaroff/reactive.nvim
     # ^ UI
     # language support
     neodev-nvim # adds support for Neovim's Lua API to lua-language-server | https://github.com/folke/neodev.nvim/
@@ -112,6 +114,8 @@ with final.pkgs.lib; let
   extraPackages = with pkgs; [
     # language servers, etc.
     deno
+    fzf
+    gh
     gopls
     lua-language-server
     nil # Nix LSP

@@ -2,19 +2,31 @@ local g = vim.g
 -- many plugins annoyingly require a call to a 'setup' function to be loaded,
 -- even with default configs
 
--- Satellite –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Satellite ———————————————————————————————————————————————————————————————————
 require('satellite').setup({})
 
--- Hover Hints –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Hover Hints —————————————————————————————————————————————————————————————————
 require('hoverhints').setup({})
 
--- Indent Blankline ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-require('ibl').setup()
+-- Indent Blankline ————————————————————————————————————————————————————————————
+require('ibl').setup({
+	indent = { char = '┊' },
+	whitespace = { highlight = { 'Whitespace', 'NonText' } },
+})
 
--- Nvim Surround –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Indent Blankline ————————————————————————————————————————————————————————————
+require('reactive').setup({
+	builtin = {
+		cursorline = true,
+		cursor = true,
+		modemsg = true,
+	},
+})
+
+-- Nvim Surround ———————————————————————————————————————————————————————————————
 require('nvim-surround').setup()
 
--- Comment –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Comment —————————————————————————————————————————————————————————————————————
 require('Comment').setup({
 	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
 })

@@ -19,8 +19,5 @@ rose_pine.setup({
 	variant = 'auto',
 	dark_variant = 'main',
 	dim_inactive_windows = true,
-	styles = {
-		transparency = true,
-	},
 })
 cmd.colorscheme('rose-pine')
