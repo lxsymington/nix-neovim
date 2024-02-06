@@ -5,22 +5,10 @@ local g = vim.g
 -- Satellite ———————————————————————————————————————————————————————————————————
 require('satellite').setup({})
 
--- Hover Hints —————————————————————————————————————————————————————————————————
-require('hoverhints').setup({})
-
 -- Indent Blankline ————————————————————————————————————————————————————————————
 require('ibl').setup({
 	indent = { char = '┊' },
 	whitespace = { highlight = { 'Whitespace', 'NonText' } },
-})
-
--- Indent Blankline ————————————————————————————————————————————————————————————
-require('reactive').setup({
-	builtin = {
-		cursorline = true,
-		cursor = true,
-		modemsg = true,
-	},
 })
 
 -- Nvim Surround ———————————————————————————————————————————————————————————————
