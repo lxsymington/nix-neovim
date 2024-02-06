@@ -73,14 +73,11 @@ with final.pkgs.lib; let
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
     which-key-nvim # keymap hints | https://github.com/folke/which-key.nvim/
-    lsp_lines-nvim # diagnostic display | https://git.sr.ht/~whynothugo/lsp_lines.nvim
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
-    (mkNvimPlugin inputs.hover-hints "hover-hints") # Mouse hover | https://github.com/soulis-1256/hoverhints.nvim
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
-    (mkNvimPlugin inputs.reactive "reactive") # Mode visualiser | https://github.com/rasulomaroff/reactive.nvim
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -96,7 +93,6 @@ with final.pkgs.lib; let
     nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
-    flash-nvim # search/highlight/jump | https://github.com/folke/flash.nvim/
     # ^ navigation/editing enhancement plugins
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
