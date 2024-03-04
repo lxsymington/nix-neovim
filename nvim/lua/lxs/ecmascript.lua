@@ -47,7 +47,7 @@ function M.start()
 		single_file_support = true,
 		capabilities = require('lxs.lsp').make_client_capabilities(),
 		on_attach = function(_, buf)
-			keymap.set('n', '@I', function()
+			keymap.set('n', 'goi', function()
 				organize_imports(buf)
 			end, { buffer = buf, desc = 'Organise imports' })
 		end,
@@ -94,12 +94,12 @@ function M.start()
 	end
 
 	lint.linters_by_ft = {
-		-- typescript = { 'tslint' },
-		-- typescriptreact = { 'tslint' },
-		-- ['typescript.tsx'] = { 'tslint' },
+		typescript = { 'tslint' },
+		typescriptreact = { 'tslint' },
+		['typescript.tsx'] = { 'tslint' },
 	}
 
-	opt.wildignore:append('*/node_modules/*')
+	opt.wildignore:append([[ '*/node_modules/*' ]])
 end
 
 return M

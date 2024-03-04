@@ -30,6 +30,9 @@ vim.lsp.start({
 			runtime = {
 				version = 'LuaJIT',
 			},
+			completion = {
+				callSnippet = 'Replace',
+			},
 			diagnostics = {
 				-- Get the language server to recognize the `vim` global, etc.
 				globals = {
@@ -45,6 +48,10 @@ vim.lsp.start({
 			},
 			workspace = {
 				checkThirdParty = false,
+				library = {
+					'${3rd}/luv/library',
+					unpack(vim.api.nvim_get_runtime_file('', true)),
+				},
 			},
 			telemetry = {
 				enable = false,

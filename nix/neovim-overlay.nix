@@ -140,22 +140,38 @@ with final.pkgs.lib; let
     terraform
     terraform-ls
     typescript
-    # TODO: Sort this out!
-    # (mkYarnPackage {
-    #   name = "tslint";
+    (mkYarnPackage {
+      name = "tslint";
+      version = "6.1.3";
 
-    #   src = inputs.tslint.outPath;
+      src = inputs.tslint.outPath;
+      packageJson = "${inputs.tslint.outPath}/package.json";
+      yarnLock = "${inputs.tslint.outPath}/yarn.lock";
 
-    #   packageJSON = builtins.trace "${inputs.tslint.outPath}/package.json" "${inputs.tslint.outPath}/package.json";
+      offlineCache = pkgs.fetchYarnDeps {
+        yarnLock = inputs.tslint.outPath + "/yarn.lock";
+        hash = "sha256-xfN1nZXPspHtQnCxNtGBVRrX7I3X8H20gXbslqzp9Io=";
+      };
 
-    #   yarnLock = builtins.trace "${inputs.tslint.outPath}/yarn.lock" "${inputs.tslint.outPath}/yarn.lock";
+      packageResolutions = {
+        "tslint-test-config-non-relative" = "${inputs.tslint.outPath}/test/external/tslint-test-config-non-relative";
+      };
 
-    #   buildPhase = ''
-    #     echo "BUILDING"
-    #     export HOME=$(mktemp -d)
-    #     yarn --offline compile:core
-    #   '';
-    # })
+      buildPhase = ''
+        runHook preBuild
+           
+        yarn --offline compile
+
+        runHook postBuild
+      '';
+
+      meta = with pkgs.lib; {
+        description = "An extensible linter for the TypeScript language";
+        homepage = "https://github.com/palantir/tslint";
+        license = licenses.mit;
+        maintainers = with maintainers; [ lxsymington ];
+      };
+    })
     vale
     vim-vint # Vim linter
   ];
