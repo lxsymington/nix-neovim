@@ -6,35 +6,31 @@ vim.g.did_load_telescope_plugin = true
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
+local themes = require('telescope.themes')
 local fn = vim.fn
 local fs = vim.fs
 local keymap = vim.keymap
 local loop = vim.loop
 local tbl_extend = vim.tbl_extend
 
-local layout_config = {
-	width = function(_, cols, _)
-		return math.min(240, math.floor(cols * 0.8))
-	end,
-	height = function(_, _, lines)
-		return math.min(60, math.floor(lines * 0.75))
-	end,
-	prompt_position = 'top',
-	flex = {
-		horizontal = {
-			preview_width = function(_, cols, _)
-				return math.min(120, math.floor(cols * 0.6 * 0.8))
-			end,
-		},
-		vertical = {
-			width = function(_, cols, _)
-				return math.min(120, math.floor(cols * 0.8))
-			end,
-			preview_height = function(_, _, lines)
-				return math.min(45, math.floor(lines * 0.5))
-			end,
-		},
+local centred_opts = {
+	border = true,
+	layout_strategy = 'vertical',
+	layout_config = {
+		anchor = 'CENTER',
+		height = function(_, _, lines)
+			return math.min(30, math.floor(lines * 0.75))
+		end,
+		mirror = 'true',
+		preview_height = function(_, _, lines)
+			return math.min(10, math.floor(lines * 0.75))
+		end,
+		prompt_position = 'bottom',
+		width = function(_, cols, _)
+			return math.min(100, math.floor(cols * 0.8))
+		end,
 	},
+	path_display = { shorten = { len = 5, exclude = { -1 } } },
 }
 
 local function initialise_worksapces()
@@ -69,106 +65,115 @@ local project_files = function()
 	end
 end
 
----@param picker function the telescope picker to use
-local function grep_current_file_type(picker)
-	local current_file_ext = vim.fn.expand('%:e')
-	local additional_vimgrep_arguments = {}
-	if current_file_ext ~= '' then
-		additional_vimgrep_arguments = {
-			'--type',
-			current_file_ext,
-		}
-	end
-	local conf = require('telescope.config').values
-	picker({
-		vimgrep_arguments = vim.tbl_flatten({
-			conf.vimgrep_arguments,
-			additional_vimgrep_arguments,
-		}),
-	})
-end
-
---- Grep the string under the cursor, filtering for the current file type
-local function grep_string_current_file_type()
-	grep_current_file_type(builtin.grep_string)
-end
-
---- Live grep, filtering for the current file type
-local function live_grep_current_file_type()
-	grep_current_file_type(builtin.live_grep)
-end
-
 --- Like live_grep, but fuzzy (and slower)
 local function fuzzy_grep(opts)
-	opts = vim.tbl_extend('error', opts or {}, { search = '', prompt_title = 'Fuzzy grep' })
+	opts = tbl_extend('error', opts or {}, { search = '', prompt_title = 'Fuzzy grep' })
 	builtin.grep_string(opts)
 end
 
-local function fuzzy_grep_current_file_type()
-	grep_current_file_type(fuzzy_grep)
+local function frecent()
+	telescope.extensions.frecency.frecency(centred_opts)
 end
 
-local function frecent()
+local function buffers()
+	builtin.buffers(centred_opts)
+end
+
+local function builtins()
+	builtin.builtin(centred_opts)
+end
+
+local function definitions()
+	builtin.lsp_definitions(themes.get_ivy())
+end
+
+local function references()
+	builtin.lsp_references(themes.get_ivy())
+end
+
+local function document_symbols()
+	builtin.lsp_document_symbols(themes.get_ivy())
+end
+
+local function workspace_symbols()
+	builtin.lsp_workspace_symbols(themes.get_ivy())
+end
+
+local function dynamic_workspace_symbols()
+	builtin.lsp_dynamic_workspace_symbols(themes.get_ivy())
+end
+
+local function symbols()
 	local opts = {
 		border = true,
-		layout_strategy = 'vertical',
+		layout_strategy = 'cursor',
 		layout_config = {
-			anchor = 'CENTER',
 			height = function(_, _, lines)
-				return math.min(30, math.floor(lines * 0.75))
+				return math.min(10, math.floor(lines * 0.1))
 			end,
-			mirror = 'true',
-			preview_height = function(_, _, lines)
-				return math.min(10, math.floor(lines * 0.75))
-			end,
-			prompt_position = 'bottom',
 			width = function(_, cols, _)
-				return math.min(100, math.floor(cols * 0.8))
+				return math.min(40, math.floor(cols * 0.4))
 			end,
 		},
-		path_display = { shorten = 3 },
 	}
 
-	telescope.extensions.frecency.frecency(opts)
+	builtin.symbols(opts)
 end
 
 keymap.set('n', '<Leader>/f', builtin.find_files, { desc = '[telescope] find files' })
 keymap.set('n', '<Leader>/O', builtin.oldfiles, { desc = '[telescope] old files' })
 keymap.set('n', '<Leader>/g', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap.set('n', '<Leader>/d', definitions, { desc = '[telescope] definitions' })
+keymap.set('n', '<Leader>/r', references, { desc = '[telescope] references' })
 keymap.set('n', '<Leader>/G', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
-keymap.set(
-	'n',
-	'<Leader>/ft',
-	fuzzy_grep_current_file_type,
-	{ desc = '[telescope] fuzzy grep filetype' }
-)
 keymap.set('n', '<Leader>/p', project_files, { desc = '[telescope] project files' })
-keymap.set('n', '<Leader>/b', builtin.buffers, { desc = '[telescope] buffers' })
-keymap.set(
-	'n',
-	'<Leader>/s',
-	builtin.lsp_document_symbols,
-	{ desc = '[telescope] lsp document symbols' }
-)
+keymap.set('n', '<Leader>/b', buffers, { desc = '[telescope] buffers' })
+keymap.set('n', '<Leader>/B', builtins, { desc = '[telescope] builtins' })
+keymap.set('n', '<Leader>/s', document_symbols, { desc = '[telescope] lsp document symbols' })
+keymap.set('n', '<Leader>/£', workspace_symbols, { desc = '[telescope] lsp workspace symbols' })
 keymap.set(
 	'n',
 	'<Leader>/S',
-	builtin.lsp_dynamic_workspace_symbols,
+	dynamic_workspace_symbols,
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
 )
-
-keymap.set('n', '<Leader>/;', builtin.symbols, { desc = '[telescope] find symbols' })
-
+keymap.set('n', '<Leader>/;', symbols, { desc = '[telescope] find symbols' })
 keymap.set('n', '<Leader>/vm', builtin.marks, { desc = '[telescope] find marks' })
-
 keymap.set('n', '<Leader>/vh', builtin.help_tags, { desc = '[telescope] find help tags' })
-
 keymap.set('n', '<Leader>/hz', frecent, { desc = '[telescope] frecent files' })
+
+local layout_config = {
+	width = function(_, cols, _)
+		return math.min(180, math.floor(cols * 0.8))
+	end,
+	height = function(_, _, lines)
+		return math.min(60, math.floor(lines * 0.75))
+	end,
+	prompt_position = 'top',
+	flex = {
+		mirror = true,
+		horizontal = {
+			mirror = true,
+			preview_width = function(_, cols, _)
+				return math.min(100, math.floor(cols * (5 / 9)))
+			end,
+		},
+		vertical = {
+			prompt_position = 'top',
+			width = function(_, cols, _)
+				return math.min(100, math.floor(cols * 0.8))
+			end,
+			preview_height = function(_, _, lines)
+				return math.min(45, math.floor(lines * 0.5))
+			end,
+		},
+	},
+}
 
 telescope.setup({
 	defaults = {
 		path_display = {
-			'truncate',
+			shorten = { len = 5, exclude = { -1 } },
 		},
 		layout_strategy = 'flex',
 		layout_config = layout_config,
@@ -189,7 +194,6 @@ telescope.setup({
 			treesitter = true,
 		},
 		history = {
-			path = vim.fn.stdpath('data') .. '/telescope_history.sqlite3',
 			limit = 1000,
 		},
 		color_devicons = true,
@@ -198,6 +202,7 @@ telescope.setup({
 		selection_caret = '➜ ',
 		entry_prefix = '  ',
 		initial_mode = 'insert',
+		sorting_strategy = 'ascending',
 		vimgrep_arguments = {
 			'rg',
 			'-L',
