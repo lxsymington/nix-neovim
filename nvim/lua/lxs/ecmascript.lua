@@ -58,7 +58,7 @@ function M.start()
 	if eslint_config_file then
 		lsp.start({
 			name = 'eslint',
-			cmd = { 'eslint-langserver', '--stdio' },
+			cmd = { 'vscode-eslint-language-server', '--stdio' },
 			root_dir = fs.dirname(eslint_config_file),
 			init_options = {
 				provideFormatter = true,
@@ -93,11 +93,15 @@ function M.start()
 		})
 	end
 
-	lint.linters_by_ft = {
-		typescript = { 'tslint' },
-		typescriptreact = { 'tslint' },
-		['typescript.tsx'] = { 'tslint' },
-	}
+	local tslint_config_file = fs.find('tslint.json', { upward = true })[1]
+
+	if tslint_config_file then
+		lint.linters_by_ft = {
+			typescript = { 'tslint' },
+			typescriptreact = { 'tslint' },
+			['typescript.tsx'] = { 'tslint' },
+		}
+	end
 
 	opt.wildignore:append([[ '*/node_modules/*' ]])
 end
