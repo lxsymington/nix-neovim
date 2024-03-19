@@ -191,22 +191,6 @@
         "type": "github"
       }
     },
-    "hover-hints": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1700732787,
-        "narHash": "sha256-QQ+ISmwY6NnvzsnY2GZVxXh/2V6LYaXIjD7evScq4HQ=",
-        "owner": "soulis-1256",
-        "repo": "hoverhints.nvim",
-        "rev": "86fad985b91fe454469108924c1cdb378cbae1ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "soulis-1256",
-        "repo": "hoverhints.nvim",
-        "type": "github"
-      }
-    },
     "neotest-vim-test": {
       "flake": false,
       "locked": {
@@ -308,35 +292,18 @@
         "type": "github"
       }
     },
-    "reactive": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1705884543,
-        "narHash": "sha256-oazTmFcziXgfjBAKqRX2Pfbls9hDzvSFnqp5f7pVde8=",
-        "owner": "rasulomaroff",
-        "repo": "reactive.nvim",
-        "rev": "c72d4b2e17efc95117af6fc0a5cb06af40762f96",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rasulomaroff",
-        "repo": "reactive.nvim",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "copilot": "copilot",
         "copilot-cmp": "copilot-cmp",
         "flake-utils": "flake-utils",
-        "hover-hints": "hover-hints",
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",
         "nougat": "nougat",
         "nvim-luaref": "nvim-luaref",
-        "reactive": "reactive",
         "statuscol": "statuscol",
+        "telescope-frecency": "telescope-frecency",
         "tslint": "tslint"
       }
     },
@@ -383,6 +350,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "telescope-frecency": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710746891,
+        "narHash": "sha256-IzQdMGSd3heYilDzZcPWa2pLzjfgeTA3CvL8vomIZCA=",
+        "owner": "nvim-telescope",
+        "repo": "telescope-frecency.nvim",
+        "rev": "8e3e5ba645b04625acb92e912fabf6d102ae6ee4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-telescope",
+        "repo": "telescope-frecency.nvim",
         "type": "github"
       }
     },

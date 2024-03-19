@@ -20,11 +20,6 @@
       flake = false;
     };
 
-    hover-hints = {
-      url = "github:soulis-1256/hoverhints.nvim";
-      flake = false;
-    };
-
     neotest-vim-test = {
       url = "github:vim-test/vim-test";
       flake = false;
@@ -40,13 +35,13 @@
       flake = false;
     };
 
-    reactive = {
-      url = "github:rasulomaroff/reactive.nvim";
+    statuscol = {
+      url = "github:luukvbaal/statuscol.nvim";
       flake = false;
     };
 
-    statuscol = {
-      url = "github:luukvbaal/statuscol.nvim";
+    telescope-frecency = {
+      url = "github:nvim-telescope/telescope-frecency.nvim";
       flake = false;
     };
 
