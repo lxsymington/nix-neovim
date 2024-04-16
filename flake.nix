@@ -7,7 +7,7 @@
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
     neovim-nightly = {
-      url = "github:neovim/neovim?dir=contrib";
+      url = "github:lxsymington/neovim?dir=contrib&ref=fix/contrib/nix-flake";
     };
 
     copilot = {

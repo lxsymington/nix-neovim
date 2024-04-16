@@ -69,10 +69,8 @@ opt.foldmethod = 'expr'
 -- Use tree-sitter for the foldexpr
 opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
--- stylua: ignore
 -- Match the indent for the fold display
--- opt.foldtext = [[v:lua.vim.treesitter.foldtext()]]
-opt.foldtext = [[v:lua.require("lxs.folds").foldtext()]]
+opt.foldtext = ''
 
 -- Set maximum nesting of folds
 opt.foldnestmax = 20
