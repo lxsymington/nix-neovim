@@ -7,7 +7,7 @@
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
     neovim-nightly = {
-      url = "github:lxsymington/neovim?dir=contrib&ref=fix/contrib/nix-flake";
+      url = "github:neovim/neovim?dir=contrib";
     };
 
     copilot = {
@@ -17,6 +17,11 @@
 
     copilot-cmp = {
       url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    neogit = {
+      url = "github:NeogitOrg/neogit?ref=nightly";
       flake = false;
     };
 
@@ -32,6 +37,16 @@
 
     nvim-luaref = {
       url = "github:milisims/nvim-luaref";
+      flake = false;
+    };
+
+    reactive = {
+      url = "github:rasulomaroff/reactive.nvim";
+      flake = false;
+    };
+
+    screenkey = {
+      url = "github:NStefan002/screenkey.nvim";
       flake = false;
     };
 

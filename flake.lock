@@ -191,6 +191,23 @@
         "type": "github"
       }
     },
+    "neogit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713512329,
+        "narHash": "sha256-ddIwIOWcbrAhXCk3nKwi0gStqxE2xV4y/PMPuQl9aUg=",
+        "owner": "NeogitOrg",
+        "repo": "neogit",
+        "rev": "5748a61f05e55838a362de5ce134440656e0d7bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NeogitOrg",
+        "ref": "nightly",
+        "repo": "neogit",
+        "type": "github"
+      }
+    },
     "neotest-vim-test": {
       "flake": false,
       "locked": {
@@ -214,17 +231,16 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1712937761,
-        "narHash": "sha256-ayqVuMGBZsGJ9/t4Qq3NtB2laRlvd/47Qw+g9nzZQz8=",
-        "owner": "lxsymington",
+        "lastModified": 1713510711,
+        "narHash": "sha256-crw3bmrp6zIdtLlhTlmG0dIIXQi5a8/XqKbPUWbfAiM=",
+        "owner": "neovim",
         "repo": "neovim",
-        "rev": "18a3e331c9b5abc55159bf4949790eed9af74dc2",
+        "rev": "9319d97679053a219b1701d70abce414d0f6a8b0",
         "type": "github"
       },
       "original": {
         "dir": "contrib",
-        "owner": "lxsymington",
-        "ref": "fix/contrib/nix-flake",
+        "owner": "neovim",
         "repo": "neovim",
         "type": "github"
       }
@@ -293,19 +309,54 @@
         "type": "github"
       }
     },
+    "reactive": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713171747,
+        "narHash": "sha256-W/2tcpIsjoxw1I8juMLTnzrZm2DBa2zihuT9pN7YVEM=",
+        "owner": "rasulomaroff",
+        "repo": "reactive.nvim",
+        "rev": "d0063007a8700f41a2ba9de6ba36523917c55b51",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rasulomaroff",
+        "repo": "reactive.nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "copilot": "copilot",
         "copilot-cmp": "copilot-cmp",
         "flake-utils": "flake-utils",
+        "neogit": "neogit",
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_2",
         "nougat": "nougat",
         "nvim-luaref": "nvim-luaref",
+        "reactive": "reactive",
+        "screenkey": "screenkey",
         "statuscol": "statuscol",
         "telescope-frecency": "telescope-frecency",
         "tslint": "tslint"
+      }
+    },
+    "screenkey": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713476758,
+        "narHash": "sha256-vhNzgz26HbjMrC4bNPjo67xdyypeU3TzmjTsJE5v2AE=",
+        "owner": "NStefan002",
+        "repo": "screenkey.nvim",
+        "rev": "3ed8a01825258a79434b8d82f597eb833e2fcafc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NStefan002",
+        "repo": "screenkey.nvim",
+        "type": "github"
       }
     },
     "statuscol": {

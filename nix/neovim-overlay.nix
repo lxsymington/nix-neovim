@@ -51,10 +51,10 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
     # git integration plugins
     diffview-nvim # https://github.com/sindrets/diffview.nvim/
-    neogit # https://github.com/TimUntersberger/neogit/
+    (mkNvimPlugin inputs.neogit "neogit") # https://github.com/TimUntersberger/neogit/
     gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
     gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
-    octo-nvim # httpd://github.com/pwntester/octo.nvim/
+    octo-nvim # https://github.com/pwntester/octo.nvim/
     vim-fugitive # https://github.com/tpope/vim-fugitive/
     # ^ git integration plugins
     # telescope and extensions
@@ -78,6 +78,8 @@ with final.pkgs.lib; let
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
+    (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
+    (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
