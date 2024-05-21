@@ -2,12 +2,12 @@
   description = "Neovim derivation";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
     neovim-nightly = {
-      url = "github:neovim/neovim?dir=contrib";
+      url = "github:nix-community/neovim-nightly-overlay";
     };
 
     copilot = {
