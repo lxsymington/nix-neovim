@@ -21,7 +21,7 @@
     };
 
     neogit = {
-      url = "github:NeogitOrg/neogit?ref=nightly";
+      url = "github:NeogitOrg/neogit?ref=master";
       flake = false;
     };
 
@@ -67,12 +67,9 @@
   };
 
   outputs =
-    inputs @ { self
-    , nixpkgs
+    inputs @ { nixpkgs
     , flake-utils
     , gen-luarc
-    , neovim-nightly
-    , tslint
     , ...
     }:
     let
@@ -120,7 +117,7 @@
         };
         # You can add this overlay to your NixOS configuration
         overlays = {
-          default = (neovim-overlay { inherit system; });
+          default = neovim-overlay { inherit system; };
         };
       });
 }

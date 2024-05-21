@@ -184,10 +184,10 @@ cmp.setup({
 
 cmp.setup.filetype('lua', {
 	sources = cmp.config.sources({
-		{ name = 'copilot', max_item_count = 2 },
 		{ name = 'nvim_lua' },
-		{ name = 'nvim_lsp', keyword_length = 3 },
-		{ name = 'path' },
+		{ name = 'nvim_lsp' },
+		{ name = 'copilot', max_item_count = 2 },
+		{ name = 'path', keyword_length = 3 },
 	}),
 })
 

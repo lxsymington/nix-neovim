@@ -55,6 +55,7 @@ api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeav
 		end
 	end,
 })
+
 api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, {
 	pattern = '*',
 	group = numbertoggle,

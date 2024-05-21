@@ -50,7 +50,7 @@ local function preview_location_callback(_, result)
 	if result == nil or vim.tbl_isempty(result) then
 		return nil
 	end
-	local buf, _ = lsp.util.preview_location(result[1])
+	local buf, _ = lsp.util.preview_location(result[1], { border = 'single' })
 	if buf then
 		local cur_buf = vim.api.nvim_get_current_buf()
 		vim.bo[buf].filetype = vim.bo[cur_buf].filetype
@@ -122,20 +122,25 @@ function M.attach(ev)
 	end, desc('[lsp] list workspace folders'))
 	keymap.set('n', 'gR', lsp.buf.rename, desc('[lsp] rename'))
 	keymap.set('n', 'g#', lsp.buf.document_symbol, desc('[lsp] document symbol'))
-	keymap.set('n', 'ga', lsp.buf.code_action, desc('[lsp] code action'))
+	keymap.set('n', 'g.', lsp.buf.code_action, desc('[lsp] code action'))
 	keymap.set('n', 'gl', lsp.codelens.run, desc('[lsp] run code lens'))
 	keymap.set('n', 'gL', lsp.codelens.refresh, desc('[lsp] refresh code lenses'))
 	keymap.set('n', 'gF', function()
 		lsp.buf.format({ async = true })
 	end, desc('[lsp] format buffer'))
 	keymap.set('n', 'gh', function()
-		lsp.inlay_hint(bufnr)
+		lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
 	end, desc('[lsp] toggle inlay hints'))
+	keymap.set('n', 'gT', function()
+		lsp.buf.typehierarchy('subtypes')
+	end, desc('[lsp] type hierarchy subtypes'))
 
 	-- Auto-refresh code lenses
 	refresh_codeLens(bufnr, client)
 
 	document_highlight(bufnr, client)
+
+	lsp.inlay_hint.enable()
 end
 
 return M

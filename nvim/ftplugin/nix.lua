@@ -20,5 +20,5 @@ vim.lsp.start({
 })
 
 lint.linters_by_ft = {
-	nix = { 'nix' },
+	nix = { 'deadnix', 'nix', 'statix' },
 }

@@ -109,7 +109,7 @@ local function symbols()
 		layout_strategy = 'cursor',
 		layout_config = {
 			height = function(_, _, lines)
-				return math.min(10, math.floor(lines * 0.1))
+				return math.min(10, math.floor(lines * 0.2))
 			end,
 			width = function(_, cols, _)
 				return math.min(40, math.floor(cols * 0.4))

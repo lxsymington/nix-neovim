@@ -80,6 +80,8 @@ with final.pkgs.lib; let
     nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
+    twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
+    zen-mode-nvim # Zen mode | https://github.com/folke/zen-mode.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
