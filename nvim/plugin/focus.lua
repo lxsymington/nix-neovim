@@ -1,8 +1,6 @@
 local screenkey = require('screenkey')
 local twilight = require('twilight')
 local zenmode = require('zen-mode')
-local api = vim.api
-local cmd = vim.cmd
 
 -- Twilight ————————————————————————————————————————————————————————————————————
 twilight.setup({
@@ -37,7 +35,7 @@ zenmode.setup({
 		-- by default, no options are changed for the Zen window
 		-- uncomment any of the options below, or add other vim.wo options you want to apply
 		options = {
-			signcolumn = false, -- disable signcolumn
+			signcolumn = 'no', -- disable signcolumn
 			number = false, -- disable number column
 			relativenumber = false, -- disable relative numbers
 			cursorline = false, -- disable cursorline
@@ -71,10 +69,10 @@ zenmode.setup({
 		-- this will change the font size on alacritty when in zen mode
 		-- requires  Alacritty Version 0.10.0 or higher
 		-- uses `alacritty msg` subcommand to change font size
-		alacritty = {
-			enabled = true,
-			font = '16', -- font size
-		},
+		-- alacritty = {
+		-- 	enabled = true,
+		-- 	font = '16', -- font size
+		-- },
 	},
 	on_open = function()
 		screenkey.toggle()
