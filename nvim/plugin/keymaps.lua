@@ -4,6 +4,7 @@ end
 vim.g.did_load_keymaps_plugin = true
 
 local api = vim.api
+local cmd = vim.cmd
 local fn = vim.fn
 local keymap = vim.keymap
 local diagnostic = vim.diagnostic
@@ -211,6 +212,6 @@ keymap.set(
 keymap.set(
 	'n',
 	'<Leader>H',
-	'<cmd>TSHighlightCapturesUnderCursor<cr>',
+	cmd.Inspect,
 	{ silent = true, desc = 'Show treesitter highlight information' }
 )

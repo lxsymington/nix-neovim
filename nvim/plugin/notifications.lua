@@ -1,7 +1,15 @@
 local notify_utils = require('lxs.notification_utils')
+local notify = require('notify')
 local keymap = vim.keymap
+local cmd = vim.cmd
+local log = vim.log
+local lsp = vim.lsp
 
-vim.notify = require('notify')
+notify.setup({
+	top_down = false,
+})
+
+vim.notify = notify
 
 -- Notifications –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 keymap.set('n', '<Leader>N', function()
@@ -14,13 +22,13 @@ keymap.set('n', '<Leader>N', function()
 
 		telescope.extensions.notify.notify(opts)
 	else
-		vim.cmd.Notifications()
+		cmd.Notifications()
 	end
 end, { desc = 'Notifications', silent = true })
 
 -- LSP Handlers ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
-	local client = vim.lsp.get_client_by_id(ctx.client_id)
+lsp.handlers['window/showMessage'] = function(_, result, ctx)
+	local client = lsp.get_client_by_id(ctx.client_id)
 	local lvl = ({
 		'ERROR',
 		'WARN',
@@ -28,7 +36,11 @@ vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
 		'DEBUG',
 	})[result.type]
 
-	vim.notify({ result.message }, lvl, {
+	if client == nil then
+		return
+	end
+
+	vim.notify(result.message, lvl, {
 		title = 'LSP | ' .. client.name,
 		timeout = 10000,
 		keep = function()
@@ -37,7 +49,7 @@ vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
 	})
 end
 
-vim.lsp.handlers['$/progress'] = function(_, result, ctx)
+lsp.handlers['$/progress'] = function(_, result, ctx)
 	local client_id = ctx.client_id
 
 	local val = result.value
@@ -51,8 +63,8 @@ vim.lsp.handlers['$/progress'] = function(_, result, ctx)
 	if val.kind == 'begin' then
 		local message = notify_utils.format_message(val.message, val.percentage)
 
-		notif_data.notification = vim.notify(message, vim.log.levels.INFO, {
-			title = notify_utils.format_title(val.title, vim.lsp.get_client_by_id(client_id).name),
+		notif_data.notification = vim.notify(message, log.levels.INFO, {
+			title = notify_utils.format_title(val.title, lsp.get_client_by_id(client_id).name),
 			icon = notify_utils.spinner_frames[1],
 			timeout = false,
 			hide_from_history = false,
@@ -62,14 +74,14 @@ vim.lsp.handlers['$/progress'] = function(_, result, ctx)
 		notify_utils.update_spinner(client_id, result.token)
 	elseif val.kind == 'report' and notif_data then
 		notif_data.notification =
-			vim.notify(notify_utils.format_message(val.message, val.percentage), vim.log.levels.INFO, {
+			vim.notify(notify_utils.format_message(val.message, val.percentage), log.levels.INFO, {
 				replace = notif_data.notification,
 				hide_from_history = false,
 			})
 	elseif val.kind == 'end' and notif_data then
 		notif_data.notification = vim.notify(
 			val.message and notify_utils.format_message(val.message) or 'Complete',
-			vim.log.levels.INFO,
+			log.levels.INFO,
 			{
 				icon = '',
 				replace = notif_data.notification,
@@ -81,10 +93,10 @@ vim.lsp.handlers['$/progress'] = function(_, result, ctx)
 	end
 end
 
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, {
 	border = 'rounded',
 })
 
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, {
 	border = 'rounded',
 })

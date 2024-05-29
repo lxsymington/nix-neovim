@@ -23,7 +23,14 @@ function M.get_notif_data(client_id, token)
 end
 
 ---The frames to use in a notification's loading spinner
-M.spinner_frames = { '⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷' }
+M.spinner_frames = {
+	'◜',
+	'◠',
+	'◝',
+	'◞',
+	'◡',
+	'◟',
+}
 
 ---A function to apply the spinner animations to a notification
 function M.update_spinner(client_id, token)
@@ -33,7 +40,7 @@ function M.update_spinner(client_id, token)
 		local new_spinner = (notif_data.spinner + 1) % #M.spinner_frames
 		notif_data.spinner = new_spinner
 
-		notif_data.notification = vim.notify(nil, nil, {
+		notif_data.notification = vim.notify('⏳', nil, {
 			hide_from_history = true,
 			icon = M.spinner_frames[new_spinner],
 			replace = notif_data.notification,
