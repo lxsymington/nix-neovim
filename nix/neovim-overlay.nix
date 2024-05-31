@@ -121,17 +121,22 @@ with final.pkgs.lib; let
     # ^ Vim utilities
     # Miscellaneous
     vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
+    (mkNvimPlugin inputs.hurl-nvim "hurl-nvim") # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
     # ^ Miscellaneous
   ];
 
   extraPackages = with pkgs; [
     # language servers, etc.
+    biome
     deno
     fzf
     gh
+    gojq
     gopls
+    hurl
     lua-language-server
     nil # Nix LSP
+    nodePackages_latest.nodejs
     nodePackages_latest.prettier
     nodePackages_latest.ts-node
     nodePackages_latest.typescript-language-server

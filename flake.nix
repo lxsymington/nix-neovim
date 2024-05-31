@@ -8,6 +8,9 @@
 
     neovim-nightly = {
       url = "github:nix-community/neovim-nightly-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     copilot = {
@@ -17,6 +20,11 @@
 
     copilot-cmp = {
       url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    hurl-nvim = {
+      url = "github:jellydn/hurl.nvim";
       flake = false;
     };
 

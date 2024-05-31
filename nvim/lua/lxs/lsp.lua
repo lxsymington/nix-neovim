@@ -46,11 +46,11 @@ local function document_highlight(bufnr, client)
 end
 
 local function preview_location_callback(_, result)
-	vim.print(result)
 	if result == nil or vim.tbl_isempty(result) then
 		return nil
 	end
-	local buf, _ = lsp.util.preview_location(result[1], { border = 'single' })
+	vim.print(result)
+	local buf, _ = lsp.util.preview_location(result[1], { border = 'rounded' })
 	if buf then
 		local cur_buf = vim.api.nvim_get_current_buf()
 		vim.bo[buf].filetype = vim.bo[cur_buf].filetype
@@ -74,7 +74,7 @@ local function refresh_codeLens(bufnr, client)
 
 	local function buf_refresh_codeLens()
 		vim.schedule(function()
-			if client.server_capabilities.codeLensProvider then
+			if client.server_capabilities.codeLensProvider.resolveProvider then
 				lsp.codelens.refresh()
 				return
 			end
@@ -82,7 +82,7 @@ local function refresh_codeLens(bufnr, client)
 	end
 
 	local group = api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {})
-	if client.server_capabilities.codeLensProvider then
+	if client.server_capabilities.codeLensProvider.resolveProvider then
 		api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
 			group = group,
 			callback = buf_refresh_codeLens,
