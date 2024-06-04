@@ -74,7 +74,10 @@ local function refresh_codeLens(bufnr, client)
 
 	local function buf_refresh_codeLens()
 		vim.schedule(function()
-			if client.server_capabilities.codeLensProvider.resolveProvider then
+			if
+				client.server_capabilities.codeLensProvider ~= nil
+				and client.server_capabilities.codeLensProvider.resolveProvider
+			then
 				lsp.codelens.refresh()
 				return
 			end
@@ -82,7 +85,10 @@ local function refresh_codeLens(bufnr, client)
 	end
 
 	local group = api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {})
-	if client.server_capabilities.codeLensProvider.resolveProvider then
+	if
+		client.server_capabilities.codeLensProvider ~= nil
+		and client.server_capabilities.codeLensProvider.resolveProvider
+	then
 		api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
 			group = group,
 			callback = buf_refresh_codeLens,

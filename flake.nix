@@ -43,6 +43,11 @@
       flake = false;
     };
 
+    nui-nvim = {
+      url = "github:MunifTanjim/nui.nvim";
+      flake = false;
+    };
+
     nvim-luaref = {
       url = "github:milisims/nvim-luaref";
       flake = false;

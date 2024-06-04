@@ -77,6 +77,7 @@ with final.pkgs.lib; let
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
+    (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
     nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
