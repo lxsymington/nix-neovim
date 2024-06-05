@@ -70,6 +70,7 @@ opt.breakindent = true
 
 -- Set breakindent options
 opt.breakindentopt = {
+	'list:-1',
 	'min:20',
 	'shift:0',
 	'sbr',
