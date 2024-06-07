@@ -38,7 +38,6 @@ vim.snippet.stop = ls.unlink_current
 ls.config.set_config({
 	history = true,
 	updateevents = 'TextChanged,TextChangedI',
-	override_builtin = true,
 })
 
 ls.config.setup({
@@ -61,17 +60,21 @@ ls.config.setup({
 	},
 })
 
-vim.keymap.set({ 'i', 's' }, '<c-k>', function()
+vim.keymap.set({ 'i', 's' }, '<C-k>', function()
+	vim.print('Jumping to next snippet slot')
 	return vim.snippet.active({ direction = 1 }) and vim.snippet.jump(1)
-end, { silent = true })
+end, { desc = 'Jump to next snippet slot', expr = true, remap = true })
 
-vim.keymap.set({ 'i', 's' }, '<c-j>', function()
+vim.keymap.set({ 'i', 's' }, '<C-j>', function()
+	vim.print('Jumping to previous snippet slot')
 	return vim.snippet.active({ direction = -1 }) and vim.snippet.jump(-1)
-end, { silent = true })
+end, { desc = 'Jump to previous snippet slot', expr = true, remap = true })
 
-ls.add_snippets('gitcommit', {
-	-- All the snippets are defined in here
-	s('gct', {
+ls.add_snippets('all', {
+	s({
+		trig = 'commit',
+		name = 'git commit template',
+	}, {
 		t([[# Subject line (try to keep under 50 characters)]]),
 		fmt([[⁅Ticket: #{}⁆ · {}]], {
 			i(1, 'Ticket Number'),
