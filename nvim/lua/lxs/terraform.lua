@@ -29,6 +29,13 @@ function M.start()
 		terraform = { 'terraform_validate' },
 		['terraform-vars'] = { 'terraform_validate' },
 	}
+
+	local ns = lint.get_namespace('terraform_validate')
+	vim.diagnostic.config({
+		virtual_text = {
+			suffix = ' 🚩 terraform validate',
+		},
+	}, ns)
 end
 
 return M

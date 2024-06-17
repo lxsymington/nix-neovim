@@ -23,6 +23,11 @@
       flake = false;
     };
 
+    dbee-binary = {
+      url = "github:kndndrj/nvim-dbee?dir=dbee";
+      flake = false;
+    };
+
     hurl-nvim = {
       url = "github:jellydn/hurl.nvim";
       flake = false;
@@ -31,6 +36,10 @@
     neogit = {
       url = "github:NeogitOrg/neogit?ref=master";
       flake = false;
+    };
+
+    neorg-overlay = {
+      url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     };
 
     neotest-vim-test = {
@@ -80,7 +89,8 @@
   };
 
   outputs =
-    inputs @ { nixpkgs
+    inputs @ { neorg-overlay
+    , nixpkgs
     , flake-utils
     , gen-luarc
     , ...
@@ -97,6 +107,7 @@
           inherit system;
           config = { allowUnfree = true; };
           overlays = [
+            neorg-overlay.overlays.default
             # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
             (neovim-overlay { inherit system; })
             # This adds a function can be used to generate a .luarc.json
@@ -126,7 +137,7 @@
         };
         packages = rec {
           default = nvim;
-          nvim = pkgs.nvim-pkg;
+          nvim = pkgs.lxs-nvim;
         };
         # You can add this overlay to your NixOS configuration
         overlays = {

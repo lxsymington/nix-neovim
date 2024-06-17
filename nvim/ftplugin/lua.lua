@@ -66,3 +66,10 @@ vim.lsp.start({
 lint.linters_by_ft = {
 	lua = { 'selene' },
 }
+
+local ns = lint.get_namespace('selene')
+vim.diagnostic.config({
+	virtual_text = {
+		suffix = ' 🚩 selene',
+	},
+}, ns)

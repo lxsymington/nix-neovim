@@ -77,8 +77,6 @@ with final.pkgs.lib; let
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
-    (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
-    nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
@@ -102,10 +100,16 @@ with final.pkgs.lib; let
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
-    sniprun # Repl | https://github.com/michaelb/sniprun 
+    {
+      plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
+      optional = true;
+    }
     vim-test # Testing framework | https://github.com/vim-test/vim-test/
     (mkNvimPlugin inputs.neotest-vim-test "neotest-vim-test") # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
-    overseer-nvim # task management | https://github.com/stevearc/overseer.nvim/
+    {
+      plugin = overseer-nvim; # task management | https://github.com/stevearc/overseer.nvim/
+      optional = true;
+    }
     # ^ Code running
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
@@ -116,6 +120,8 @@ with final.pkgs.lib; let
     plenary-nvim
     nvim-web-devicons
     vim-repeat
+    (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
+    nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
     # ^ libraries that other plugins depend on
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
@@ -123,12 +129,22 @@ with final.pkgs.lib; let
     # Miscellaneous
     vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
     (mkNvimPlugin inputs.hurl-nvim "hurl-nvim") # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
+    neorg # Note taking | https://github.com/nvim-neorg/neorg/
+    neorg-telescope # Neorg telescope integration
     # ^ Miscellaneous
   ];
 
   extraPackages = with pkgs; [
     # language servers, etc.
     biome
+    (buildGoModule {
+      name = "dbee";
+      version = "v0.0.0";
+      src = inputs.dbee-binary.outPath;
+      sourceRoot = "source/dbee";
+      vendorHash = "sha256-AItvgOehVskGLARJWDnJLtWM5YHKN/zn/FnZQ0evAtI=";
+      buildInputs = [ duckdb mongodb mongodb-tools mongosh ];
+    })
     deno
     fzf
     gh

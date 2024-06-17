@@ -8,6 +8,12 @@ vim.g.skip_ts_context_comment_string_module = true
 
 ---@diagnostic disable-next-line: missing-fields
 configs.setup({
+	auto_install = false,
+	ensure_installed = 'none',
+	modules = {
+		'highlight',
+		'textobjects',
+	},
 	highlight = {
 		enable = true,
 		disable = function(_, buf)
@@ -18,6 +24,8 @@ configs.setup({
 			end
 		end,
 	},
+	ignore_install = {},
+	sync_install = false,
 	textobjects = {
 		select = {
 			enable = true,

@@ -1,3 +1,7 @@
+vim.cmd.packadd({
+	args = { 'sniprun' },
+	bang = true,
+})
 local sniprun = require('sniprun')
 
 sniprun.setup({

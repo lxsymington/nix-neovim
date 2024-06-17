@@ -1,3 +1,12 @@
+-- TODO: These aren't doing much at the moment. As they always get loaded. Figure out the best time to load them.
+vim.cmd.packadd({
+	args = { 'overseer.nvim' },
+	bang = true,
+})
+vim.cmd.packadd({
+	args = { 'neotest' },
+	bang = true,
+})
 local neotest = require('neotest')
 local keymap = vim.keymap
 

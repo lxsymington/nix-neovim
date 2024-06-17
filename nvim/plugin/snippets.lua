@@ -3,7 +3,7 @@ local c = ls.choice_node
 local fmt = require('luasnip.extras.fmt').fmt
 local i = ls.insert_node
 local s = ls.snippet
-local t = ls.test_node
+local t = ls.text_node
 local types = require('luasnip.util.types')
 
 vim.snippet.expand = ls.lsp_expand

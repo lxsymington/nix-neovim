@@ -22,3 +22,24 @@ vim.lsp.start({
 lint.linters_by_ft = {
 	nix = { 'deadnix', 'nix', 'statix' },
 }
+
+local deadnixNs = lint.get_namespace('deadnix')
+vim.diagnostic.config({
+	virtual_text = {
+		suffix = ' 🚩 deadnix',
+	},
+}, deadnixNs)
+
+local nixNs = lint.get_namespace('nix')
+vim.diagnostic.config({
+	virtual_text = {
+		suffix = ' 🚩 nix',
+	},
+}, nixNs)
+
+local statixNs = lint.get_namespace('statix')
+vim.diagnostic.config({
+	virtual_text = {
+		suffix = ' 🚩 statix',
+	},
+}, statixNs)

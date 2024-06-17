@@ -1,3 +1,7 @@
+vim.cmd.packadd({
+	args = { 'overseer.nvim' },
+	bang = true,
+})
 local overseer = require('overseer')
 local keymap = vim.keymap
 local cmd = vim.cmd
