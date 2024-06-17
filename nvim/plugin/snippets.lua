@@ -70,31 +70,42 @@ vim.keymap.set({ 'i', 's' }, '<C-j>', function()
 	return vim.snippet.active({ direction = -1 }) and vim.snippet.jump(-1)
 end, { desc = 'Jump to previous snippet slot', expr = true, remap = true })
 
-ls.add_snippets('all', {
-	s({
+local commit_snippet = s(
+	{
 		trig = 'commit',
 		name = 'git commit template',
-	}, {
-		t([[# Subject line (try to keep under 50 characters)]]),
-		fmt([[⁅Ticket: #{}⁆ · {}]], {
+	},
+	fmt(
+		[[
+# Subject line (try to keep under 50 characters)
+⁅Ticket: #{}⁆ · {}
+
+# Describe the problem this commit addresses
+{}
+
+# Describe the changes or solutions implemented as part of this commit.
+{}
+
+{}
+]],
+		{
 			i(1, 'Ticket Number'),
 			i(2, 'Subject Line'),
-		}),
-		t(),
-		t([[# Describe the problem this commit addresses]]),
-		i(3, 'Multi-line description of commit, feel free to be detailed.'),
-		t(),
-		t([[# Describe the changes or solutions implemented as part of this commit.]]),
-		i(4, '- Change 1'),
-		t(),
-		c(5, {
-			fmt([[Co-authored-by: {} <{}@{}.{}>]], {
-				i(6, 'Co-author Name'),
-				i(7, 'Co-author Email'),
-				i(8, 'Co-author Domain'),
-				i(9, 'Co-author TLD'),
-			}),
-			t(),
-		}),
-	}),
+			i(3, 'Multi-line description of commit, feel free to be detailed.'),
+			i(4, '- Change 1'),
+			c(
+				5,
+				fmt([[Co-authored-by: {} <{}@{}.{}>]], {
+					i(6, 'Co-author Name'),
+					i(7, 'Co-author Email'),
+					i(8, 'Co-author Domain'),
+					i(9, 'Co-author TLD'),
+				})
+			),
+		}
+	)
+)
+
+ls.add_snippets('all', {
+	commit_snippet,
 })

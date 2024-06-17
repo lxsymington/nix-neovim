@@ -137,14 +137,16 @@ with final.pkgs.lib; let
   extraPackages = with pkgs; [
     # language servers, etc.
     biome
-    (buildGoModule {
-      name = "dbee";
-      version = "v0.0.0";
-      src = inputs.dbee-binary.outPath;
-      sourceRoot = "source/dbee";
-      vendorHash = "sha256-AItvgOehVskGLARJWDnJLtWM5YHKN/zn/FnZQ0evAtI=";
-      buildInputs = [ duckdb mongodb mongodb-tools mongosh ];
-    })
+    # NOTE: it looks as if the nvim-dbee package in `nixpkgs` includes the binary so we don't need
+    # to include it as an extra package here.
+    # (buildGoModule {
+    #   name = "dbee";
+    #   version = "v0.0.0";
+    #   src = inputs.dbee-binary.outPath;
+    #   sourceRoot = "source/dbee";
+    #   vendorHash = "sha256-AItvgOehVskGLARJWDnJLtWM5YHKN/zn/FnZQ0evAtI=";
+    #   buildInputs = [ mongodb mongodb-tools mongosh ];
+    # })
     deno
     fzf
     gh
