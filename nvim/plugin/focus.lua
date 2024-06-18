@@ -30,8 +30,8 @@ zenmode.setup({
 		-- * an absolute number of cells when > 1
 		-- * a percentage of the width / height of the editor when <= 1
 		-- * a function that returns the width or the height
-		width = 100, -- width of the Zen window
-		height = 1, -- height of the Zen window
+		width = 120, -- width of the Zen window
+		height = 0.8, -- height of the Zen window
 		-- by default, no options are changed for the Zen window
 		-- uncomment any of the options below, or add other vim.wo options you want to apply
 		options = {
@@ -40,7 +40,7 @@ zenmode.setup({
 			relativenumber = false, -- disable relative numbers
 			cursorline = false, -- disable cursorline
 			cursorcolumn = false, -- disable cursor column
-			foldcolumn = true, -- disable fold column
+			foldcolumn = 'no', -- disable fold column
 			list = true, -- disable whitespace characters
 		},
 	},
@@ -69,10 +69,10 @@ zenmode.setup({
 		-- this will change the font size on alacritty when in zen mode
 		-- requires  Alacritty Version 0.10.0 or higher
 		-- uses `alacritty msg` subcommand to change font size
-		-- alacritty = {
-		-- 	enabled = true,
-		-- 	font = '16', -- font size
-		-- },
+		alacritty = {
+			enabled = true,
+			font = '20', -- font size
+		},
 	},
 	on_open = function()
 		screenkey.toggle()

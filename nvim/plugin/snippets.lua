@@ -5,6 +5,8 @@ local i = ls.insert_node
 local s = ls.snippet
 local t = ls.text_node
 local types = require('luasnip.util.types')
+local select_choice = require('luasnip.extras.select_choice')
+local keymap = vim.keymap
 
 vim.snippet.expand = ls.lsp_expand
 
@@ -60,15 +62,17 @@ ls.config.setup({
 	},
 })
 
-vim.keymap.set({ 'i', 's' }, '<C-k>', function()
-	vim.print('Jumping to next snippet slot')
+keymap.set({ 'i', 's' }, '<C-k>', function()
 	return vim.snippet.active({ direction = 1 }) and vim.snippet.jump(1)
 end, { desc = 'Jump to next snippet slot', expr = true, remap = true })
 
-vim.keymap.set({ 'i', 's' }, '<C-j>', function()
-	vim.print('Jumping to previous snippet slot')
+keymap.set({ 'i', 's' }, '<C-j>', function()
 	return vim.snippet.active({ direction = -1 }) and vim.snippet.jump(-1)
 end, { desc = 'Jump to previous snippet slot', expr = true, remap = true })
+
+keymap.set({ 'i', 's' }, '<C-l>', function()
+	return select_choice()
+end, { desc = 'Expand snippet', expr = true, remap = true })
 
 local commit_snippet = s(
 	{
@@ -100,7 +104,8 @@ local commit_snippet = s(
 					i(7, 'Co-author Email'),
 					i(8, 'Co-author Domain'),
 					i(9, 'Co-author TLD'),
-				})
+				}),
+				t('')
 			),
 		}
 	)

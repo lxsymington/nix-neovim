@@ -432,6 +432,54 @@
         "type": "github"
       }
     },
+    "mini-clue": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718279789,
+        "narHash": "sha256-8JK9XYPvjrHeZ56md9vtJfP09woMR8w/FREek6t1qc0=",
+        "owner": "echasnovski",
+        "repo": "mini.clue",
+        "rev": "08f792869781b4bfdfcaa55eb905b9635c0a243f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.clue",
+        "type": "github"
+      }
+    },
+    "mini-pairs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716646032,
+        "narHash": "sha256-lszfplyL9Mj/2gQz7ITzRdru9djPxJKB2ncvV0MaE0k=",
+        "owner": "echasnovski",
+        "repo": "mini.pairs",
+        "rev": "40261dfcec7623cd57be3c3beb50fa73f2650cdf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.pairs",
+        "type": "github"
+      }
+    },
+    "mini-sessions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1717325611,
+        "narHash": "sha256-0SX1S+Csno+syTSfwxAYbJXqyhy8VsIaGN1wpKm8ZyA=",
+        "owner": "echasnovski",
+        "repo": "mini.sessions",
+        "rev": "a36b78d12fc16c938ba7a1e5ad1300d43c8bb848",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.sessions",
+        "type": "github"
+      }
+    },
     "neogit": {
       "flake": false,
       "locked": {
@@ -737,6 +785,9 @@
         "dbee-binary": "dbee-binary",
         "flake-utils": "flake-utils",
         "hurl-nvim": "hurl-nvim",
+        "mini-clue": "mini-clue",
+        "mini-pairs": "mini-pairs",
+        "mini-sessions": "mini-sessions",
         "neogit": "neogit",
         "neorg-overlay": "neorg-overlay",
         "neotest-vim-test": "neotest-vim-test",

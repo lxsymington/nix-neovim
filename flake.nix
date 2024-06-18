@@ -33,6 +33,21 @@
       flake = false;
     };
 
+    mini-clue = {
+      url = "github:echasnovski/mini.clue";
+      flake = false;
+    };
+
+    mini-pairs = {
+      url = "github:echasnovski/mini.pairs";
+      flake = false;
+    };
+
+    mini-sessions = {
+      url = "github:echasnovski/mini.sessions";
+      flake = false;
+    };
+
     neogit = {
       url = "github:NeogitOrg/neogit?ref=master";
       flake = false;

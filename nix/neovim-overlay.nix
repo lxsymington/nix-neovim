@@ -72,7 +72,7 @@ with final.pkgs.lib; let
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
-    which-key-nvim # keymap hints | https://github.com/folke/which-key.nvim/
+    (mkNvimPlugin inputs.mini-clue "mini-clue") # Mini clue | https://github.com/echanovski/mini.clue/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
@@ -131,6 +131,8 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.hurl-nvim "hurl-nvim") # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
     neorg # Note taking | https://github.com/nvim-neorg/neorg/
     neorg-telescope # Neorg telescope integration
+    # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
+    # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
     # ^ Miscellaneous
   ];
 
