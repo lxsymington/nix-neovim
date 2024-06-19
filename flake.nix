@@ -33,6 +33,11 @@
       flake = false;
     };
 
+    luvit-meta = {
+      url = "github:Bilal2453/luvit-meta";
+      flake = false;
+    };
+
     mini-clue = {
       url = "github:echasnovski/mini.clue";
       flake = false;

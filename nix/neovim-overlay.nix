@@ -125,6 +125,8 @@ with final.pkgs.lib; let
     # ^ libraries that other plugins depend on
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
+    (mkNvimPlugin inputs.luvit-meta "luvit-meta") # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
+    lazydev-nvim
     # ^ Vim utilities
     # Miscellaneous
     vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
@@ -210,9 +212,10 @@ in
   # This is the neovim derivation
   # returned by the overlay
   lxs-nvim = mkNeovim {
-    neovimPackage = inputs.neovim-nightly.packages.${system}.default;
-    plugins = all-plugins;
     inherit extraPackages isDarwin;
+    neovim-unwrapped = inputs.neovim-nightly.packages.${system}.default;
+    plugins = all-plugins;
+    withNodeJs = true;
   };
 
   # This can be symlinked in the devShell's shellHook

@@ -1,5 +1,5 @@
 if vim.g.did_load_completion_plugin then
-  return
+	return
 end
 vim.g.did_load_completion_plugin = true
 
@@ -141,6 +141,7 @@ cmp.setup({
 
 cmp.setup.filetype('lua', {
 	sources = cmp.config.sources({
+		{ name = 'lazydev', group_index = 0 },
 		{ name = 'nvim_lua' },
 		{ name = 'nvim_lsp' },
 		{ name = 'copilot', max_item_count = 2 },

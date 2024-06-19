@@ -9,6 +9,3 @@ cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 
 -- Compatible ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 opt.compatible = false
-
--- Config ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-require('lxs.config.init').setup()
