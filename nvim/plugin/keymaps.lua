@@ -179,18 +179,18 @@ keymap.set('n', ']w', function()
 		severity = severity.WARN,
 	})
 end, { noremap = true, silent = true, desc = 'next [w]arning diagnostic' })
-keymap.set('n', '[h', function()
+keymap.set('n', '[?', function()
 	diagnostic.jump({
 		count = -1,
 		severity = severity.HINT,
 	})
-end, { noremap = true, silent = true, desc = 'previous [h]int diagnostic' })
-keymap.set('n', ']h', function()
+end, { noremap = true, silent = true, desc = 'previous hint[?] diagnostic' })
+keymap.set('n', ']?', function()
 	diagnostic.jump({
 		count = 1,
 		severity = severity.HINT,
 	})
-end, { noremap = true, silent = true, desc = 'next [h]int diagnostic' })
+end, { noremap = true, silent = true, desc = 'next hint[?] diagnostic' })
 
 local function toggle_spell_check()
 	---@diagnostic disable-next-line: param-type-mismatch

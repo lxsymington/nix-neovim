@@ -50,12 +50,12 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
     # git integration plugins
-    diffview-nvim # https://github.com/sindrets/diffview.nvim/
-    (mkNvimPlugin inputs.neogit "neogit") # https://github.com/TimUntersberger/neogit/
+    diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
+    (mkNvimPlugin inputs.neogit "neogit") # Git Client | https://github.com/TimUntersberger/neogit/
     gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
-    gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
-    octo-nvim # https://github.com/pwntester/octo.nvim/
-    vim-fugitive # https://github.com/tpope/vim-fugitive/
+    (mkNvimPlugin inputs.mini-git "mini-git") # Git Editor Integration | https://github.com/echasnovski/mini-git/
+    (mkNvimPlugin inputs.mini-diff "mini-diff") # Diff Editor Integration | https://diffhub.com/echasnovski/mini.diff/
+    octo-nvim # GitHub Integration | https://github.com/pwntester/octo.nvim/
     # ^ git integration plugins
     # telescope and extensions
     telescope-nvim # https://github.com/nvim-telescope/telescope.nvim/
@@ -66,7 +66,6 @@ with final.pkgs.lib; let
     # UI
     lush-nvim # colorscheme | https://github.com/rktjmp/lush.nvim/
     rose-pine # colorscheme | https://github.com/rose-pine/neovim
-    (mkNvimPlugin inputs.nougat "nougat") # A vim statusline plugin | https://github.com/MunifTanjim/nougat.nvim
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
@@ -81,6 +80,8 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
     zen-mode-nvim # Zen mode | https://github.com/folke/zen-mode.nvim/
+    (mkNvimPlugin inputs.mini-starter "mini-starter") # Dashboard | https://github.com/echasnovski/mini.starter/
+    (mkNvimPlugin inputs.nougat "nougat") # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -93,9 +94,11 @@ with final.pkgs.lib; let
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
-    nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
+    (mkNvimPlugin inputs.mini-pairs "mini-pairs") # Auto pairs | https://github.com/echasnovski/mini.pairs/
+    (mkNvimPlugin inputs.mini-sessions "mini-sessions") # Session management | https://github.com/echasnovski/mini.sessions/
+    (mkNvimPlugin inputs.mini-surround "mini-surround") # Surround operator | https://github.com/echasnovski/mini.surround/
     # ^ navigation/editing enhancement plugins
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/

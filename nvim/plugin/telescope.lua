@@ -140,7 +140,7 @@ keymap.set(
 keymap.set('n', '<Leader>/;', symbols, { desc = '[telescope] find symbols' })
 keymap.set('n', '<Leader>/vm', builtin.marks, { desc = '[telescope] find marks' })
 keymap.set('n', '<Leader>/vh', builtin.help_tags, { desc = '[telescope] find help tags' })
-keymap.set('n', '<Leader>/hz', frecent, { desc = '[telescope] frecent files' })
+keymap.set('n', '<Leader><Leader>', frecent, { desc = '[telescope] frecent files' })
 
 local layout_config = {
 	width = function(_, cols, _)

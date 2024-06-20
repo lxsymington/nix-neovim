@@ -101,12 +101,13 @@ opt.shortmess:append('c')
 
 -- Improve mergetool and diff experience by using git's built in diff
 opt.diffopt = {
+	'indent-heuristic',
+	'algorithm:patience',
 	'filler',
 	'iblank',
+	'internal',
 	'iwhite',
-	'indent-heuristic',
 	'linematch:60',
-	'algorithm:patience',
 }
 
 -- Keep an undo file (undo changes after closing)

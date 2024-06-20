@@ -3,8 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+    gen-luarc = {
+      url = "github:mrcjkb/nix-gen-luarc-json";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
 
     neovim-nightly = {
       url = "github:nix-community/neovim-nightly-overlay";
@@ -43,6 +50,16 @@
       flake = false;
     };
 
+    mini-diff = {
+      url = "github:echasnovski/mini.diff";
+      flake = false;
+    };
+
+    mini-git = {
+      url = "github:echasnovski/mini-git";
+      flake = false;
+    };
+
     mini-pairs = {
       url = "github:echasnovski/mini.pairs";
       flake = false;
@@ -50,6 +67,16 @@
 
     mini-sessions = {
       url = "github:echasnovski/mini.sessions";
+      flake = false;
+    };
+
+    mini-starter = {
+      url = "github:echasnovski/mini.starter";
+      flake = false;
+    };
+
+    mini-surround = {
+      url = "github:echasnovski/mini.surround";
       flake = false;
     };
 

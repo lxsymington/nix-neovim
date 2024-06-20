@@ -1,3 +1,8 @@
+if vim.g.did_load_statusline_plugin then
+	return
+end
+vim.g.did_load_statusline_plugin = true
+
 local nougat = require('nougat')
 local core = require('nougat.core')
 local Bar = require('nougat.bar')
