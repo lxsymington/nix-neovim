@@ -4,10 +4,14 @@ end
 vim.g.did_load_statusline_plugin = true
 
 local nougat = require('nougat')
+local color = require('nougat.color').get()
 local core = require('nougat.core')
 local Bar = require('nougat.bar')
 local Item = require('nougat.item')
 local sep = require('nougat.separator')
+local lsp_server_nut = require('nougat.nut.lsp.servers')
+
+vim.print(color)
 
 local nut = {
 	buf = {
@@ -41,7 +45,7 @@ local mode = nut.mode({
 local filename = (function()
 	local item = Item({
 		prepare = function(_, ctx)
-			local bufnr, data = ctx.bufnr, ctx.ctx
+			local _, data = ctx.bufnr, ctx.ctx
 			data.readonly = vim.api.nvim_get_option_value('readonly', {})
 			data.modifiable = vim.api.nvim_get_option_value('modifiable', {})
 			data.modified = vim.api.nvim_get_option_value('modified', {})
@@ -84,6 +88,9 @@ local filename = (function()
 				content = '󰐖',
 			}),
 		},
+		hl = {
+			fg = color.blue,
+		},
 	})
 
 	return item
@@ -120,12 +127,14 @@ local macros = Item({
 })
 
 local ruler = (function()
-	local scroll_hl = {}
+	local scroll_hl = {
+		fg = color.fg,
+	}
 
 	local item = Item({
 		content = {
 			Item({
-				sep_left = sep.none(true),
+				sep_left = sep.none(),
 				content = core.group({
 					core.code('l'),
 					':',
@@ -139,7 +148,7 @@ local ruler = (function()
 				end,
 				prefix = ' ',
 				content = core.code('P'),
-				sep_right = sep.none(true),
+				sep_right = sep.none(),
 			}),
 		},
 		sep_right = sep.space(true),
@@ -171,11 +180,49 @@ local function paired_space(item)
 	})
 end
 
+local lsp_servers = lsp_server_nut.create({
+	-- whatever you set here, will be available as `item.ctx`
+	-- doc: https://github.com/MunifTanjim/nougat.nvim/tree/main/lua/nougat/item#ctx
+	ctx = {
+		content = {
+			lua_ls = 'LuaLS',
+		},
+		hl = {
+			lua_ls = { fg = color.cyan },
+		},
+	},
+	hl = { fg = color.green },
+	sep_left = sep.space(),
+	config = {
+		content = function(client, item)
+			if client.name == 'copilot' then
+				-- if you return nothing, that lsp server will be hidden.
+				-- so 'copilot' lsp will be hidden
+				return
+			end
+
+			return {
+				-- `item.ctx.content` has value for `lua_ls`, so it'll be displayed as `LuaLS`.
+				-- Other LSP servers will be displayed as default `client.name`
+				content = item.ctx.content[client.name] or client.name,
+				-- `item.ctx.hl` has value for `lua_ls`, so it'll be displayed with `cyan` color.
+				-- Other LSP servers will have default/no colors.
+				hl = item.ctx.hl[client.name],
+			}
+		end,
+		sep = ' ',
+	},
+	suffix = ' ',
+})
+
 local stl = Bar('statusline')
 stl:add_item(mode)
 stl:add_item(sep.space())
 stl:add_item(nut.git.branch({
 	prefix = ' ',
+	hl = {
+		fg = color.magenta,
+	},
 }))
 stl:add_item(sep.space())
 local gitstatus = stl:add_item(nut.git.status.create({
@@ -185,21 +232,27 @@ local gitstatus = stl:add_item(nut.git.status.create({
 			suffix = function(_, ctx)
 				return (ctx.gitstatus.changed > 0 or ctx.gitstatus.removed > 0) and ' ' or ''
 			end,
+			hl = { fg = color.green },
 		}),
 		nut.git.status.count('changed', {
 			prefix = '󱕍 ',
 			suffix = function(_, ctx)
 				return ctx.gitstatus.removed > 0 and ' ' or ''
 			end,
+			hl = { fg = color.yellow },
 		}),
 		nut.git.status.count('removed', {
 			prefix = '󰍵 ',
+			hl = { fg = color.red },
 		}),
 	},
 }))
 stl:add_item(paired_space(gitstatus))
 stl:add_item(filename)
 stl:add_item(sep.space())
+stl:add_item(nut.spacer())
+stl:add_item(nut.truncation_point())
+stl:add_item(lsp_servers)
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
 stl:add_item(copilot)
