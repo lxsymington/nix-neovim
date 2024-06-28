@@ -129,8 +129,23 @@
       flake = false;
     };
 
+    true-zen = {
+      url = "github:Pocco81/true-zen.nvim";
+      flake = false;
+    };
+
     tslint = {
       url = "github:palantir/tslint";
+      flake = false;
+    };
+
+    vtsls = {
+      url = "github:yioneko/vtsls";
+      flake = false;
+    };
+
+    vtsls-nvim = {
+      url = "github:yioneko/nvim-vtsls";
       flake = false;
     };
   };

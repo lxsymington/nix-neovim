@@ -1,6 +1,8 @@
 local screenkey = require('screenkey')
 local twilight = require('twilight')
-local zenmode = require('zen-mode')
+local truezen = require('true-zen')
+
+local keymap = vim.keymap
 
 -- Twilight ————————————————————————————————————————————————————————————————————
 twilight.setup({
@@ -23,63 +25,102 @@ twilight.setup({
 })
 
 -- Zen Mode ————————————————————————————————————————————————————————————————————
-zenmode.setup({
-	window = {
-		backdrop = 0.5, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-		-- height and width can be:
-		-- * an absolute number of cells when > 1
-		-- * a percentage of the width / height of the editor when <= 1
-		-- * a function that returns the width or the height
-		width = 120, -- width of the Zen window
-		height = 0.8, -- height of the Zen window
-		-- by default, no options are changed for the Zen window
-		-- uncomment any of the options below, or add other vim.wo options you want to apply
-		options = {
-			signcolumn = 'no', -- disable signcolumn
-			number = false, -- disable number column
-			relativenumber = false, -- disable relative numbers
-			cursorline = false, -- disable cursorline
-			cursorcolumn = false, -- disable cursor column
-			foldcolumn = 'no', -- disable fold column
-			list = true, -- disable whitespace characters
+local callbacks = {}
+function callbacks.open_pre()
+	vim.system({
+		'alacritty',
+		'msg',
+		'config',
+		'font.size=20',
+	}, {}, function()
+		vim.system({
+			'tmux',
+			'resize-pane',
+			'-Z',
+		}, {}, function()
+			vim.notify_once('enabled', 'info', {
+				title = 'Focus Mode',
+				timeout = 500,
+			})
+		end)
+	end)
+end
+
+callbacks.open_pos = screenkey.toggle
+callbacks.close_pre = screenkey.toggle
+
+callbacks.close_pos = function()
+	vim.system({
+		'alacritty',
+		'msg',
+		'config',
+		'-r',
+	}, {}, function()
+		vim.system({
+			'tmux',
+			'resize-pane',
+			'-Z',
+		}, {}, function()
+			vim.notify_once('disabled', 'info', {
+				title = 'Focus Mode',
+				timeout = 500,
+			})
+		end)
+	end)
+end
+
+truezen.setup({
+	modes = {
+		ataraxis = {
+			shade = vim.opt.background:get(),
+			backdrop = 0.5,
+			minimum_writing_area = {
+				width = 80,
+				height = 30,
+			},
+			callbacks = callbacks,
+		},
+		minimalist = {
+			callbacks = callbacks,
 		},
 	},
-	plugins = {
-		-- disable some global vim options (vim.o...)
-		-- comment the lines to not apply the options
-		options = {
-			enabled = true,
-			ruler = true, -- disables the ruler text in the cmd line area
-			showcmd = true, -- disables the command in the last line of the screen
-			-- you may turn on/off statusline in zen mode by setting 'laststatus'
-			-- statusline will be shown only if 'laststatus' == 3
-			laststatus = 0, -- turn off the statusline in zen mode
-		},
-		twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
-		gitsigns = { enabled = false }, -- disables git signs
-		tmux = { enabled = true }, -- disables the tmux statusline
-		-- this will change the font size on kitty when in zen mode
-		-- to make this work, you need to set the following kitty options:
-		-- - allow_remote_control socket-only
-		-- - listen_on unix:/tmp/kitty
+	integrations = {
 		kitty = {
 			enabled = true,
-			font = '+4', -- font size increment
+			font = '+4',
 		},
-		-- this will change the font size on alacritty when in zen mode
-		-- requires  Alacritty Version 0.10.0 or higher
-		-- uses `alacritty msg` subcommand to change font size
-		alacritty = {
-			enabled = true,
-			font = '20', -- font size
-		},
+		tmux = true,
+		twilight = true,
 	},
-	on_open = function()
-		screenkey.toggle()
-	end,
-	on_close = function()
-		screenkey.toggle()
-	end,
+})
+
+keymap.set('n', '<leader>zn', function()
+	local first = 0
+	local last = vim.api.nvim_buf_line_count(0)
+	truezen.narrow(first, last)
+end, {
+	desc = 'True[z]en [n]arrow',
+	noremap = true,
+})
+keymap.set('v', '<leader>zn', function()
+	local first = vim.fn.line('v')
+	local last = vim.fn.line('.')
+	truezen.narrow(first, last)
+end, {
+	desc = 'True[z]en [n]arrow',
+	noremap = true,
+})
+keymap.set('n', '<leader>zf', truezen.focus, {
+	desc = 'True[z]en [f]ocus',
+	noremap = true,
+})
+keymap.set('n', '<leader>zm', truezen.minimalist, {
+	desc = 'True[z]en [m]inimalist',
+	noremap = true,
+})
+keymap.set('n', '<leader>za', truezen.ataraxis, {
+	desc = 'True[z]en [a]taraxis',
+	noremap = true,
 })
 
 -- ScreenKey ———————————————————————————————————————————————————————————————————

@@ -11,8 +11,6 @@ local Item = require('nougat.item')
 local sep = require('nougat.separator')
 local lsp_server_nut = require('nougat.nut.lsp.servers')
 
-vim.print(color)
-
 local nut = {
 	buf = {
 		diagnostic_count = require('nougat.nut.buf.diagnostic_count').create,
@@ -41,6 +39,52 @@ local mode = nut.mode({
 	sep_left = sep.space(true),
 	sep_right = sep.space(true),
 })
+
+local search = (function()
+	return Item({
+		prepare = function(_, ctx)
+			local data = ctx.ctx
+			data.search_highlight = vim.v.hlsearch == 1
+			data.search_active, data.search_data =
+				pcall(vim.fn.searchcount, { maxcount = 0, recalculate = 1 })
+		end,
+		prefix = '🔎',
+		content = {
+			Item({
+				hidden = function(_, ctx)
+					return not ctx.ctx.search_active
+				end,
+				content = function(_, ctx)
+					local data = ctx.ctx
+
+					if
+						data.search_active
+						and type(data.search_data.current) == 'number'
+						and type(data.search_data.current) == 'number'
+					then
+						return string.format('%d∕%d', data.search_data.current, data.search_data.total)
+					end
+
+					return ''
+				end,
+				sep_left = sep.space(),
+				sep_right = sep.none(),
+				hl = { fg = color.magenta },
+			}),
+			Item({
+				content = function(_, ctx)
+					local data = ctx.ctx
+					return string.format('%s', data.search_highlight and '' or '')
+				end,
+				sep_left = sep.space(),
+				sep_right = sep.none(),
+				hl = { fg = color.accent.blue },
+			}),
+		},
+		sep_left = sep.space(),
+		sep_right = sep.space(),
+	})
+end)()
 
 local filename = (function()
 	local item = Item({
@@ -253,6 +297,7 @@ stl:add_item(sep.space())
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
 stl:add_item(lsp_servers)
+stl:add_item(search)
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
 stl:add_item(copilot)

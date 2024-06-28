@@ -65,13 +65,19 @@ opt.mouse = 'a'
 opt.timeoutlen = 300
 opt.ttimeoutlen = 100
 
+-- configure text wrapping within the editor space
+opt.wrap = true
+opt.wrapmargin = 5
+opt.linebreak = true
+opt.showbreak = '↪'
+
 -- Set wrapped lines to continue visual indentation
 opt.breakindent = true
 
 -- Set breakindent options
 opt.breakindentopt = {
 	'list:-1',
-	'min:20',
+	'min:15',
 	'shift:0',
 	'sbr',
 }

@@ -79,7 +79,7 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
-    zen-mode-nvim # Zen mode | https://github.com/folke/zen-mode.nvim/
+    (mkNvimPlugin inputs.true-zen "true-zen") # Zen mode | https://github.com/Pocco81/true-zen.nvim/
     (mkNvimPlugin inputs.mini-starter "mini-starter") # Dashboard | https://github.com/echasnovski/mini.starter/
     (mkNvimPlugin inputs.nougat "nougat") # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
     # ^ UI
@@ -183,7 +183,7 @@ with final.pkgs.lib; let
       packageJson = "${inputs.tslint.outPath}/package.json";
       yarnLock = "${inputs.tslint.outPath}/yarn.lock";
 
-      offlineCache = pkgs.fetchYarnDeps {
+      offlineCache = fetchYarnDeps {
         yarnLock = inputs.tslint.outPath + "/yarn.lock";
         hash = "sha256-xfN1nZXPspHtQnCxNtGBVRrX7I3X8H20gXbslqzp9Io=";
       };

@@ -40,7 +40,7 @@ lsp.handlers['window/showMessage'] = function(_, result, ctx)
 		return
 	end
 
-	vim.notify(result.message, lvl, {
+	vim.notify_once(result.message, lvl, {
 		title = 'LSP | ' .. client.name,
 		timeout = 10000,
 		keep = function()
