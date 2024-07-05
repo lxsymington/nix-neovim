@@ -25,6 +25,17 @@ neorg.setup({
 				},
 			},
 		},
+		['core.integrations.treesitter'] = {
+			config = {
+				configure_parsers = true,
+				install_parsers = false,
+			},
+		},
+		['core.presenter'] = {
+			config = {
+				zen_mode = 'truezen',
+			},
+		},
 	},
 })
 

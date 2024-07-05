@@ -2,9 +2,9 @@ if vim.g.did_load_treesitter_plugin then
 	return
 end
 vim.g.did_load_treesitter_plugin = true
+vim.g.skip_ts_context_commentstring_module = true
 
 local configs = require('nvim-treesitter.configs')
-vim.g.skip_ts_context_comment_string_module = true
 
 ---@diagnostic disable-next-line: missing-fields
 configs.setup({
@@ -103,6 +103,4 @@ require('treesitter-context').setup({
 	max_lines = 5,
 })
 
-vim.g.skip_ts_context_commentstring_module = true
-
-vim.treesitter.language.register('terraform', 'terraform-vars')
+pcall(vim.treesitter.language.register, 'terraform', 'terraform-vars')
