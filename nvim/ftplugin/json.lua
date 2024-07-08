@@ -1,19 +1,16 @@
 local schemastore = require('schemastore')
+local lspconfig = require('lspconfig')
 
 -- JSON Configuration ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-local root_files = {
-	'.git',
-}
-
-vim.lsp.start({
-	name = 'jsonls',
-	cmd = { 'vscode-json-language-server' },
-	root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true })[1]),
-	capabilities = require('lxs.lsp').make_client_capabilities(),
-	settings = {
-		json = {
-			schemas = schemastore.json.schemas(),
-			validate = { enable = true },
+if vim.fn.executable('vscode-json-languageserver') == 1 then
+	lspconfig.json.setup({
+		name = 'jsonls',
+		capabilities = require('lxs.lsp').make_client_capabilities(),
+		settings = {
+			json = {
+				schemas = schemastore.json.schemas(),
+				validate = { enable = true },
+			},
 		},
-	},
-})
+	})
+end

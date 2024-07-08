@@ -3,6 +3,7 @@
 ---@brief [[
 ---ECMAScript related functions
 ---@brief ]]
+local lspconfig = require('lspconfig')
 local lint = require('lint')
 
 local api = vim.api
@@ -23,73 +24,31 @@ local function organize_imports(buf)
 	lsp.buf_request_sync(buf or 0, 'workspace/executeCommand', params, 1000)
 end
 
-local ecmascript_root_files = {
-	'package.json',
-	'tsconfig.json',
-}
-
-local eslint_root_files = {
-	'.eslintrc',
-	'.eslintrc.cjs',
-	'.eslintrc.js',
-	'.eslintrc.json',
-	'.eslintrc.yaml',
-	'.eslintrc.yml',
-}
-
 function M.start()
 	-- TODO: Conditionally use Deno if it's available
-	lsp.start({
-		name = 'tsserver',
-		cmd = { 'typescript-language-server', '--stdio' },
-		init_options = { hostInfo = 'neovim' },
-		root_dir = fs.dirname(fs.find(ecmascript_root_files, { upward = true })[1]),
-		single_file_support = true,
-		capabilities = require('lxs.lsp').make_client_capabilities(),
-		on_attach = function(_, buf)
-			keymap.set('n', 'goi', function()
-				organize_imports(buf)
-			end, { buffer = buf, desc = 'Organise imports' })
-		end,
-	})
-
-	local eslint_config_file = fs.find(eslint_root_files, { upward = true })[1]
-
-	if eslint_config_file then
-		lsp.start({
-			name = 'eslint',
-			cmd = { 'vscode-eslint-language-server', '--stdio' },
-			root_dir = fs.dirname(eslint_config_file),
-			init_options = {
-				provideFormatter = true,
-			},
+	if vim.fn.executable('tsserver') == 1 then
+		lspconfig.tsserver.setup({
+			name = 'tsserver',
+			init_options = { hostInfo = 'neovim' },
+			single_file_support = true,
 			capabilities = require('lxs.lsp').make_client_capabilities(),
-			settings = {
-				codeAction = {
-					disableRuleComment = {
-						enable = true,
-						location = 'separateLine',
-					},
-					showDocumentation = {
-						enable = true,
-					},
-				},
-				onIgnoredFiles = 'off',
-				problems = {
-					shortenToSingleLine = false,
-				},
-				validate = 'on',
-				format = true,
-				workingDirecotry = {
-					mode = 'auto',
-				},
-			},
-			on_new_config = function(config, new_root_dir)
-				config.settings.workspaceFolder = {
-					uri = new_root_dir,
-					name = vim.fs.basename(new_root_dir),
-				}
+			on_attach = function(_, buf)
+				keymap.set('n', 'goi', function()
+					organize_imports(buf)
+				end, { buffer = buf, desc = 'Organise imports' })
 			end,
+		})
+	end
+
+	if vim.fn.executable('eslint') == 1 then
+		lspconfig.eslint.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+		})
+	end
+
+	if vim.fn.executable('deno') == 1 then
+		lspconfig.denols.setup({
+			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
 		})
 	end
 
