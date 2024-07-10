@@ -5,6 +5,10 @@
 ---@brief ]]
 local lint = require('lint')
 local tsc = require('tsc')
+local diagnostic = vim.diagnostic
+local json = vim.json
+local fn = vim.fn
+local loop = vim.loop
 
 -- TypeScript Tooling ––––––––––––––––––––––––––––––––––––––––––––––––––––
 local M = {}
@@ -12,7 +16,7 @@ local M = {}
 function M.start()
 	tsc.setup({
 		auto_start_watch_mode = true,
-		use_diagnosticls = true,
+		use_diagnostics = true,
 		spinner = {
 			'◜',
 			'◠',
@@ -25,14 +29,14 @@ function M.start()
 
 	local tslint_parser = function(output, bufnr)
 		local json_results = string.match(output, '(.-)\n')
-		local results_ok, tslint_results = pcall(vim.json.decode, json_results)
+		local results_ok, tslint_results = pcall(json.decode, json_results)
 		if not results_ok then
 			return {}
 		end
 
 		local severity_map = {
-			['ERROR'] = vim.diagnostic.severity.ERROR,
-			['WARNING'] = vim.diagnostic.severity.WARN,
+			['ERROR'] = diagnostic.severity.ERROR,
+			['WARNING'] = diagnostic.severity.WARN,
 		}
 
 		local diagnostics = {}
@@ -55,13 +59,13 @@ function M.start()
 	end
 
 	lint.linters.tslint = function()
-		local tslint_config = vim.fn.findfile('tslint.json', vim.loop.cwd())
+		local tslint_config = fn.findfile('tslint.json', loop.cwd())
 
 		if not tslint_config then
 			return {}
 		end
 
-		local typescript_config = vim.fn.findfile('tsconfig.json', vim.loop.cwd())
+		local typescript_config = fn.findfile('tsconfig.json', loop.cwd())
 		local args = typescript_config
 				and {
 					'--format',
@@ -84,7 +88,7 @@ function M.start()
 	end
 
 	local ns = lint.get_namespace('tslint')
-	vim.diagnostic.config({
+	diagnostic.config({
 		virtual_text = {
 			suffix = ' 🚩 tslint',
 		},

@@ -7,6 +7,7 @@ local lspconfig = require('lspconfig')
 local lint = require('lint')
 
 local api = vim.api
+local fn = vim.fn
 local fs = vim.fs
 local keymap = vim.keymap
 local lsp = vim.lsp
@@ -25,7 +26,7 @@ local function organize_imports(buf)
 end
 
 function M.start()
-	if vim.fn.executable('tsserver') == 1 then
+	if fn.executable('tsserver') == 1 then
 		lspconfig.tsserver.setup({
 			name = 'tsserver',
 			capabilities = require('lxs.lsp').make_client_capabilities(),
@@ -37,13 +38,13 @@ function M.start()
 		})
 	end
 
-	if vim.fn.executable('eslint') == 1 then
+	if fn.executable('vscode-eslint-language-server') == 1 then
 		lspconfig.eslint.setup({
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 		})
 	end
 
-	if vim.fn.executable('deno') == 1 then
+	if fn.executable('deno') == 1 then
 		lspconfig.denols.setup({
 			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
 		})
