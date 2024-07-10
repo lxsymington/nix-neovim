@@ -56,7 +56,7 @@ cmp.setup({
 		comparators = {
 			-- Below is the default comparator list and order for nvim-cmp
 			cmp.config.compare.offset,
-			-- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+			cmp.config.compare.scopes,
 			cmp.config.compare.exact,
 			copilot_comparators.prioritize,
 			cmp.config.compare.score,
@@ -139,7 +139,7 @@ cmp.setup({
 	},
 })
 
-cmp.config.filetype('lua', {
+cmp.setup.filetype('lua', {
 	sources = cmp.config.sources({
 		{ name = 'lazydev', group_index = 0 },
 		{ name = 'nvim_lua' },
@@ -149,7 +149,7 @@ cmp.config.filetype('lua', {
 	}),
 })
 
-cmp.config.filetype('norg', {
+cmp.setup.filetype('norg', {
 	sources = cmp.config.sources({
 		{ name = 'neorg' },
 		{ name = 'copilot', max_item_count = 2 },
@@ -159,7 +159,7 @@ cmp.config.filetype('norg', {
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.config.cmdline({ '/', '?' }, {
+cmp.setup.cmdline({ '/', '?' }, {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
 		{ name = 'nvim_lsp_document_symbol' },
@@ -173,7 +173,7 @@ cmp.config.cmdline({ '/', '?' }, {
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.config.cmdline(':', {
+cmp.setup.cmdline(':', {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources({
 		{ name = 'cmdline' },

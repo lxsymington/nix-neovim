@@ -95,7 +95,7 @@
     };
 
     neotest-vim-test = {
-      url = "github:vim-test/vim-test";
+      url = "github:nvim-neotest/neotest-vim-test";
       flake = false;
     };
 

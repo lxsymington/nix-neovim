@@ -567,16 +567,16 @@
     "neotest-vim-test": {
       "flake": false,
       "locked": {
-        "lastModified": 1719340165,
-        "narHash": "sha256-cISrActoqXOW7Y7IKTekuz0SZwBnol9lzrxGZS2Ofy8=",
-        "owner": "vim-test",
-        "repo": "vim-test",
-        "rev": "34aab77f7a63f20a623df45684156915f6182a55",
+        "lastModified": 1681720687,
+        "narHash": "sha256-fFm5Yt2Sus5jLSapHUtLlDkBWPLLKfWsj2NSXD8NPYo=",
+        "owner": "nvim-neotest",
+        "repo": "neotest-vim-test",
+        "rev": "75c4228882ae4883b11bfce9b8383e637eb44192",
         "type": "github"
       },
       "original": {
-        "owner": "vim-test",
-        "repo": "vim-test",
+        "owner": "nvim-neotest",
+        "repo": "neotest-vim-test",
         "type": "github"
       }
     },
