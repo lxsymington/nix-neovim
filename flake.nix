@@ -40,6 +40,11 @@
       flake = false;
     };
 
+    luarocks-nvim = {
+      url = "github:vhyrro/luarocks.nvim";
+      flake = false;
+    };
+
     luvit-meta = {
       url = "github:Bilal2453/luvit-meta";
       flake = false;
@@ -131,6 +136,11 @@
 
     true-zen = {
       url = "github:Pocco81/true-zen.nvim";
+      flake = false;
+    };
+
+    tsc-nvim = {
+      url = "github:dmmulroy/tsc.nvim";
       flake = false;
     };
 

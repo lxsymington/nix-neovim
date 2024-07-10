@@ -348,6 +348,22 @@
         "type": "github"
       }
     },
+    "luarocks-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716914177,
+        "narHash": "sha256-siqpyQLpxWYfZKxoPrflnCg8V5oTQcIXKrezjCgZfMM=",
+        "owner": "vhyrro",
+        "repo": "luarocks.nvim",
+        "rev": "1db9093915eb16ba2473cfb8d343ace5ee04130a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vhyrro",
+        "repo": "luarocks.nvim",
+        "type": "github"
+      }
+    },
     "luvit-meta": {
       "flake": false,
       "locked": {
@@ -794,6 +810,7 @@
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "hurl-nvim": "hurl-nvim",
+        "luarocks-nvim": "luarocks-nvim",
         "luvit-meta": "luvit-meta",
         "mini-clue": "mini-clue",
         "mini-diff": "mini-diff",
@@ -815,6 +832,7 @@
         "statuscol": "statuscol",
         "telescope-frecency": "telescope-frecency",
         "true-zen": "true-zen",
+        "tsc-nvim": "tsc-nvim",
         "tslint": "tslint",
         "vtsls": "vtsls",
         "vtsls-nvim": "vtsls-nvim"
@@ -911,6 +929,22 @@
       "original": {
         "owner": "Pocco81",
         "repo": "true-zen.nvim",
+        "type": "github"
+      }
+    },
+    "tsc-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720376630,
+        "narHash": "sha256-D9OVqkfm2sV2fIjTO3h2GnPZNuvHmkeIaw2f1X/UbR8=",
+        "owner": "dmmulroy",
+        "repo": "tsc.nvim",
+        "rev": "548410076322307c80646857778aee050d903b8c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dmmulroy",
+        "repo": "tsc.nvim",
         "type": "github"
       }
     },

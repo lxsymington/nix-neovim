@@ -14,16 +14,16 @@ neotest.setup({
 	adapters = {
 		require('neotest-jest')({
 			jestCommand = 'npm test -- ',
+			jest_test_discovery = true,
 		}),
+		require('neotest-vim-test')({}),
 	},
 	consumers = {
 		overseer = require('neotest.consumers.overseer'),
 	},
 	diagnostic = {
 		enabled = true,
-	},
-	discovery = {
-		enabled = true,
+		severity = vim.diagnostic.severity.INFO,
 	},
 	icons = {
 		failed = '✘',
@@ -35,6 +35,7 @@ neotest.setup({
 	jump = {
 		enabled = true,
 	},
+	log_level = vim.log.levels.INFO,
 	output = {
 		enabled = true,
 		open_on_run = true,

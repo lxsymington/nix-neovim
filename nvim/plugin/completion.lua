@@ -139,7 +139,7 @@ cmp.setup({
 	},
 })
 
-cmp.setup.filetype('lua', {
+cmp.config.filetype('lua', {
 	sources = cmp.config.sources({
 		{ name = 'lazydev', group_index = 0 },
 		{ name = 'nvim_lua' },
@@ -149,7 +149,7 @@ cmp.setup.filetype('lua', {
 	}),
 })
 
-cmp.setup.filetype('norg', {
+cmp.config.filetype('norg', {
 	sources = cmp.config.sources({
 		{ name = 'neorg' },
 		{ name = 'copilot', max_item_count = 2 },
@@ -159,7 +159,7 @@ cmp.setup.filetype('norg', {
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
+cmp.config.cmdline({ '/', '?' }, {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
 		{ name = 'nvim_lsp_document_symbol' },
@@ -173,7 +173,7 @@ cmp.setup.cmdline({ '/', '?' }, {
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
+cmp.config.cmdline(':', {
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = cmp.config.sources({
 		{ name = 'cmdline' },
@@ -182,6 +182,8 @@ cmp.setup.cmdline(':', {
 		{ name = 'copilot', max_item_count = 2 },
 	}),
 })
+
+cmp.setup()
 
 vim.keymap.set(
 	{ 'i', 'c', 's' },

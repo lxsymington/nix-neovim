@@ -1,5 +1,8 @@
 local neorg = require('neorg')
 local neorg_callbacks = require('neorg.core.callbacks')
+local luarocks = require('luarocks-nvim')
+
+luarocks.setup()
 
 neorg.setup({
 	load = {

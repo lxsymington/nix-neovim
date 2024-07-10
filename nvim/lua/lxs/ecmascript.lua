@@ -25,12 +25,9 @@ local function organize_imports(buf)
 end
 
 function M.start()
-	-- TODO: Conditionally use Deno if it's available
 	if vim.fn.executable('tsserver') == 1 then
 		lspconfig.tsserver.setup({
 			name = 'tsserver',
-			init_options = { hostInfo = 'neovim' },
-			single_file_support = true,
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = function(_, buf)
 				keymap.set('n', 'goi', function()

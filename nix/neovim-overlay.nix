@@ -92,6 +92,8 @@ with final.pkgs.lib; let
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
+    (mkNvimPlugin inputs.tsc-nvim "tsc-nvim") # TypeScript support | https://github.com/dmmulroy/tsc.nvim/
+    # Rainbow brackets | 
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
@@ -115,6 +117,12 @@ with final.pkgs.lib; let
       optional = true;
     }
     # ^ Code running
+    # Debugging
+    # TODO: make these optional dependencies
+    nvim-dap
+    nvim-dap-ui
+    nvim-dap-virtual-text
+    # ^ Debugging
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
     vim-startuptime # Profile startup time | https://github.com/dstein64/vim-startuptime
@@ -130,6 +138,7 @@ with final.pkgs.lib; let
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
     (mkNvimPlugin inputs.luvit-meta "luvit-meta") # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
+    (mkNvimPlugin inputs.luarocks-nvim "luarocks-nvim") # LuaRocks integration | https://github.com/vhyrro/luarocks.nvim/
     lazydev-nvim
     # ^ Vim utilities
     # Miscellaneous
@@ -210,6 +219,7 @@ with final.pkgs.lib; let
     })
     vale
     vim-vint # Vim linter
+    vscode-js-debug
   ];
 in
 {
