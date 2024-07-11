@@ -69,6 +69,7 @@ neotest.setup({
 			run_marked = 'R',
 			short = 'O',
 			stop = 'u',
+			watch = 'W',
 		},
 		width = 80,
 	},
