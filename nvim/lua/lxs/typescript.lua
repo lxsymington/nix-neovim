@@ -4,7 +4,7 @@
 ---TypeScript related functions
 ---@brief ]]
 local lint = require('lint')
-local tsc = require('tsc')
+-- local tsc = require('tsc')
 local diagnostic = vim.diagnostic
 local json = vim.json
 local fn = vim.fn
@@ -14,18 +14,18 @@ local loop = vim.loop
 local M = {}
 
 function M.start()
-	tsc.setup({
-		auto_start_watch_mode = true,
-		use_diagnostics = true,
-		spinner = {
-			'◜',
-			'◠',
-			'◝',
-			'◞',
-			'◡',
-			'◟',
-		},
-	})
+	-- tsc.setup({
+	-- 	auto_start_watch_mode = true,
+	-- 	use_diagnostics = true,
+	-- 	spinner = {
+	-- 		'◜',
+	-- 		'◠',
+	-- 		'◝',
+	-- 		'◞',
+	-- 		'◡',
+	-- 		'◟',
+	-- 	},
+	-- })
 
 	local tslint_parser = function(output, bufnr)
 		local json_results = string.match(output, '(.-)\n')

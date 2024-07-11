@@ -1,4 +1,5 @@
 local trouble = require('trouble')
+local todo = require('todo-comments')
 local keymap = vim.keymap
 local ERROR = vim.diagnostic.severity.ERROR
 local WARN = vim.diagnostic.severity.WARN
@@ -119,3 +120,5 @@ end)
 keymap.set('n', '<Leader>xr', function()
 	trouble.toggle('lsp_references')
 end)
+
+todo.setup()

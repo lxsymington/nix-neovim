@@ -2,7 +2,12 @@ vim.cmd.packadd({
 	args = { 'overseer.nvim' },
 	bang = true,
 })
+vim.cmd.packadd({
+	args = { 'compiler.nvim' },
+	bang = true,
+})
 local overseer = require('overseer')
+local compiler = require('compiler')
 local keymap = vim.keymap
 local cmd = vim.cmd
 -- Overseer ————————————————————————————————————————————————————————————————————
@@ -33,3 +38,5 @@ keymap.set('n', '<Leader>Or', cmd.OverseerRun, {
 	desc = 'Overseer » Run',
 	silent = true,
 })
+
+compiler.setup({})

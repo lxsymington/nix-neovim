@@ -1,7 +1,11 @@
-local dressing = require('dressing')
+-- local dressing = require('dressing')
+--
+-- dressing.setup({
+-- 	input = {
+-- 		insert_only = false,
+-- 	},
+-- })
 
-dressing.setup({
-	input = {
-		insert_only = false,
-	},
-})
+local noice = require('noice')
+
+noice.setup({})

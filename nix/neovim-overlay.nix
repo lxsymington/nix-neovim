@@ -71,7 +71,8 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
-    dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
+    # dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
+    noice-nvim # UI Enhancements | https://github.com/folke/noice.nvim/
     (mkNvimPlugin inputs.mini-clue "mini-clue") # Mini clue | https://github.com/echanovski/mini.clue/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
@@ -92,7 +93,6 @@ with final.pkgs.lib; let
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
-    (mkNvimPlugin inputs.tsc-nvim "tsc-nvim") # TypeScript support | https://github.com/dmmulroy/tsc.nvim/
     # Rainbow brackets | 
     # ^ language support
     # navigation/editing enhancement plugins
@@ -114,6 +114,10 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.neotest-vim-test "neotest-vim-test") # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
     {
       plugin = overseer-nvim; # task management | https://github.com/stevearc/overseer.nvim/
+      optional = true;
+    }
+    {
+      plugin = compiler-nvim; # Compiler support | https://github.com/Zeioth/compiler.nvim ;
       optional = true;
     }
     # ^ Code running

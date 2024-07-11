@@ -26,11 +26,18 @@ neotest.setup({
 		severity = vim.diagnostic.severity.INFO,
 	},
 	icons = {
-		failed = '✘',
-		passed = '✔',
-		running = '➜',
-		skipped = '',
-		unknown = '',
+		running_animated = {
+			'▁',
+			'▃',
+			'▄',
+			'▅',
+			'▆',
+			'▇',
+			'▆',
+			'▅',
+			'▄',
+			'▃',
+		},
 	},
 	jump = {
 		enabled = true,
@@ -71,7 +78,7 @@ neotest.setup({
 			stop = 'u',
 			watch = 'W',
 		},
-		width = 80,
+		open = 'botright 80vsplit',
 	},
 })
 
