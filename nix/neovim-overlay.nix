@@ -71,7 +71,7 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
-    # dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
+    dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
     noice-nvim # UI Enhancements | https://github.com/folke/noice.nvim/
     (mkNvimPlugin inputs.mini-clue "mini-clue") # Mini clue | https://github.com/echanovski/mini.clue/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
