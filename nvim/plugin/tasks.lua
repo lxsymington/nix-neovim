@@ -20,6 +20,10 @@ overseer.setup({
 			'on_complete_dispose',
 		},
 	},
+	task_list = {
+		default_detail = 2,
+		separator = '▰▰▰▰▰▰▰▰▰▰',
+	},
 })
 
 keymap.set('n', '<Leader>Ot', cmd.OverseerToggle, {

@@ -40,7 +40,7 @@ conform.setup({
 			end
 		end
 
-		return { timeout_ms = 200, lsp_fallback = true }, on_format
+		return { timeout_ms = 100, lsp_format = 'fallback' }, on_format
 	end,
 	format_after_save = function(bufnr)
 		if vim.tbl_contains(ignore_filetypes, bo[bufnr].filetype) then
@@ -55,7 +55,7 @@ conform.setup({
 			return
 		end
 
-		return { lsp_fallback = true }
+		return { async = true, lsp_format = 'fallback' }
 	end,
 })
 
