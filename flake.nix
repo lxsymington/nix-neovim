@@ -92,6 +92,9 @@
 
     neorg-overlay = {
       url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     neotest-vim-test = {
