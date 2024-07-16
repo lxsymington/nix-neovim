@@ -8,8 +8,6 @@ local configs = require('nvim-treesitter.configs')
 
 ---@diagnostic disable-next-line: missing-fields
 configs.setup({
-	auto_install = false,
-	ensure_installed = 'none',
 	modules = {
 		'highlight',
 		'textobjects',
@@ -24,8 +22,6 @@ configs.setup({
 			end
 		end,
 	},
-	ignore_install = {},
-	sync_install = false,
 	textobjects = {
 		select = {
 			enable = true,
@@ -53,7 +49,7 @@ configs.setup({
 			},
 			selection_modes = {
 				['@parameter.outer'] = 'v', -- charwise
-				['@function.outer'] = 'V', -- linewise
+				['@function.outer'] = 'v', -- linewise
 				['@class.outer'] = 'V', -- blockwise
 			},
 		},

@@ -8,16 +8,12 @@
     };
     gen-luarc = {
       url = "github:mrcjkb/nix-gen-luarc-json";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neovim-nightly = {
       url = "github:nix-community/neovim-nightly-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     copilot = {
@@ -92,9 +88,7 @@
 
     neorg-overlay = {
       url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neotest-vim-test = {
@@ -216,7 +210,9 @@
         };
         # You can add this overlay to your NixOS configuration
         overlays = {
-          default = neovim-overlay { inherit system; };
+          default = pkgs.lib.composeManyExtensions [
+            (neovim-overlay { inherit system; })
+          ];
         };
       });
 }
