@@ -211,6 +211,8 @@
         # You can add this overlay to your NixOS configuration
         overlays = {
           default = pkgs.lib.composeManyExtensions [
+            gen-luarc.overlays.default
+            neorg-overlay.overlays.default
             (neovim-overlay { inherit system; })
           ];
         };
