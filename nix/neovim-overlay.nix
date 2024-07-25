@@ -72,8 +72,8 @@ with final.pkgs.lib; let
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
-    noice-nvim # UI Enhancements | https://github.com/folke/noice.nvim/
-    (mkNvimPlugin inputs.mini-clue "mini-clue") # Mini clue | https://github.com/echanovski/mini.clue/
+    (mkNvimPlugin inputs.noice "noice") # UI Enhancements | https://github.com/folke/noice.nvim/
+    (mkNvimPlugin inputs.which-key "which-key") # Keybindings helper | https://github.com/folke/which-key.nvim/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
@@ -100,7 +100,7 @@ with final.pkgs.lib; let
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
     (mkNvimPlugin inputs.mini-pairs "mini-pairs") # Auto pairs | https://github.com/echasnovski/mini.pairs/
-    (mkNvimPlugin inputs.mini-sessions "mini-sessions") # Session management | https://github.com/echasnovski/mini.sessions/
+    (mkNvimPlugin inputs.resession "resession") # Session management | https://github.com/stevearc/resession.nvim/
     (mkNvimPlugin inputs.mini-surround "mini-surround") # Surround operator | https://github.com/echasnovski/mini.surround/
     # ^ navigation/editing enhancement plugins
     # Code running
@@ -135,6 +135,7 @@ with final.pkgs.lib; let
     sqlite-lua
     plenary-nvim
     nvim-web-devicons
+    (mkNvimPlugin inputs.mini-icons "mini-icons") # Additional icons | https://github.com/echasnovski/mini.icons/
     vim-repeat
     (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
     nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/

@@ -1,12 +1,12 @@
 local dressing = require('dressing')
+local noice = require('noice')
+local icons = require('mini.icons')
 
 dressing.setup({
 	input = {
 		insert_only = false,
 	},
 })
-
-local noice = require('noice')
 
 noice.setup({
 	lsp = {
@@ -26,3 +26,5 @@ noice.setup({
 		lsp_doc_border = true, -- add a border to hover docs and signature help
 	},
 })
+
+icons.setup()

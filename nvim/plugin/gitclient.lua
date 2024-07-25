@@ -8,6 +8,7 @@ local neogit = require('neogit')
 neogit.setup({
 	disable_builtin_notifications = true,
 	disable_insert_on_commit = 'auto',
+	graph_style = 'unicode',
 	integrations = {
 		diffview = true,
 		telescope = true,

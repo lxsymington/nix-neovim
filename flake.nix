@@ -46,11 +46,6 @@
       flake = false;
     };
 
-    mini-clue = {
-      url = "github:echasnovski/mini.clue";
-      flake = false;
-    };
-
     mini-diff = {
       url = "github:echasnovski/mini.diff";
       flake = false;
@@ -61,13 +56,13 @@
       flake = false;
     };
 
-    mini-pairs = {
-      url = "github:echasnovski/mini.pairs";
+    mini-icons = {
+      url = "github:echasnovski/mini.icons";
       flake = false;
     };
 
-    mini-sessions = {
-      url = "github:echasnovski/mini.sessions";
+    mini-pairs = {
+      url = "github:echasnovski/mini.pairs";
       flake = false;
     };
 
@@ -96,6 +91,11 @@
       flake = false;
     };
 
+    noice = {
+      url = "github:folke/noice.nvim";
+      flake = false;
+    };
+
     nougat = {
       url = "github:MunifTanjim/nougat.nvim";
       flake = false;
@@ -113,6 +113,11 @@
 
     reactive = {
       url = "github:rasulomaroff/reactive.nvim";
+      flake = false;
+    };
+
+    resession = {
+      url = "github:stevearc/resession.nvim";
       flake = false;
     };
 
@@ -153,6 +158,11 @@
 
     vtsls-nvim = {
       url = "github:yioneko/nvim-vtsls";
+      flake = false;
+    };
+
+    which-key = {
+      url = "github:folke/which-key.nvim";
       flake = false;
     };
   };
