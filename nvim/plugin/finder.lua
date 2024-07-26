@@ -123,6 +123,7 @@ end
 keymap.set('n', '<Leader>/f', builtin.find_files, { desc = '[telescope] find files' })
 keymap.set('n', '<Leader>/O', builtin.oldfiles, { desc = '[telescope] old files' })
 keymap.set('n', '<Leader>/g', builtin.live_grep, { desc = '[telescope] live grep' })
+keymap.set('n', '<Leader>/j', builtin.jumplist, { desc = '[telescope] jumplist' })
 keymap.set('n', '<Leader>/d', definitions, { desc = '[telescope] definitions' })
 keymap.set('n', '<Leader>/r', references, { desc = '[telescope] references' })
 keymap.set('n', '<Leader>/G', fuzzy_grep, { desc = '[telescope] fuzzy grep' })
@@ -138,8 +139,10 @@ keymap.set(
 	{ desc = '[telescope] lsp dynamic workspace symbols' }
 )
 keymap.set('n', '<Leader>/;', symbols, { desc = '[telescope] find symbols' })
+keymap.set('n', '<Leader>/.', builtin.resume, { desc = '[telescope] resume' })
 keymap.set('n', '<Leader>/vm', builtin.marks, { desc = '[telescope] find marks' })
 keymap.set('n', '<Leader>/vh', builtin.help_tags, { desc = '[telescope] find help tags' })
+keymap.set('n', '<Leader>/vk', builtin.keymaps, { desc = '[telescope] find keymaps' })
 keymap.set('n', '<Leader><Leader>', frecent, { desc = '[telescope] frecent files' })
 
 local layout_config = {

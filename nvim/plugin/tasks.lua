@@ -37,19 +37,23 @@ overseer.setup({
 	},
 })
 
-keymap.set('n', '<Leader>Ot', cmd.OverseerToggle, {
+keymap.set('n', '<Leader>ot', cmd.OverseerToggle, {
 	desc = 'Overseer » Toggle',
 	silent = true,
 })
-keymap.set('n', '<Leader>Ob', cmd.OverseerBuild, {
+keymap.set('n', '<Leader>ob', cmd.OverseerBuild, {
 	desc = 'Overseer » Builder',
 	silent = true,
 })
-keymap.set('n', '<Leader>Oa', cmd.OverseerTaskAction, {
+keymap.set('n', '<Leader>oa', cmd.OverseerTaskAction, {
 	desc = 'Overseer » Run Action',
 	silent = true,
 })
-keymap.set('n', '<Leader>Or', cmd.OverseerRun, {
+keymap.set('n', '<Leader>oq', cmd.OverseerQuickAction, {
+	desc = 'Overseer » Quick Action',
+	silent = true,
+})
+keymap.set('n', '<Leader>or', cmd.OverseerRun, {
 	desc = 'Overseer » Run',
 	silent = true,
 })
