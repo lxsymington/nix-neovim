@@ -36,11 +36,6 @@
       flake = false;
     };
 
-    luarocks-nvim = {
-      url = "github:vhyrro/luarocks.nvim";
-      flake = false;
-    };
-
     luvit-meta = {
       url = "github:Bilal2453/luvit-meta";
       flake = false;

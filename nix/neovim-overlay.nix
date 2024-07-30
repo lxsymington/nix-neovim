@@ -143,7 +143,6 @@ with final.pkgs.lib; let
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
     (mkNvimPlugin inputs.luvit-meta "luvit-meta") # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
-    (mkNvimPlugin inputs.luarocks-nvim "luarocks-nvim") # LuaRocks integration | https://github.com/vhyrro/luarocks.nvim/
     lazydev-nvim
     # ^ Vim utilities
     # Miscellaneous

@@ -1,8 +1,7 @@
 local neorg = require('neorg')
 local neorg_callbacks = require('neorg.core.callbacks')
-local luarocks = require('luarocks-nvim')
 
-luarocks.setup()
+local keymap = vim.keymap
 
 neorg.setup({
 	load = {
@@ -19,6 +18,12 @@ neorg.setup({
 					notes = '~/Development/Notes',
 				},
 				default_workspace = 'notes',
+			},
+		},
+		['core.keybinds'] = {
+			config = {
+				default_keybinds = true,
+				preset = 'neorg',
 			},
 		},
 		['core.integrations.telescope'] = {
@@ -57,3 +62,5 @@ neorg_callbacks.on_event('core.keybinds.events.enable_keybinds', function(_, key
 		noremap = true,
 	})
 end)
+
+keymap.set('n', '<leader>ni', '<Cmd>Neorg index<CR>')

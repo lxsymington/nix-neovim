@@ -348,22 +348,6 @@
         "type": "github"
       }
     },
-    "luarocks-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1716914177,
-        "narHash": "sha256-siqpyQLpxWYfZKxoPrflnCg8V5oTQcIXKrezjCgZfMM=",
-        "owner": "vhyrro",
-        "repo": "luarocks.nvim",
-        "rev": "1db9093915eb16ba2473cfb8d343ace5ee04130a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vhyrro",
-        "repo": "luarocks.nvim",
-        "type": "github"
-      }
-    },
     "luvit-meta": {
       "flake": false,
       "locked": {
@@ -812,7 +796,6 @@
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "hurl-nvim": "hurl-nvim",
-        "luarocks-nvim": "luarocks-nvim",
         "luvit-meta": "luvit-meta",
         "mini-diff": "mini-diff",
         "mini-git": "mini-git",
