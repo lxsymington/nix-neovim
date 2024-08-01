@@ -53,9 +53,8 @@ with final.pkgs.lib; let
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
     (mkNvimPlugin inputs.neogit "neogit") # Git Client | https://github.com/TimUntersberger/neogit/
-    gitsigns-nvim # https://github.com/lewis6991/gitsigns.nvim/
+    (mkNvimPlugin inputs.gitsigns "gitsigns") # Diff Editor Integration | https://github.com/lewis6991/gitsigns.nvim/
     (mkNvimPlugin inputs.mini-git "mini-git") # Git Editor Integration | https://github.com/echasnovski/mini-git/
-    (mkNvimPlugin inputs.mini-diff "mini-diff") # Diff Editor Integration | https://diffhub.com/echasnovski/mini.diff/
     octo-nvim # GitHub Integration | https://github.com/pwntester/octo.nvim/
     # ^ git integration plugins
     # telescope and extensions

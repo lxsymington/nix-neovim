@@ -19,15 +19,6 @@ require('Comment').setup({
 	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
 })
 
--- Reactive ————————————————————————————————————————————————————————————————————
-require('reactive').setup({
-	builtin = {
-		cursorline = true,
-		cursor = true,
-		modemsg = true,
-	},
-})
-
 -- Enable EditorConfig
 g.editorconfig = true
 

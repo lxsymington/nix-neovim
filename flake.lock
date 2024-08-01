@@ -310,6 +310,22 @@
         "type": "github"
       }
     },
+    "gitsigns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721914876,
+        "narHash": "sha256-nHUQoYo/4J2rh494UxYz3hqrrgPSxX4IgManKxCsBR8=",
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "rev": "f074844b60f9e151970fbcdbeb8a2cd52b6ef25a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "type": "github"
+      }
+    },
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -361,22 +377,6 @@
       "original": {
         "owner": "Bilal2453",
         "repo": "luvit-meta",
-        "type": "github"
-      }
-    },
-    "mini-diff": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1720699401,
-        "narHash": "sha256-WPP8hfojxt0i2j9nCd4l16pEhz4s+U2xZmByPNggDyc=",
-        "owner": "echasnovski",
-        "repo": "mini.diff",
-        "rev": "d58f9cb13400aedc5b5a0ef70fcdf31871ba2ee6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "echasnovski",
-        "repo": "mini.diff",
         "type": "github"
       }
     },
@@ -795,9 +795,9 @@
         "dbee-binary": "dbee-binary",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
+        "gitsigns": "gitsigns",
         "hurl-nvim": "hurl-nvim",
         "luvit-meta": "luvit-meta",
-        "mini-diff": "mini-diff",
         "mini-git": "mini-git",
         "mini-icons": "mini-icons",
         "mini-pairs": "mini-pairs",

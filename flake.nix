@@ -31,6 +31,11 @@
       flake = false;
     };
 
+    gitsigns = {
+      url = "github:lewis6991/gitsigns.nvim";
+      flake = false;
+    };
+
     hurl-nvim = {
       url = "github:jellydn/hurl.nvim";
       flake = false;
@@ -38,11 +43,6 @@
 
     luvit-meta = {
       url = "github:Bilal2453/luvit-meta";
-      flake = false;
-    };
-
-    mini-diff = {
-      url = "github:echasnovski/mini.diff";
       flake = false;
     };
 

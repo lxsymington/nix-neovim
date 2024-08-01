@@ -3,8 +3,9 @@ local wk = require('which-key')
 wk.setup({
 	preset = 'modern',
 	spec = {
-		{ '<leader>o', group = 'Overseer', mode = 'n', desc = 'Command Runner' },
-		{ '<leader>D', group = 'DAP', mode = 'n', desc = 'Debugger' },
+		{ '<leader>o', group = 'Command Runner', mode = 'n', desc = 'Command Runner (Overseer)' },
+		{ '<leader>D', group = 'Debugger', mode = 'n', desc = 'Debugger (DAP)' },
+		{ '<leader>G', group = 'Git Host', mode = 'n', desc = 'Git Host (GitHub - Octo)' },
 		{ '<leader>g', group = 'Git', mode = 'n', desc = 'Git Client' },
 		{ '<leader>h', group = 'Height', mode = 'n', desc = 'Window Height Operations' },
 		{ '<leader>n', group = 'Notes', mode = 'n', desc = 'Note Taking' },

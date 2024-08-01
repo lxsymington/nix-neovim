@@ -1,13 +1,16 @@
 local dressing = require('dressing')
 local noice = require('noice')
 local icons = require('mini.icons')
+local reactive = require('reactive')
 
+-- Dressing ——————————————————————————————————————————————————————————————————
 dressing.setup({
 	input = {
 		insert_only = false,
 	},
 })
 
+-- Noice —————————————————————————————————————————————————————————————————————
 noice.setup({
 	lsp = {
 		-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -27,4 +30,14 @@ noice.setup({
 	},
 })
 
+-- Icons —————————————————————————————————————————————————————————————————————
 icons.setup()
+
+-- Reactive ————————————————————————————————————————————————————————————————————
+reactive.setup({
+	builtin = {
+		cursorline = true,
+		cursor = true,
+		modemsg = true,
+	},
+})

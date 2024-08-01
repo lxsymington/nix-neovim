@@ -1,6 +1,6 @@
 local rose_pine = require('rose-pine')
+
 local cmd = vim.cmd
-local g = vim.g
 local opt = vim.opt
 
 -- Theme –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -13,9 +13,8 @@ end
 opt.background = 'dark'
 
 -- Sets the colorscheme to be Crepuscular
--- g.colors_name = 'crepuscular'
 -- cmd.colorscheme('crepuscular')
-g.colors_name = 'rose-pine'
+
 rose_pine.setup({
 	variant = 'auto',
 	dark_variant = 'main',
