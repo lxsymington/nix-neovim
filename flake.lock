@@ -380,6 +380,22 @@
         "type": "github"
       }
     },
+    "markview": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722870509,
+        "narHash": "sha256-UVkNZku50DfzYRwzQbaztDOy9EnDGH41pJrZNrPb0qo=",
+        "owner": "OXY2DEV",
+        "repo": "markview.nvim",
+        "rev": "9e5275f3b7507da51deab9bc985e9154d0b6af28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "OXY2DEV",
+        "repo": "markview.nvim",
+        "type": "github"
+      }
+    },
     "mini-git": {
       "flake": false,
       "locked": {
@@ -393,6 +409,22 @@
       "original": {
         "owner": "echasnovski",
         "repo": "mini-git",
+        "type": "github"
+      }
+    },
+    "mini-hipatterns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721725596,
+        "narHash": "sha256-2ItJzAf3noQDSuj2Di7SLffVtK6iePe6i3mMYjzXGi0=",
+        "owner": "echasnovski",
+        "repo": "mini.hipatterns",
+        "rev": "1811b0661721285fc83494d2e687d538fb3ddac8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.hipatterns",
         "type": "github"
       }
     },
@@ -798,7 +830,9 @@
         "gitsigns": "gitsigns",
         "hurl-nvim": "hurl-nvim",
         "luvit-meta": "luvit-meta",
+        "markview": "markview",
         "mini-git": "mini-git",
+        "mini-hipatterns": "mini-hipatterns",
         "mini-icons": "mini-icons",
         "mini-pairs": "mini-pairs",
         "mini-starter": "mini-starter",

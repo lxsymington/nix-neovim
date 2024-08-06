@@ -83,6 +83,8 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.true-zen "true-zen") # Zen mode | https://github.com/Pocco81/true-zen.nvim/
     (mkNvimPlugin inputs.mini-starter "mini-starter") # Dashboard | https://github.com/echasnovski/mini.starter/
     (mkNvimPlugin inputs.nougat "nougat") # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
+    (mkNvimPlugin inputs.markview "markview") # Mark view | https://github.com/OXY2DEV/markview.nvim/
+    (mkNvimPlugin inputs.mini-hipatterns "mini-hipatterns") # highlighting | https://github.com/echasnovski/mini.hipatterns/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/

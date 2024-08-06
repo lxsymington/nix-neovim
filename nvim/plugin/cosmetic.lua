@@ -2,6 +2,7 @@ local dressing = require('dressing')
 local noice = require('noice')
 local icons = require('mini.icons')
 local reactive = require('reactive')
+local hipatterns = require('mini.hipatterns')
 
 -- Dressing ——————————————————————————————————————————————————————————————————
 dressing.setup({
@@ -39,5 +40,16 @@ reactive.setup({
 		cursorline = true,
 		cursor = true,
 		modemsg = true,
+	},
+})
+
+-- Highlight Patterns ——————————————————————————————————————————————————————————
+hipatterns.setup({
+	highlighters = {
+		-- Highlight hex color strings (`#rrggbb`) using that colour
+		hex_color = hipatterns.gen_highlighter.hex_color({
+			style = 'inline',
+			inline_text = '⬤  ',
+		}),
 	},
 })

@@ -17,10 +17,6 @@ neotest.setup({
 			jestConfigFile = 'integration/jest.config.ts',
 			jest_test_discovery = true,
 		}),
-		require('neotest-jest')({
-			jestCommand = 'npm run test:local --if-present -- ',
-			jest_test_discovery = true,
-		}),
 		require('neotest-vim-test')({}),
 	},
 	consumers = {

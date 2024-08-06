@@ -46,8 +46,18 @@
       flake = false;
     };
 
+    markview = {
+      url = "github:OXY2DEV/markview.nvim";
+      flake = false;
+    };
+
     mini-git = {
       url = "github:echasnovski/mini-git";
+      flake = false;
+    };
+
+    mini-hipatterns = {
+      url = "github:echasnovski/mini.hipatterns";
       flake = false;
     };
 
