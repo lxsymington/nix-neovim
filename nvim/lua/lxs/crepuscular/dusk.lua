@@ -449,8 +449,8 @@ local theme = lush(function(injected_functions)
 
 		TelescopeBorder({ NonText }),
 		TelescopeMatching({ fg = dim.orange, gui = Bold.gui }),
-		TelescopeNormal({ 'NormalFloat' }),
-		TelescopePromptNormal({ 'TelescopeNormal' }),
+		TelescopeNormal({ NormalFloat }),
+		TelescopePromptNormal({ TelescopeNormal }),
 		TelescopePromptPrefix({ fg = dim.grey.mix(Normal.bg, 40) }),
 		TelescopeSelection({ fg = dim.blue, bg = Normal.bg.mix(dim.blue, 25) }),
 		TelescopeSelectionCaret({ fg = bright.red, bg = Normal.bg.mix(dim.red, 25) }),
