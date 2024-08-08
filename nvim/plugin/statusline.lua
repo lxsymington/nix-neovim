@@ -170,36 +170,32 @@ local macros = Item({
 	end,
 })
 
-local ruler = (function()
-	local scroll_hl = {
-		fg = color.fg,
-	}
-
-	local item = Item({
-		content = {
-			Item({
-				sep_left = sep.none(),
-				content = core.group({
-					core.code('l'),
-					':',
-					core.code('c'),
-				}, { align = 'left', min_width = 8 }),
-				suffix = ' ',
-			}),
-			Item({
-				hl = function(_, ctx)
-					return scroll_hl[ctx.is_focused]
-				end,
-				prefix = ' ',
-				content = core.code('P'),
-				sep_right = sep.none(),
-			}),
-		},
-		sep_right = sep.space(true),
-	})
-
-	return item
-end)()
+local ruler = Item({
+	content = {
+		Item({
+			hl = {
+				fg = color.blue,
+			},
+			content = core.group({
+				core.code('l'),
+				':',
+				core.code('c'),
+			}, { align = 'left', min_width = 8 }),
+			sep_left = sep.none(),
+			sep_right = sep.none(),
+		}),
+		Item({
+			hl = {
+				fg = color.green,
+			},
+			content = core.code('P'),
+			sep_left = sep.none(),
+			sep_right = sep.none(),
+		}),
+	},
+	sep_left = sep.none(),
+	sep_right = sep.none(),
+})
 
 local copilot = Item({
 	ctx = { value = nil },

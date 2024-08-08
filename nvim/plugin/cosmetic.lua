@@ -1,7 +1,6 @@
 local dressing = require('dressing')
 local noice = require('noice')
 local icons = require('mini.icons')
-local reactive = require('reactive')
 local hipatterns = require('mini.hipatterns')
 
 -- Dressing ——————————————————————————————————————————————————————————————————
@@ -33,15 +32,6 @@ noice.setup({
 
 -- Icons —————————————————————————————————————————————————————————————————————
 icons.setup()
-
--- Reactive ————————————————————————————————————————————————————————————————————
-reactive.setup({
-	builtin = {
-		cursorline = true,
-		cursor = true,
-		modemsg = true,
-	},
-})
 
 -- Highlight Patterns ——————————————————————————————————————————————————————————
 hipatterns.setup({

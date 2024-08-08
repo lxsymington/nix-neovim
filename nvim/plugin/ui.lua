@@ -41,6 +41,9 @@ opt.wildoptions = 'pum'
 -- Highlights the current line
 opt.cursorline = true
 
+-- Set the amount of time before a redraw is abandoned
+opt.redrawtime = 200
+
 -- Redraws only when needed
 opt.lazyredraw = true
 

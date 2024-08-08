@@ -11,6 +11,11 @@ g.did_load_plugins_plugin = true
 -- Indent Blankline ————————————————————————————————————————————————————————————
 require('ibl').setup({
 	indent = { char = '┊' },
+	scope = {
+		char = '│',
+		highlight = { 'Function', 'Label' },
+		show_exact_scope = true,
+	},
 	whitespace = { highlight = { 'Whitespace', 'NonText' } },
 })
 

@@ -5,27 +5,32 @@ local hsl = lush.hsl
 
 -- Colours
 local colours = {
-	black = hsl(275, 20, 10),
-	blue = hsl(215, 75, 45),
-	cyan = hsl(175, 45, 60),
-	green = hsl(130, 30, 30),
-	grey = hsl(315, 5, 30),
-	orange = hsl(20, 75, 50),
-	purple = hsl(260, 75, 45),
-	red = hsl(350, 60, 40),
-	white = hsl(30, 60, 80),
-	yellow = hsl(40, 100, 45),
+	-- Original
+	--[[
+    black = hsl(275, 20, 10),
+    blue = hsl(215, 75, 45),
+    cyan = hsl(175, 45, 60),
+    green = hsl(130, 30, 30),
+    grey = hsl(315, 5, 30),
+    orange = hsl(20, 75, 50),
+    purple = hsl(260, 75, 45),
+    red = hsl(350, 60, 40),
+    white = hsl(30, 60, 80),
+    yellow = hsl(40, 100, 45),
+	]]
 
-	lightBlack = hsl(275, 25, 15),
-	lightBlue = hsl(215, 75, 60),
-	lightCyan = hsl(175, 60, 90),
-	lightGreen = hsl(85, 30, 45),
-	lightGrey = hsl(310, 10, 60),
-	lightOrange = hsl(25, 100, 67),
-	lightPurple = hsl(260, 75, 75),
-	lightRed = hsl(0, 90, 80),
-	lightWhite = hsl(45, 70, 95),
-	lightYellow = hsl(40, 100, 60),
+	--[[
+    lightBlack = hsl(275, 25, 15),
+    lightBlue = hsl(215, 75, 60),
+    lightCyan = hsl(175, 60, 90),
+    lightGreen = hsl(85, 30, 45),
+    lightGrey = hsl(310, 10, 60),
+    lightOrange = hsl(25, 100, 67),
+    lightPurple = hsl(260, 75, 75),
+    lightRed = hsl(0, 90, 80),
+    lightWhite = hsl(45, 70, 95),
+    lightYellow = hsl(40, 100, 60),
+  ]]
 
 	-- Dim Palette
 	-- https://accessiblepalette.com/?lightness=95,74,67,60,53,46,39,32,25,5&af6a75=1,0&d6855c=1,0&e6bf99=1,0&825e17=1,0&8aa88f=1,0&50958f=1,0&506d95=1,0&412a6f=1,0&766f74=1,15
@@ -118,5 +123,25 @@ local colours = {
 		},
 	},
 }
+
+local bright = colours[vim.opt.background:get()].bright
+local standard = colours[vim.opt.background:get()].standard
+
+vim.g.terminal_color_0 = standard.black.hex -- black
+vim.g.terminal_color_8 = standard.grey.hex -- bright black
+vim.g.terminal_color_1 = standard.red.hex -- red
+vim.g.terminal_color_9 = bright.red.hex -- bright red
+vim.g.terminal_color_2 = standard.green.hex -- green
+vim.g.terminal_color_10 = bright.green.hex -- bright green
+vim.g.terminal_color_3 = standard.yellow.hex -- yellow
+vim.g.terminal_color_11 = bright.yellow.hex -- bright yellow
+vim.g.terminal_color_4 = standard.blue.hex -- blue
+vim.g.terminal_color_12 = bright.blue.hex -- bright blue
+vim.g.terminal_color_5 = standard.purple.hex -- magenta
+vim.g.terminal_color_13 = bright.purple.hex -- bright magenta
+vim.g.terminal_color_6 = standard.cyan.hex -- cyan
+vim.g.terminal_color_14 = bright.cyan.hex -- bright cyan
+vim.g.terminal_color_7 = standard.white.hex -- white
+vim.g.terminal_color_15 = bright.white.hex -- bright white
 
 return colours
