@@ -24,17 +24,6 @@ api.nvim_create_autocmd('TermOpen', {
 	end,
 })
 
--- LSP
-local keymap = vim.keymap
-
---- Don't create a comment string when hitting <Enter> on a comment line
-vim.api.nvim_create_autocmd('BufEnter', {
-	group = vim.api.nvim_create_augroup('DisableNewLineAutoCommentString', {}),
-	callback = function()
-		vim.opt.formatoptions = vim.opt.formatoptions - { 'c', 'r', 'o' }
-	end,
-})
-
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
 	callback = require('lxs.lsp').attach,
@@ -74,7 +63,7 @@ api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
 		vim.highlight.on_yank({
 			higroup = 'IncSearch',
-			timeout = 150,
+			timeout = 330,
 		})
 	end,
 })

@@ -14,7 +14,6 @@ neotest.setup({
 	adapters = {
 		require('neotest-jest')({
 			jestCommand = 'npm run test:integration --if-present -- ',
-			jestConfigFile = 'integration/jest.config.ts',
 			jest_test_discovery = true,
 		}),
 		require('neotest-vim-test')({}),
@@ -133,6 +132,13 @@ keymap.set('n', '<Leader>ta', neotest.run.attach, {
 })
 
 keymap.set('n', ']t', function()
+	require('neotest').jump.next()
+end, {
+	desc = 'Next » Test',
+	silent = true,
+})
+
+keymap.set('n', ']T', function()
 	require('neotest').jump.next({ status = 'failed' })
 end, {
 	desc = 'Next » Failing Test',
@@ -140,6 +146,13 @@ end, {
 })
 
 keymap.set('n', '[t', function()
+	require('neotest').jump.prev()
+end, {
+	desc = 'Previous » Test',
+	silent = true,
+})
+
+keymap.set('n', '[T', function()
 	require('neotest').jump.prev({ status = 'failed' })
 end, {
 	desc = 'Previous » Failing Test',

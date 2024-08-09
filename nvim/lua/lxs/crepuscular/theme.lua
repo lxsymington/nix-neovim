@@ -5,7 +5,7 @@ local function generate_theme(bright, dim, standard)
 	local theme = lush(function(injected_functions)
 		local sym = injected_functions.sym
 
-		-- selene: allow(undefined_variable)
+		-- selene: allow(mixed_table, undefined_variable)
 		return {
 			Altfont({ gui = 'nocombine,altfont' }),
 			Bold({ gui = 'nocombine,bold' }),
@@ -283,11 +283,12 @@ local function generate_theme(bright, dim, standard)
 
 			-- See :h lsp-highlight, some groups may not be listed, submit a PR fix to lush-template!
 
-			LspReferenceText({ fg = standard.purple }), -- Used for highlighting "text" references
-			LspReferenceRead({ fg = dim.purple }), -- Used for highlighting "read" references
-			LspReferenceWrite({ fg = standard.blue }), -- Used for highlighting "write" references
 			LspCodeLens({ fg = dim.blue }), -- Used to color the virtual text of the codelens. See |nvim_buf_set_extmark()|.
 			LspCodeLensSeparator({ fg = bright.grey }), -- Used to color the seperator between two or more code lens.
+			LspInlayHint({ fg = dim.yellow.mix(Normal.bg, 67), gui = ItalicUnderdot.gui }), -- Used for virtual text "hints"
+			LspReferenceRead({ fg = dim.purple }), -- Used for highlighting "read" references
+			LspReferenceText({ fg = standard.purple }), -- Used for highlighting "text" references
+			LspReferenceWrite({ fg = standard.blue }), -- Used for highlighting "write" references
 			LspSignatureActiveParameter({ fg = standard.cyan, gui = Underdouble.gui }), -- Used to highlight the active parameter in the signature help. See |vim.lsp.handlers.signature_help()|.
 
 			-- See :h diagnostic-highlights, some groups may not be listed, submit a PR fix to lush-template!
@@ -335,51 +336,51 @@ local function generate_theme(bright, dim, standard)
 			--
 			-- For more information see https://github.com/rktjmp/lush.nvim/issues/109
 
-			sym('@text.literal')({ Comment }), -- Comment
-			sym('@text.reference')({ Identifier }), -- Identifier
-			sym('@text.title')({ Title }), -- Title
-			sym('@text.uri')({ Underlined, sp = bright.blue }), -- Underlined
-			sym('@text.underline')({ Underlined }), -- Underlined
-			sym('@text.todo')({ Todo }), -- Todo
+			sym('@boolean')({ Boolean }), -- Boolean
+			sym('@character')({ Character }), -- Character
+			sym('@character.special')({ SpecialChar }), -- SpecialChar
 			sym('@comment')({ Comment }), -- Comment
-			sym('@punctuation')({ Delimiter }), -- Delimiter
+			sym('@conditional')({ Conditional }), -- Conditional
 			sym('@constant')({ Constant }), -- Constant
 			sym('@constant.builtin')({ Special }), -- Special
 			sym('@constant.macro')({ Define }), -- Define
+			sym('@constructor')({ Special }), -- Special
+			sym('@debug')({ Debug }), -- Debug
 			sym('@define')({ Define }), -- Define
-			sym('@macro')({ Macro }), -- Macro
-			sym('@string')({ String }), -- String
-			sym('@string.escape')({ SpecialChar }), -- SpecialChar
-			sym('@string.special')({ SpecialChar }), -- SpecialChar
-			sym('@character')({ Character }), -- Character
-			sym('@character.special')({ SpecialChar }), -- SpecialChar
-			sym('@number')({ Number }), -- Number
-			sym('@boolean')({ Boolean }), -- Boolean
+			sym('@exception')({ Exception }), -- Exception
+			sym('@field')({ Identifier, fg = dim.purple }), -- Identifier
 			sym('@float')({ Float }), -- Float
 			sym('@function')({ Function }), -- Function
 			sym('@function.builtin')({ Special }), -- Special
 			sym('@function.macro')({ Macro }), -- Macro
-			sym('@parameter')({ Identifier }), -- Identifier
-			sym('@method')({ Function }), -- Function
-			sym('@field')({ Identifier, fg = dim.purple }), -- Identifier
-			sym('@property')({ Identifier, fg = dim.purple }), -- Identifier
-			sym('@constructor')({ Special }), -- Special
-			sym('@conditional')({ Conditional }), -- Conditional
-			sym('@repeat')({ Repeat }), -- Repeat
-			sym('@label')({ Label }), -- Label
-			sym('@operator')({ Operator }), -- Operator
+			sym('@include')({ Include }), -- Include
 			sym('@keyword')({ Keyword }), -- Keyword
-			sym('@exception')({ Exception }), -- Exception
-			sym('@variable')({ Identifier }), -- Identifier
+			sym('@label')({ Label }), -- Label
+			sym('@macro')({ Macro }), -- Macro
+			sym('@method')({ Function }), -- Function
+			sym('@namespace')({ Identifier }), -- Identifier
+			sym('@number')({ Number }), -- Number
+			sym('@operator')({ Operator }), -- Operator
+			sym('@parameter')({ Identifier }), -- Identifier
+			sym('@preproc')({ PreProc }), -- PreProc
+			sym('@property')({ Identifier, fg = dim.purple }), -- Identifier
+			sym('@punctuation')({ Delimiter }), -- Delimiter
+			sym('@repeat')({ Repeat }), -- Repeat
+			sym('@storageclass')({ StorageClass }), -- StorageClass
+			sym('@string')({ String }), -- String
+			sym('@string.escape')({ SpecialChar }), -- SpecialChar
+			sym('@string.special')({ SpecialChar }), -- SpecialChar
+			sym('@structure')({ Structure }), -- Structure
+			sym('@tag')({ Tag }), -- Tag
+			sym('@text.literal')({ Comment }), -- Comment
+			sym('@text.reference')({ Identifier }), -- Identifier
+			sym('@text.title')({ Title }), -- Title
+			sym('@text.todo')({ Todo }), -- Todo
+			sym('@text.underline')({ Underlined }), -- Underlined
+			sym('@text.uri')({ Underlined, sp = bright.blue }), -- Underlined
 			sym('@type')({ Type }), -- Type
 			sym('@type.definition')({ Typedef }), -- Typedef
-			sym('@storageclass')({ StorageClass }), -- StorageClass
-			sym('@structure')({ Structure }), -- Structure
-			sym('@namespace')({ Identifier }), -- Identifier
-			sym('@include')({ Include }), -- Include
-			sym('@preproc')({ PreProc }), -- PreProc
-			sym('@debug')({ Debug }), -- Debug
-			sym('@tag')({ Tag }), -- Tag
+			sym('@variable')({ Identifier }), -- Identifier
 
 			GitSignsAdd({ SignColumn, fg = bright.green, gui = NoCombine.gui }),
 			GitSignsChange({ SignColumn, fg = bright.blue, gui = NoCombine.gui }),

@@ -121,7 +121,7 @@ cmp.setup({
 		return vim.bo[0].buftype ~= 'prompt'
 	end,
 	experimental = {
-		native_menu = false,
+		native_menu = true,
 		ghost_text = true,
 	},
 	view = {

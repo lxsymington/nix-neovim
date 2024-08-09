@@ -52,7 +52,7 @@ opt.listchars = {
 	conceal = '⊹',
 }
 
--- Sets ambiguous width characters to be double width
+-- Sets ambiguous width characters to be single width
 opt.ambiwidth = 'single'
 
 -- Hide the default mode text (e.g. -- INSERT -- below the statusline)
