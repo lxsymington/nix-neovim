@@ -121,7 +121,6 @@ cmp.setup({
 		return vim.bo[0].buftype ~= 'prompt'
 	end,
 	experimental = {
-		native_menu = true,
 		ghost_text = true,
 	},
 	view = {
@@ -131,11 +130,13 @@ cmp.setup({
 	},
 	window = {
 		completion = cmp.config.window.bordered({
-			winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
-			col_offset = -3,
-			side_padding = 0,
+			border = 'shadow',
+			scrollbar = true,
+			scrolloff = 5,
 		}),
-		documentation = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered({
+			border = 'single',
+		}),
 	},
 })
 
@@ -175,6 +176,7 @@ cmp.setup.cmdline({ '/', '?' }, {
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
 	mapping = cmp.mapping.preset.cmdline(),
+	preselect = cmp.PreselectMode.Item,
 	sources = cmp.config.sources({
 		{ name = 'cmdline' },
 		{ name = 'cmdline_history' },

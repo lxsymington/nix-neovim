@@ -158,7 +158,7 @@ local function generate_theme(bright, dim, standard)
 			-- The following are the Neovim (as of 0.8.0-dev+100-g371dfb174) highlight
 			-- groups, mostly used for styling UI elements.
 			Normal({ fg = standard.foreground, bg = standard.background }), -- Normal text
-			NormalFloat({ Normal, blend = 10 }), -- Normal text in floating windows.
+			NormalFloat({ Normal, blend = 12 }), -- Normal text in floating windows.
 			NormalNC({ Normal }), -- normal text in non-current windows
 
 			ColorColumn({ bg = Normal.bg.mix(Normal.fg, 2) }), -- Columns set with 'colorcolumn'
@@ -216,9 +216,9 @@ local function generate_theme(bright, dim, standard)
 			SpellRare({ gui = Underdash.gui, sp = bright.purple }), -- Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
 			StatusLine({ Normal }), -- Status line of current window
 			StatusLineNC({ NormalFloat }), -- Status lines of not-current windows. Note: If this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
-			TabLine({ bg = dim.grey.mix(Normal.bg, 95) }), -- Tab pages line, not active tab page label
-			TabLineFill({ Normal }), -- Tab pages line, where there are no labels
-			TabLineSel({ bg = dim.grey.mix(Normal.bg, 85) }), -- Tab pages line, active tab page label
+			TabLine({ bg = Normal.bg.mix(dim.grey, 50) }), -- Tab pages line, not active tab page label
+			TabLineFill({ bg = Normal.bg.mix(dim.grey, 75), blend = 50 }), -- Tab pages line, where there are no labels
+			TabLineSel({ bg = Normal.bg.mix(dim.grey, 25) }), -- Tab pages line, active tab page label
 			Title({ fg = bright.grey }), -- Titles for output from ":set all", ":autocmd" etc.
 			Visual({ bg = Normal.bg.mix(standard.yellow, 25) }), -- Visual mode selection
 			VisualNOS({ bg = Normal.bg.mix(standard.yellow, 50) }), -- Visual mode selection when vim is "Not Owning the Selection".
@@ -395,12 +395,52 @@ local function generate_theme(bright, dim, standard)
 			GitSignsTopdeleteNr({ SignColumn, fg = dim.red, gui = NoCombine.gui }),
 			GitSignsUntrackedNr({ SignColumn, fg = dim.orange, gui = NoCombine.gui }),
 
-			CmpItemAbbr({ fg = standard.foreground, gui = NoCombine.gui }),
-			CmpItemAbbrDeprecated({ fg = bright.yellow, gui = Strikethrough.gui }),
-			CmpItemAbbrMatch({ fg = bright.orange, gui = Bold.gui }),
-			CmpItemAbbrMatchFuzzy({ fg = dim.orange, gui = Bold.gui }),
-			CmpItemKind({ fg = bright.blue }),
-			CmpItemMenu({ Comment }),
+			CmpItemAbbr({ fg = standard.foreground, gui = NoCombine.gui, blend = 20 }),
+			CmpItemAbbrDeprecated({ fg = bright.yellow, gui = Strikethrough.gui, blend = 20 }),
+			CmpItemAbbrMatch({ fg = bright.orange, gui = Bold.gui, blend = 20 }),
+			CmpItemAbbrMatchFuzzy({ fg = dim.orange, gui = Bold.gui, blend = 20 }),
+			CmpItemKind({ bg = dim.grey, fg = dim.background, blend = 20 }),
+			CmpItemMenu({ Comment, blend = 20 }),
+			CmpItemKindClass({ bg = standard.blue, fg = standard.background, gui = BoldUnderdouble.gui }),
+			CmpItemKindCopilot({ bg = bright.white, fg = standard.background }),
+			CmpItemKindFunction({ bg = bright.blue, fg = standard.background }),
+			CmpItemKindInterface({ bg = bright.green, fg = standard.background }),
+			CmpItemKindMethod({ bg = dim.blue, fg = standard.background, gui = Underdot.gui }),
+			CmpItemKindSnippet({ bg = bright.orange, fg = standard.background }),
+			CmpItemKindVariable({ bg = bright.purple, fg = standard.background }),
+			CmpItemKindColor({ bg = 'None', fg = dim.red }),
+			CmpItemKindConstant({ bg = dim.green, fg = standard.background }),
+			CmpItemKindConstructor({
+				bg = bright.foreground,
+				fg = standard.background,
+				gui = Underdot.gui,
+				sp = standard.purple,
+			}),
+			CmpItemKindEnum({
+				bg = dim.cyan,
+				fg = standard.background,
+				gui = BoldUnderline.gui,
+				sp = standard.orange,
+			}),
+			CmpItemKindEnumMember({ bg = bright.cyan, fg = standard.background }),
+			CmpItemKindEvent({ bg = dim.purple, fg = standard.background, gui = BoldItalic.gui }),
+			CmpItemKindField({ bg = bright.grey, fg = standard.background }),
+			CmpItemKindFile({ bg = dim.green, fg = standard.background }),
+			CmpItemKindFolder({ bg = standard.green, fg = standard.background, gui = BoldUnderline.gui }),
+			CmpItemKindKeyword({ bg = dim.purple, fg = standard.background, gui = Bold.gui }),
+			CmpItemKindModule({ bg = dim.orange, fg = standard.background, gui = Bold.gui }),
+			CmpItemKindOperator({ bg = standard.cyan, fg = standard.background }),
+			CmpItemKindProperty({ bg = dim.yellow, fg = standard.background }),
+			CmpItemKindReference({ bg = bright.yellow, fg = standard.background }),
+			CmpItemKindStruct({ bg = bright.green, fg = standard.background, gui = Bold.gui }),
+			CmpItemKindText({ bg = dim.foreground, fg = standard.background, gui = Italic.gui }),
+			CmpItemKindTypeParameter({
+				bg = standard.green,
+				fg = standard.background,
+				gui = Underdot.gui,
+			}),
+			CmpItemKindUnit({ bg = bright.red, fg = standard.background, gui = BoldUnderdouble.gui }),
+			CmpItemKindValue({ bg = standard.red, fg = standard.background }),
 
 			NotifyERRORBorder({ fg = dim.red }),
 			NotifyWARNBorder({ fg = dim.yellow }),
@@ -455,6 +495,10 @@ local function generate_theme(bright, dim, standard)
 			TelescopeSelection({ fg = dim.blue, bg = Normal.bg.mix(dim.blue, 25) }),
 			TelescopeSelectionCaret({ fg = bright.red, bg = Normal.bg.mix(dim.red, 25) }),
 			TelescopeTitle({ fg = standard.blue, gui = Bold.gui }),
+
+			SnippetVirtTextSnippet({ fg = bright.green }),
+			SnippetVirtTextChoice({ fg = standard.orange }),
+			SnippetVirtTextInsert({ fg = bright.iblue }),
 		}
 	end)
 
