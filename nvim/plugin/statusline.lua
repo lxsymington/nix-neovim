@@ -14,8 +14,12 @@ local lsp_server_nut = require('nougat.nut.lsp.servers')
 local nut = {
 	buf = {
 		diagnostic_count = require('nougat.nut.buf.diagnostic_count').create,
+		fileencoding = require('nougat.nut.buf.fileencoding').create,
+		fileformat = require('nougat.nut.buf.fileformat').create,
 		filename = require('nougat.nut.buf.filename').create,
+		filestatus = require('nougat.nut.buf.filestatus').create,
 		filetype = require('nougat.nut.buf.filetype').create,
+		filetype_icon = require('nougat.nut.buf.filetype_icon').create,
 	},
 	git = {
 		branch = require('nougat.nut.git.branch').create,
@@ -23,11 +27,12 @@ local nut = {
 	},
 	tab = {
 		tablist = {
-			tabs = require('nougat.nut.tab.tablist').create,
 			close = require('nougat.nut.tab.tablist.close').create,
+			diagnostic_count = require('nougat.nut.tab.tablist.diagnostic_count').create,
 			icon = require('nougat.nut.tab.tablist.icon').create,
 			label = require('nougat.nut.tab.tablist.label').create,
 			modified = require('nougat.nut.tab.tablist.modified').create,
+			tabs = require('nougat.nut.tab.tablist').create,
 		},
 	},
 	mode = require('nougat.nut.mode').create,
@@ -40,105 +45,84 @@ local mode = nut.mode({
 	sep_right = sep.space(true),
 })
 
-local search = (function()
-	return Item({
-		prepare = function(_, ctx)
-			local data = ctx.ctx
-			data.search_highlight = vim.v.hlsearch == 1
-			data.search_active, data.search_data =
-				pcall(vim.fn.searchcount, { maxcount = 0, recalculate = 1 })
-		end,
-		prefix = '🔎',
-		content = {
-			Item({
-				hidden = function(_, ctx)
-					return not ctx.ctx.search_active
-				end,
-				content = function(_, ctx)
-					local data = ctx.ctx
+local search = Item({
+	prepare = function(_, ctx)
+		local data = ctx.ctx
+		data.search_highlight = vim.v.hlsearch == 1
+		data.search_active, data.search_data =
+			pcall(vim.fn.searchcount, { maxcount = 0, recalculate = 1 })
+	end,
+	prefix = '🔎',
+	content = {
+		Item({
+			hidden = function(_, ctx)
+				return not ctx.ctx.search_active
+			end,
+			content = function(_, ctx)
+				local data = ctx.ctx
 
-					if
-						data.search_active
-						and type(data.search_data.current) == 'number'
-						and type(data.search_data.current) == 'number'
-					then
-						return string.format('%d∕%d', data.search_data.current, data.search_data.total)
-					end
+				if
+					data.search_active
+					and type(data.search_data.current) == 'number'
+					and type(data.search_data.current) == 'number'
+				then
+					return string.format('%d∕%d', data.search_data.current, data.search_data.total)
+				end
 
-					return ''
-				end,
-				sep_left = sep.space(),
-				sep_right = sep.none(),
-				hl = { fg = color.magenta },
-			}),
-			Item({
-				content = function(_, ctx)
-					local data = ctx.ctx
-					return string.format('%s', data.search_highlight and '' or '')
-				end,
-				sep_left = sep.space(),
-				sep_right = sep.none(),
-				hl = { fg = color.accent.blue },
-			}),
-		},
-		sep_left = sep.space(),
-		sep_right = sep.space(),
-	})
-end)()
+				return ''
+			end,
+			sep_left = sep.space(),
+			sep_right = sep.none(),
+			hl = { fg = color.magenta },
+		}),
+		Item({
+			content = function(_, ctx)
+				local data = ctx.ctx
+				return string.format('%s', data.search_highlight and '' or '')
+			end,
+			sep_left = sep.space(),
+			sep_right = sep.none(),
+			hl = { fg = color.accent.blue },
+		}),
+	},
+	sep_left = sep.space(),
+	sep_right = sep.space(),
+})
 
-local filename = (function()
-	local item = Item({
-		prepare = function(_, ctx)
-			local _, data = ctx.bufnr, ctx.ctx
-			data.readonly = vim.api.nvim_get_option_value('readonly', {})
-			data.modifiable = vim.api.nvim_get_option_value('modifiable', {})
-			data.modified = vim.api.nvim_get_option_value('modified', {})
-		end,
-		content = {
-			Item({
-				hidden = function(_, ctx)
-					return not ctx.ctx.readonly
-				end,
-				suffix = ' ',
-				content = '󰏯 ',
-			}),
-			Item({
-				hidden = function(_, ctx)
-					return ctx.ctx.modifiable
-				end,
-				content = '',
-				suffix = ' ',
-			}),
-			nut.buf.filename({
-				prefix = function(_, ctx)
-					local data = ctx.ctx
-					if data.readonly or not data.modifiable then
-						return ' '
-					end
-					return ''
-				end,
-				suffix = function(_, ctx)
-					local data = ctx.ctx
-					if data.modified then
-						return ' '
-					end
-					return ''
-				end,
-			}),
-			Item({
-				hidden = function(_, ctx)
-					return not ctx.ctx.modified
-				end,
-				content = '󰐖',
-			}),
-		},
-		hl = {
-			fg = color.blue,
-		},
-	})
-
-	return item
-end)()
+local filename = Item({
+	content = {
+		nut.buf.filetype_icon({
+			sep_left = sep.none(),
+		}),
+		nut.buf.filename({
+			sep_left = sep.space(),
+			hl = {
+				fg = color.blue,
+			},
+		}),
+		nut.buf.filestatus({
+			config = {
+				modified = '🖋',
+				nomodifiable = '🔒',
+				readonly = '🔏',
+			},
+			sep_left = sep.space(),
+		}),
+		nut.buf.fileformat({
+			hl = 'Grey',
+			sep_left = sep.space(),
+			suffix = '·',
+			sep_right = sep.none(),
+		}),
+		nut.buf.fileencoding({
+			hl = 'DimGrey',
+			sep_left = sep.none(),
+			sep_right = sep.none(),
+		}),
+	},
+	sep_left = sep.space(),
+	sep_right = sep.space(),
+})
 
 local macros = Item({
 	prepare = function(_, ctx)
@@ -289,7 +273,6 @@ local gitstatus = stl:add_item(nut.git.status.create({
 }))
 stl:add_item(paired_space(gitstatus))
 stl:add_item(filename)
-stl:add_item(sep.space())
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
 stl:add_item(lsp_servers)
@@ -332,23 +315,49 @@ tal:add_item(nut.tab.tablist.tabs({
 		prefix = ' ',
 		suffix = ' ',
 		content = {
-			nut.tab.tablist.icon({ suffix = ' ' }),
-			nut.tab.tablist.label({}),
-			nut.tab.tablist.modified({ prefix = ' ', config = { text = '●' } }),
-			nut.tab.tablist.close({ prefix = ' ', config = { text = '󰅖' } }),
+			nut.tab.tablist.icon({ sep_right = sep.space() }),
+			nut.tab.tablist.label({
+				hl = 'Foreground',
+			}),
+			nut.tab.tablist.modified({
+				sep_left = sep.space(),
+				config = { text = '●' },
+				hl = 'Yellow',
+			}),
+			nut.tab.tablist.close({
+				sep_left = sep.space(),
+				config = { text = '󰅖' },
+				hl = 'Red',
+			}),
 		},
+		hl = 'TabLineSel',
 		sep_left = sep.space(),
 		sep_right = sep.space(),
 	},
+	hl = 'TabLineFill',
 	inactive_tab = {
 		prefix = ' ',
 		suffix = ' ',
 		content = {
-			nut.tab.tablist.icon({ suffix = ' ' }),
-			nut.tab.tablist.label({}),
-			nut.tab.tablist.modified({ prefix = ' ', config = { text = '●' } }),
-			nut.tab.tablist.close({ prefix = ' ', config = { text = '󰅖' } }),
+			nut.tab.tablist.icon({ sep_right = sep.space() }),
+			nut.tab.tablist.label({
+				hl = 'DimGrey',
+			}),
+			nut.tab.tablist.diagnostic_count({
+				sep_left = sep.space(),
+			}),
+			nut.tab.tablist.modified({
+				sep_left = sep.space(),
+				config = { text = '●' },
+				hl = 'DimYellow',
+			}),
+			nut.tab.tablist.close({
+				sep_left = sep.space(),
+				config = { text = '󰅖' },
+				hl = 'DimRed',
+			}),
 		},
+		hl = 'TabLine',
 		sep_left = sep.space(),
 		sep_right = sep.space(),
 	},

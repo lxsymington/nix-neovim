@@ -71,7 +71,6 @@ with final.pkgs.lib; let
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
-    (mkNvimPlugin inputs.noice "noice") # UI Enhancements | https://github.com/folke/noice.nvim/
     (mkNvimPlugin inputs.which-key "which-key") # Keybindings helper | https://github.com/folke/which-key.nvim/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
@@ -84,6 +83,7 @@ with final.pkgs.lib; let
     (mkNvimPlugin inputs.mini-starter "mini-starter") # Dashboard | https://github.com/echasnovski/mini.starter/
     (mkNvimPlugin inputs.nougat "nougat") # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
     (mkNvimPlugin inputs.markview "markview") # Mark view | https://github.com/OXY2DEV/markview.nvim/
+    (mkNvimPlugin inputs.helpview "helpview") # help view | https://github.com/OXY2DEV/helpview.nvim/
     (mkNvimPlugin inputs.mini-hipatterns "mini-hipatterns") # highlighting | https://github.com/echasnovski/mini.hipatterns/
     # ^ UI
     # language support

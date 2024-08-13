@@ -4,7 +4,7 @@ package.loaded['lxs.' .. vim.g.colors_name .. '.colours'] = nil
 local colours = require('lxs.' .. vim.g.colors_name .. '.colours')
 
 local dark = colours.dark
-local modes = create_highlights('dark', dark)
+local modes = create_highlights(dark)
 
 return {
 	name = 'crepuscular_dark',
@@ -20,18 +20,18 @@ return {
 		winhl = {
 			active = {
 				CursorLine = {
-					bg = dark.standard.black.mix(dark.bright.grey, 20).hex,
+					bg = dark.standard.background.mix(dark.bright.grey, 20).hex,
 				},
 			},
 			inactive = {
 				CursorLine = {
-					bg = dark.standard.black.mix(dark.bright.grey, 10).hex,
+					bg = dark.standard.background.mix(dark.bright.grey, 10).hex,
 				},
 			},
 		},
 		hl = {
 			MyCursor = {
-				bg = dark.standard.black.mix(dark.bright.grey, 40).hex,
+				bg = dark.standard.background.mix(dark.bright.grey, 40).hex,
 			},
 		},
 	},

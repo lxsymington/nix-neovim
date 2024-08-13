@@ -7,7 +7,7 @@ if vim.fn.exists('+termguicolors') then
 	opt.termguicolors = true
 end
 
--- Sets the background to be dark
+-- Sets the background to be light
 opt.background = 'dark'
 
 -- Sets the colorscheme to be Crepuscular

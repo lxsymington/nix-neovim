@@ -1,20 +1,17 @@
 --- Construct mode highlights for `Reactive`
----@param variantType 'dark' | 'light' Whether the palette is dark or light
 ---@param variant table The colour palette to use
 ---@return table Reactive Modes
-local function create_highlights(variantType, variant)
-	local normal = variantType == 'dark' and variant.standard.black or variant.standard.white
-
+local function create_highlights(variant)
 	return {
 		n = {
 			winhl = {
 				CursorLine = {
-					bg = normal.mix(variant.bright.purple, 40).hex,
+					bg = variant.standard.background.mix(variant.bright.purple.saturate(50), 10).hex,
 				},
 			},
 			hl = {
 				MyCursor = {
-					bg = normal.mix(variant.bright.purple, 80).hex,
+					bg = variant.standard.background.mix(variant.bright.purple.saturate(50), 20).hex,
 				},
 			},
 		},
@@ -25,24 +22,24 @@ local function create_highlights(variantType, variant)
 				d = {
 					winhl = {
 						CursorLine = {
-							bg = normal.mix(variant.bright.red, 40).hex,
+							bg = variant.standard.background.mix(variant.bright.red.saturate(50), 10).hex,
 						},
 					},
 					hl = {
 						MyCursor = {
-							bg = normal.mix(variant.bright.red, 80).hex,
+							bg = variant.standard.background.mix(variant.bright.red.saturate(50), 20).hex,
 						},
 					},
 				},
 				y = {
 					winhl = {
 						CursorLine = {
-							bg = normal.mix(variant.bright.yellow, 40).hex,
+							bg = variant.standard.background.mix(variant.bright.yellow.saturate(50), 10).hex,
 						},
 					},
 					hl = {
 						MyCursor = {
-							bg = normal.mix(variant.bright.yellow, 80).hex,
+							bg = variant.standard.background.mix(variant.bright.yellow.saturate(50), 20).hex,
 						},
 					},
 				},
@@ -51,36 +48,36 @@ local function create_highlights(variantType, variant)
 		i = {
 			winhl = {
 				CursorLine = {
-					bg = normal.mix(variant.bright.green, 40).hex,
+					bg = variant.standard.background.mix(variant.bright.green.saturate(50), 10).hex,
 				},
 			},
 			hl = {
 				MyCursor = {
-					bg = normal.mix(variant.bright.green, 80).hex,
+					bg = variant.standard.background.mix(variant.bright.green.saturate(50), 20).hex,
 				},
 			},
 		},
 		[{ 's', 'S', '' }] = {
 			winhl = {
 				CursorLine = {
-					bg = normal.mix(variant.bright.orange, 40).hex,
+					bg = variant.standard.background.mix(variant.bright.orange.saturate(50), 10).hex,
 				},
 			},
 			hl = {
 				MyCursor = {
-					bg = normal.mix(variant.bright.orange, 80).hex,
+					bg = variant.standard.background.mix(variant.bright.orange.saturate(50), 20).hex,
 				},
 			},
 		},
 		[{ 'v', 'V', '' }] = {
 			winhl = {
 				CursorLine = {
-					bg = normal.mix(variant.bright.cyan, 40).hex,
+					bg = variant.standard.background.mix(variant.bright.cyan.saturate(50), 10).hex,
 				},
 			},
 			hl = {
 				MyCursor = {
-					bg = normal.mix(variant.bright.cyan, 80).hex,
+					bg = variant.standard.background.mix(variant.bright.cyan.saturate(50), 20).hex,
 				},
 			},
 		},

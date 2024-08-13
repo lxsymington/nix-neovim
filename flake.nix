@@ -36,6 +36,11 @@
       flake = false;
     };
 
+    helpview = {
+      url = "github:OXY2DEV/helpview.nvim";
+      flake = false;
+    };
+
     hurl-nvim = {
       url = "github:jellydn/hurl.nvim";
       flake = false;
@@ -93,11 +98,6 @@
 
     neotest-vim-test = {
       url = "github:nvim-neotest/neotest-vim-test";
-      flake = false;
-    };
-
-    noice = {
-      url = "github:folke/noice.nvim";
       flake = false;
     };
 

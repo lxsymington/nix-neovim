@@ -4,7 +4,7 @@ package.loaded['lxs.' .. vim.g.colors_name .. '.colours'] = nil
 local colours = require('lxs.' .. vim.g.colors_name .. '.colours')
 
 local light = colours.light
-local modes = create_highlights('light', light)
+local modes = create_highlights(light)
 
 return {
 	name = 'crepuscular_light',
