@@ -52,29 +52,53 @@ ls.config.setup({
 	ext_opts = {
 		[types.snippet] = {
 			active = {
-				virt_text = { { '✂️', 'SnippetVirtTextSnippet' } },
+				virt_text = { { '◁', 'SnippetVirtTextSnippetActive' } },
 			},
 			passive = {
-				virt_text = { { '🪨', 'DimGrey' } },
+				virt_text = { { '●', 'SnippetVirtTextSnippetPassive' } },
 			},
 			visited = {
-				virt_text = { { '🏖️', 'DimGrey' } },
+				virt_text = { { '▣', 'SnippetVirtTextSnippetVisited' } },
 			},
 			unvisited = {
-				virt_text = { { '🛫', 'DimGrey' } },
+				virt_text = { { '☆', 'SnippetVirtTextSnippetUnVisited' } },
 			},
 			snippet_passive = {
-				virt_text = { { '🛏️', 'DimGrey' } },
+				virt_text = { { '◆', 'SnippetVirtTextSnippetSnippetPassive' } },
 			},
 		},
 		[types.choiceNode] = {
 			active = {
 				virt_text = { { '⦿', 'SnippetVirtTextChoice' } },
 			},
+			passive = {
+				virt_text = { { '◯', 'SnippetVirtTextChoicePassive' } },
+			},
+			visited = {
+				virt_text = { { '●', 'SnippetVirtTextChoiceVisited' } },
+			},
+			unvisited = {
+				virt_text = { { '☆', 'SnippetVirtTextChoiceVisited' } },
+			},
+			snippet_passive = {
+				virt_text = { { '◆', 'SnippetVirtTextChoiceSnippetPassive' } },
+			},
 		},
 		[types.insertNode] = {
 			active = {
-				virt_text = { { '●', 'SnippetVirtTextInsert' } },
+				virt_text = { { '◁', 'SnippetVirtTextInsertActive' } },
+			},
+			passive = {
+				virt_text = { { '●', 'SnippetVirtTextInsertPassive' } },
+			},
+			visited = {
+				virt_text = { { '▣', 'SnippetVirtTextInsertVisited' } },
+			},
+			unvisited = {
+				virt_text = { { '☆', 'SnippetVirtTextInsertUnVisited' } },
+			},
+			snippet_passive = {
+				virt_text = { { '◆', 'SnippetVirtTextInsertSnippetPassive' } },
 			},
 		},
 	},
@@ -100,8 +124,8 @@ local function commit_header()
 {}
 ]],
 		{
-			i(nil, 'Ticket Number'),
-			i(nil, 'Subject Line'),
+			i(1, 'Ticket Number'),
+			i(2, 'Subject Line'),
 			t(''),
 		}
 	)
@@ -117,7 +141,7 @@ local function commit_description()
 ]],
 		{
 			t(''),
-			i(nil, 'Multi-line description of commit, feel free to be detailed.'),
+			i(1, 'Multi-line description of commit, feel free to be detailed.'),
 			t(''),
 		}
 	)
@@ -133,7 +157,7 @@ local function commit_changes()
 ]],
 		{
 			t(''),
-			i(nil, '- Change 1'),
+			i(1, '- Change 1'),
 			t(''),
 		}
 	)
@@ -141,10 +165,10 @@ end
 
 local function commit_coauthor()
 	return fmt([[Co-authored-by: {} <{}@{}.{}>]], {
-		i(nil, 'Co-author Name'),
-		i(nil, 'Co-author Email'),
-		i(nil, 'Co-author Domain'),
-		i(nil, 'Co-author TLD'),
+		i(1, 'Co-author Name'),
+		i(2, 'Co-author Email'),
+		i(3, 'Co-author Domain'),
+		i(4, 'Co-author TLD'),
 	})
 end
 
@@ -154,24 +178,37 @@ local commit_snippet = s(
 		name = 'git commit template',
 	},
 	c(1, {
-		sn(nil, {
-			sn(nil, commit_header()),
+		sn(1, {
+			sn(1, commit_header()),
 		}, { key = 'Header' }),
-		sn(nil, {
-			sn(nil, commit_header()),
-			sn(nil, commit_description()),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_description()),
 		}, { key = 'Header » Description' }),
-		sn(nil, {
-			sn(nil, commit_header()),
-			sn(nil, commit_description()),
-			sn(nil, commit_changes()),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_description()),
+			sn(3, commit_changes()),
 		}, { key = 'Header » Description » Changes' }),
-		sn(nil, {
-			sn(nil, commit_header()),
-			sn(nil, commit_description()),
-			sn(nil, commit_changes()),
-			sn(nil, commit_coauthor()),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_description()),
+			sn(3, commit_changes()),
+			sn(4, commit_coauthor()),
 		}, { key = 'Header » Description » Changes » Coauthor' }),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_changes()),
+		}, { key = 'Header » Changes' }),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_changes()),
+			sn(3, commit_coauthor()),
+		}, { key = 'Header » Changes » Coauthor' }),
+		sn(1, {
+			sn(1, commit_header()),
+			sn(2, commit_coauthor()),
+		}, { key = 'Header » Coauthor' }),
 	})
 )
 

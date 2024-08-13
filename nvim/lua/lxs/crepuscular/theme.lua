@@ -527,9 +527,21 @@ local theme = lush(function(injected_functions)
 		TelescopeSelectionCaret({ fg = bright.red, bg = Normal.bg.hue(dim.red.h).mix(dim.red, 25) }),
 		TelescopeTitle({ fg = standard.blue, gui = Bold.gui }),
 
-		SnippetVirtTextSnippet({ fg = bright.green }),
-		SnippetVirtTextChoice({ fg = standard.orange }),
-		SnippetVirtTextInsert({ fg = bright.iblue }),
+		SnippetVirtTextSnippetActive({ fg = bright.green }),
+		SnippetVirtTextSnippetPassive({ fg = bright.yellow }),
+		SnippetVirtTextSnippetVisited({ fg = bright.purple }),
+		SnippetVirtTextSnippetUnvisited({ fg = bright.blue }),
+		SnippetVirtTextSnippetSnippetPassive({ fg = bright.grey }),
+		SnippetVirtTextChoiceActive({ fg = bright.green }),
+		SnippetVirtTextChoicePassive({ fg = bright.yellow }),
+		SnippetVirtTextChoiceVisited({ fg = bright.purple }),
+		SnippetVirtTextChoiceUnvisited({ fg = bright.blue }),
+		SnippetVirtTextChoiceSnippetPassive({ fg = bright.grey }),
+		SnippetVirtTextInsertActive({ fg = bright.green }),
+		SnippetVirtTextInsertPassive({ fg = bright.yellow }),
+		SnippetVirtTextInsertVisited({ fg = bright.purple }),
+		SnippetVirtTextInsertUnvisited({ fg = bright.blue }),
+		SnippetVirtTextInsertSnippetPassive({ fg = bright.grey }),
 	}
 end)
 
