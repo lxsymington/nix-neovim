@@ -45,6 +45,24 @@ local mode = nut.mode({
 	sep_right = sep.space(true),
 })
 
+local linters = Item({
+	prepare = function(_, ctx)
+		local data = ctx.ctx
+		data.linters = require('lint').get_running()
+	end,
+	content = function(_, ctx)
+		local data = ctx.ctx
+
+		if #data.linters == 0 then
+			return '󰦕'
+		end
+		return '󱉶 ' .. table.concat(data.linters, ' ')
+	end,
+	hl = {
+		fg = color.yellow,
+	},
+})
+
 local search = Item({
 	prepare = function(_, ctx)
 		local data = ctx.ctx
@@ -276,6 +294,7 @@ stl:add_item(filename)
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())
 stl:add_item(lsp_servers)
+stl:add_item(linters)
 stl:add_item(search)
 stl:add_item(nut.spacer())
 stl:add_item(nut.truncation_point())

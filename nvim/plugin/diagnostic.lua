@@ -42,8 +42,8 @@ local defaults = {
 
 vim.diagnostic.config(vim.tbl_deep_extend('force', defaults, {
 	virtual_text = {
-		prefix = '',
-		format = function(diagnostic)
+		hl_mode = 'blend',
+		prefix = function(diagnostic)
 			local severity = diagnostic.severity
 			if severity == ERROR then
 				return prefix_diagnostic('󰅚', diagnostic)
@@ -59,6 +59,8 @@ vim.diagnostic.config(vim.tbl_deep_extend('force', defaults, {
 			end
 			return prefix_diagnostic('■', diagnostic)
 		end,
+		spacing = 2,
+		virt_text_pos = 'eol',
 	},
 }))
 

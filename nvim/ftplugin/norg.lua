@@ -1,3 +1,4 @@
+local writing = require('lxs.writing')
 local wo = vim.wo
 local opt = vim.opt
 local keymap = vim.keymap
@@ -16,3 +17,5 @@ keymap.set('n', '<C-H>', '<Plug>(neorg.presenter.previous-page)')
 keymap.set('n', 'q', '<Plug>(neorg.presenter.close)')
 
 keymap.set('n', '<leader>lg', '<Plug>(neorg.looking-glass.magnify-code-block)')
+
+writing.start()

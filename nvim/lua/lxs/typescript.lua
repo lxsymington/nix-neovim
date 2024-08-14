@@ -4,7 +4,7 @@
 ---TypeScript related functions
 ---@brief ]]
 local lint = require('lint')
--- local tsc = require('tsc')
+local icons = require('mini.icons')
 local diagnostic = vim.diagnostic
 local json = vim.json
 local fn = vim.fn
@@ -14,19 +14,6 @@ local loop = vim.loop
 local M = {}
 
 function M.start()
-	-- tsc.setup({
-	-- 	auto_start_watch_mode = true,
-	-- 	use_diagnostics = true,
-	-- 	spinner = {
-	-- 		'◜',
-	-- 		'◠',
-	-- 		'◝',
-	-- 		'◞',
-	-- 		'◡',
-	-- 		'◟',
-	-- 	},
-	-- })
-
 	local tslint_parser = function(output, bufnr)
 		local json_results = string.match(output, '(.-)\n')
 		local results_ok, tslint_results = pcall(json.decode, json_results)
@@ -87,12 +74,16 @@ function M.start()
 		}
 	end
 
+	local icon, _hl, _is_default = icons.get('file', vim.fn.expand('%'))
 	local ns = lint.get_namespace('tslint')
-	diagnostic.config({
-		virtual_text = {
-			suffix = ' 🚩 tslint',
-		},
-	}, ns)
+	vim.diagnostic.config(
+		vim.tbl_deep_extend('force', vim.diagnostic.config(), {
+			virtual_text = {
+				suffix = string.format(' ⁅%s tslint⁆', icon),
+			},
+		}),
+		ns
+	)
 end
 
 return M

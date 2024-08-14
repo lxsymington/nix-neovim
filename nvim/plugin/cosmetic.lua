@@ -11,6 +11,7 @@ dressing.setup({
 
 -- Icons —————————————————————————————————————————————————————————————————————
 icons.setup()
+icons.mock_nvim_web_devicons()
 
 -- Highlight Patterns ——————————————————————————————————————————————————————————
 hipatterns.setup({

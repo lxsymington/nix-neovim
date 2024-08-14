@@ -6,6 +6,7 @@
 
 local lspconfig = require('lspconfig')
 local lint = require('lint')
+local icons = require('mini.icons')
 
 local M = {}
 
@@ -24,12 +25,16 @@ function M.start()
 		['terraform-vars'] = { 'terraform_validate' },
 	}
 
+	local icon, _hl, _is_default = icons.get('file', vim.fn.expand('%'))
 	local ns = lint.get_namespace('terraform_validate')
-	vim.diagnostic.config({
-		virtual_text = {
-			suffix = ' 🚩 terraform validate',
-		},
-	}, ns)
+	vim.diagnostic.config(
+		vim.tbl_deep_extend('force', vim.diagnostic.config(), {
+			virtual_text = {
+				suffix = string.format(' ⁅%s terraform validate⁆', icon),
+			},
+		}),
+		ns
+	)
 end
 
 return M

@@ -164,12 +164,21 @@ local function commit_changes()
 end
 
 local function commit_coauthor()
-	return fmt([[Co-authored-by: {} <{}@{}.{}>]], {
-		i(1, 'Co-author Name'),
-		i(2, 'Co-author Email'),
-		i(3, 'Co-author Domain'),
-		i(4, 'Co-author TLD'),
-	})
+	return fmt(
+		[[
+{}
+Co-authored-by: {} <{}@{}.{}>
+{}
+	]],
+		{
+			t(''),
+			i(1, 'Co-author Name'),
+			i(2, 'Co-author Email'),
+			i(3, 'Co-author Domain'),
+			i(4, 'Co-author TLD'),
+			t(''),
+		}
+	)
 end
 
 local commit_snippet = s(

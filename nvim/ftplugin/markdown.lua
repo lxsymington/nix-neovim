@@ -1,6 +1,6 @@
 local markview = require('markview')
 local presets = require('markview.presets')
-local cmd = vim.cmd
+local writing = require('lxs.writing')
 
 vim.opt_local.list = false
 
@@ -8,4 +8,4 @@ markview.setup({
 	headings = presets.headings.glow_labels,
 })
 
-cmd('Markview enableAll')
+writing.start()

@@ -1,12 +1,14 @@
-local notify_utils = require('lxs.notification_utils')
+-- local notify_utils = require('lxs.notification_utils')
 local notify = require('notify')
 local keymap = vim.keymap
 local cmd = vim.cmd
-local log = vim.log
+-- local log = vim.log
 local lsp = vim.lsp
 
 notify.setup({
 	top_down = false,
+	render = 'compact',
+	stages = 'fade',
 })
 
 vim.notify = notify
@@ -49,7 +51,7 @@ lsp.handlers['window/showMessage'] = function(_, result, ctx)
 	})
 end
 
-lsp.handlers['$/progress'] = function(_, result, ctx)
+--[[ lsp.handlers['$/progress'] = function(_, result, ctx)
 	local client_id = ctx.client_id
 
 	local val = result.value
@@ -91,7 +93,7 @@ lsp.handlers['$/progress'] = function(_, result, ctx)
 
 		notif_data.spinner = nil
 	end
-end
+end ]]
 
 lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, {
 	border = 'rounded',

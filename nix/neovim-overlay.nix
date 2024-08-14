@@ -177,6 +177,7 @@ with final.pkgs.lib; let
     hurl
     lua-language-server
     nil # Nix LSP
+    nodePackages_latest.jsonlint
     nodePackages_latest.nodejs
     nodePackages_latest.prettier
     nodePackages_latest.ts-node
@@ -222,7 +223,7 @@ with final.pkgs.lib; let
         maintainers = with maintainers; [ lxsymington ];
       };
     })
-    vale
+    (vale.withStyles (s: [ s.write-good s.readability s.proselint ]))
     vim-vint # Vim linter
     vscode-js-debug
   ];
