@@ -28,7 +28,7 @@ configs.setup({
 			-- Automatically jump forward to textobject, similar to targets.vim
 			lookahead = true,
 			keymaps = {
-				['a#'] = '@comment.outer',
+				['a/'] = '@comment.outer',
 				['aC'] = '@call.outer',
 				['aP'] = '@parameter.outer',
 				['aa'] = '@assignment.outer',
@@ -37,7 +37,7 @@ configs.setup({
 				['ai'] = '@conditional.outer',
 				['al'] = '@loop.outer',
 				['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
-				['i#'] = '@comment.outer',
+				['i/'] = '@comment.outer',
 				['iC'] = '@call.inner',
 				['iP'] = '@parameter.inner',
 				['ia'] = '@assignment.inner',
@@ -74,14 +74,20 @@ configs.setup({
 			goto_next_end = {
 				[']M'] = '@function.outer',
 				[']P'] = '@parameter.outer',
+				[']S'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
+				[']Z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
 			},
 			goto_previous_start = {
 				['[m'] = '@function.outer',
 				['[P'] = '@parameter.outer',
+				['[s'] = { query = '@scope', query_group = 'locals', desc = 'Previous scope' },
+				['[z'] = { query = '@fold', query_group = 'folds', desc = 'Previous fold' },
 			},
 			goto_previous_end = {
 				['[M'] = '@function.outer',
 				['[P'] = '@parameter.outer',
+				['[S'] = { query = '@scope', query_group = 'locals', desc = 'Previous scope' },
+				['[Z'] = { query = '@fold', query_group = 'folds', desc = 'Previous fold' },
 			},
 		},
 		lsp_interop = {
