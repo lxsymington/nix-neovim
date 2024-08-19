@@ -7,11 +7,6 @@ local INFO = vim.diagnostic.severity.INFO
 local HINT = vim.diagnostic.severity.HINT
 
 -- Diagnostic –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
--- Configure Neovim diagnostic messages
-local function prefix_diagnostic(prefix, diagnostic)
-	return string.format(prefix .. ' %s', diagnostic.message)
-end
-
 local defaults = {
 	signs = {
 		text = {
@@ -46,18 +41,18 @@ vim.diagnostic.config(vim.tbl_deep_extend('force', defaults, {
 		prefix = function(diagnostic)
 			local severity = diagnostic.severity
 			if severity == ERROR then
-				return prefix_diagnostic('󰅚', diagnostic)
+				return '󰅚'
 			end
 			if severity == WARN then
-				return prefix_diagnostic('⚠', diagnostic)
+				return '⚠'
 			end
 			if severity == INFO then
-				return prefix_diagnostic('⚐', diagnostic)
+				return '⚐'
 			end
 			if severity == HINT then
-				return prefix_diagnostic('󰌶', diagnostic)
+				return '󰌶'
 			end
-			return prefix_diagnostic('■', diagnostic)
+			return '■'
 		end,
 		spacing = 2,
 		virt_text_pos = 'eol',
