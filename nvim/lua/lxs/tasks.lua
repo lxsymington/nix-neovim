@@ -72,6 +72,8 @@ Tasks.instance = setmetatable({}, {
 
 Tasks.toggle = function(self)
 	local overseer = self.instance.overseer
+	vim.print(overseer)
+
 	if overseer ~= nil then
 		cmd.OverseerToggle()
 	end
@@ -79,6 +81,7 @@ end
 
 Tasks.build = function(self)
 	local overseer = self.instance.overseer
+	vim.print(overseer)
 
 	if overseer ~= nil then
 		cmd.OverseerBuild()
@@ -87,6 +90,7 @@ end
 
 Tasks.action = function(self)
 	local overseer = self.instance.overseer
+	vim.print(overseer)
 
 	if overseer ~= nil then
 		cmd.OverseerTaskAction()
@@ -95,6 +99,7 @@ end
 
 Tasks.quick_action = function(self)
 	local overseer = self.instance.overseer
+	vim.print(overseer)
 
 	if overseer ~= nil then
 		cmd.OverseerQuickAction()
@@ -103,6 +108,7 @@ end
 
 Tasks.run = function(self)
 	local overseer = self.instance.overseer
+	vim.print(overseer)
 
 	if overseer ~= nil then
 		cmd.OverseerRun()
@@ -111,8 +117,9 @@ end
 
 Tasks.compile = function(self)
 	local compiler = self.instance.compiler
+	vim.print(compiler)
 
-	if compiler == nil then
+	if compiler ~= nil then
 		cmd.CompilerOpen()
 	end
 end

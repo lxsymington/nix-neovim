@@ -1,4 +1,4 @@
-local M = {}
+--[[ local M = {}
 
 M.icons = {
 	debug = 'Ⓓ ',
@@ -150,4 +150,4 @@ function M.identify_tab_panes()
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end, 5000)
 	end)
-end
+end ]]

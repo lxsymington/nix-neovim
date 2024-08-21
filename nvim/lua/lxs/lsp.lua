@@ -80,11 +80,11 @@ local function refresh_codeLens(bufnr, client)
 		api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
 			group = group,
 			callback = function()
-				lsp.codelens.refresh({ buf = bufnr })
+				lsp.codelens.refresh({ bufnr = bufnr })
 			end,
 			buffer = bufnr,
 		})
-		lsp.codelens.refresh({ buf = bufnr })
+		lsp.codelens.refresh({ bufnr = bufnr })
 	end
 end
 
