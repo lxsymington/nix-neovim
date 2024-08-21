@@ -136,7 +136,7 @@ function M.attach(ev)
 
 	document_highlight(bufnr, client)
 
-	lsp.inlay_hint.enable()
+	lsp.inlay_hint.enable(true, { bufnr = bufnr })
 end
 
 return M
