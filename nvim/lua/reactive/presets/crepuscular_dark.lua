@@ -11,7 +11,7 @@ return {
 	init = function()
 		-- making our cursor to use `MyCursor` highlight group
 		vim.opt_local.guicursor:append({
-			['a'] = 'blinkwait700-blinkoff400-blinkon250-MyCursor/MylCursor',
+			['a'] = 'MyCursor/MylCursor',
 		})
 	end,
 	lazy = true,

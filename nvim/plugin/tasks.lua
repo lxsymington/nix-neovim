@@ -1,61 +1,40 @@
-vim.cmd.packadd({
-	args = { 'overseer.nvim' },
-	bang = true,
-})
-vim.cmd.packadd({
-	args = { 'compiler.nvim' },
-	bang = true,
-})
-local overseer = require('overseer')
-local compiler = require('compiler')
+local tasks = require('lxs.tasks')
 local keymap = vim.keymap
-local cmd = vim.cmd
 
--- Overseer ————————————————————————————————————————————————————————————————————
-overseer.setup({
-	component_aliases = {
-		default = {
-			{ 'display_duration', detail_level = 2 },
-			'on_output_summarize',
-			'on_exit_set_status',
-			{ 'on_complete_notify', system = 'always' },
-			{ 'on_complete_dispose', require_view = { 'SUCCESS', 'FAILURE' } },
-		},
-		default_neotest = {
-			'on_output_summarize',
-			'on_exit_set_status',
-			'on_complete_notify',
-			'on_complete_dispose',
-		},
-	},
-	task_list = {
-		default_detail = 2,
-		separator = '▰▰▰▰▰▰▰▰▰▰',
-		min_width = { 60, 0.15 },
-		max_height = { 20, 0.2 },
-		min_height = 12,
-	},
-})
-
-keymap.set('n', '<Leader>ot', cmd.OverseerToggle, {
-	desc = 'Overseer » Toggle',
+-- Tasks ———————————————————————————————————————————————————————————————————————
+keymap.set('n', '<Leader>ot', function()
+	tasks:toggle()
+end, {
+	desc = 'Tasks » Toggle',
 	silent = true,
 })
-keymap.set('n', '<Leader>ob', cmd.OverseerBuild, {
+keymap.set('n', '<Leader>ob', function()
+	tasks:build()
+end, {
 	desc = 'Overseer » Builder',
 	silent = true,
 })
-keymap.set('n', '<Leader>oa', cmd.OverseerTaskAction, {
+keymap.set('n', '<Leader>oa', function()
+	tasks:action()
+end, {
 	desc = 'Overseer » Run Action',
 	silent = true,
 })
-keymap.set('n', '<Leader>oq', cmd.OverseerQuickAction, {
+keymap.set('n', '<Leader>oq', function()
+	tasks:quick_action()
+end, {
 	desc = 'Overseer » Quick Action',
 	silent = true,
 })
-keymap.set('n', '<Leader>or', cmd.OverseerRun, {
+keymap.set('n', '<Leader>or', function()
+	tasks:run()
+end, {
 	desc = 'Overseer » Run',
 	silent = true,
 })
-
-compiler.setup({})
+keymap.set('n', '<Leader>co', function()
+	tasks:compile()
+end, {
+	desc = 'Compiler » Open',
+	silent = true,
+})
