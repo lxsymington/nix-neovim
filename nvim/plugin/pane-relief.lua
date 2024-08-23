@@ -1,4 +1,4 @@
---[[ local M = {}
+local M = {}
 
 M.icons = {
 	debug = 'Ⓓ ',
@@ -15,7 +15,7 @@ M.lines = {
 	'Some body text for testing purposes.',
 }
 
-M.ui = vim.api.nvim_list_uis()[1]
+--[[ M.ui = vim.api.nvim_list_uis()[1]
 
 function M.create_notification_pane()
 	local buf = vim.api.nvim_create_buf(false, true)
@@ -47,7 +47,7 @@ function M.create_notification_pane()
 	end, 5000)
 
 	return win_handle
-end
+end ]]
 
 M.numbers = {
 	[[
@@ -112,7 +112,7 @@ M.numbers = {
   ]],
 }
 
-function M.identify_tab_panes()
+--[[ function M.identify_tab_panes()
 	local wins = vim.api.nvim_tabpage_list_wins(0)
 
 	local focusable_wins = vim

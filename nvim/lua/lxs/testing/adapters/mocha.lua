@@ -1,3 +1,4 @@
+local async = require('neotest.async')
 local lib = require('neotest.lib')
 
 local neotest_mocha = {}
@@ -116,26 +117,39 @@ function neotest_mocha.Adapter.is_test_file(file_path)
 
 	-- TODO: Make this configurable and use `unpack` to merge with defaults
 	-- TODO: Consider using `nio` via `neotest.async` to make this asynchronous
+	-- TODO: Consider using `json-stream` reporter - not compatible with `--parallel`
 	local mocha_dry_run_output = vim
 		.system({
 			'npx',
 			'mocha',
+			'--parallel',
 			'--dry-run',
 			'-R=json',
 		}, { text = true })
 		:wait()
 
-	--[[ local suffixes = vim
-		.iter(file_extensions)
-		:map(function(ext)
-			return vim.iter(testing_namespaces):map(function(ns)
-				return string.format('.%s.%s$', ns, ext)
-			end)
-		end)
-		:flatten() ]]
+	if mocha_dry_run_output.code ~= 0 then
+		vim.print('Failed to run mocha --dry-run')
+		vim.print(mocha_dry_run_output.stderr)
 
-	return suffixes:any(function(suffix)
-		return file_path:find(suffix) ~= nil
+		local suffixes = vim
+			.iter(file_extensions)
+			:map(function(ext)
+				return vim.iter(testing_namespaces):map(function(ns)
+					return string.format('.%s.%s$', ns, ext)
+				end)
+			end)
+			:flatten()
+
+		return suffixes:any(function(suffix)
+			return file_path:find(suffix) ~= nil
+		end)
+	end
+
+	local mocha_dry_run_json = vim.json.decode(mocha_dry_run_output.stdout)
+
+	return vim.iter(mocha_dry_run_json.tests):any(function(tests)
+		return vim.fs.normalize(tests.file) == vim.fs.normalize(file_path)
 	end)
 end
 
@@ -147,28 +161,18 @@ function neotest_mocha.Adapter.discover_positions(file_path)
 	local query = [[
     ; -- Namespaces --
     ; Matches: `describe('context', () => {})`
-    ((call_expression
-      function: (identifier) @func_name (#eq? @func_name "describe")
-      arguments: (arguments (string (string_fragment) @namespace.name) (arrow_function))
-    )) @namespace.definition
     ; Matches: `describe('context', function() {})`
     ((call_expression
       function: (identifier) @func_name (#eq? @func_name "describe")
-      arguments: (arguments (string (string_fragment) @namespace.name) (function_expression))
+      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function) (function_expression)])
     )) @namespace.definition
     ; Matches: `describe.only('context', () => {})`
-    ((call_expression
-      function: (member_expression
-        object: (identifier) @func_name (#any-of? @func_name "describe")
-      )
-      arguments: (arguments (string (string_fragment) @namespace.name) (arrow_function))
-    )) @namespace.definition
     ; Matches: `describe.only('context', function() {})`
     ((call_expression
       function: (member_expression
         object: (identifier) @func_name (#any-of? @func_name "describe")
       )
-      arguments: (arguments (string (string_fragment) @namespace.name) (function_expression))
+      arguments: (arguments (string (string_fragment) @namespace.name) [(arrow_function) (function_expression)])
     )) @namespace.definition
 
     ; -- Tests --
@@ -185,11 +189,23 @@ function neotest_mocha.Adapter.discover_positions(file_path)
       arguments: (arguments (string (string_fragment) @test.name) [(arrow_function) (function_expression)])
     )) @test.definition
   ]]
+
+	return lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
 end
 
 ---@param args neotest.RunArgs
 ---@return nil | neotest.RunSpec | neotest.RunSpec[]
-function neotest_mocha.Adapter.build_spec(args) end
+function neotest_mocha.Adapter.build_spec(args)
+	local results_path = async.fn.tempname() .. '.json'
+	local tree = args.tree
+
+	if not tree then
+		return
+	end
+
+	local pos = args.tree:data()
+	local testNamePattern = "'.*'"
+end
 
 ---@async
 ---@param spec neotest.RunSpec
