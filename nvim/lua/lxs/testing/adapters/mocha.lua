@@ -18,12 +18,7 @@ local configuration_files = {
 	'.mocharc.jsonc',
 }
 
----Find the project root directory given a current directory to work from.
----Should no root be found, the adapter can still be used in a non-project context if a test file matches.
----@async
----@param dir string @Directory to treat as cwd
----@return string | nil @Absolute root dir of test suite
-function neotest_mocha.Adapter.root(dir)
+local function find_nearest_configuration_file(dir)
 	local configuration_file = vim.fs.find(configuration_files, {
 		limit = 1,
 		path = dir,
@@ -36,18 +31,34 @@ function neotest_mocha.Adapter.root(dir)
 		type = 'file',
 	})[1]
 
-	if configuration_file ~= nil then
-		return vim.fs.dirname(configuration_file)
-	end
+	return configuration_file
+end
 
-	local package_root = vim.fs.find('package.json', {
+local find_package_root = function(dir)
+	return vim.fs.find('package.json', {
 		limit = 1,
 		path = dir,
 		stop = vim.loop.os_homedir(),
 		type = 'file',
 		upward = true,
 	})[1]
+end
 
+---Find the project root directory given a current directory to work from.
+---Should no root be found, the adapter can still be used in a non-project context if a test file matches.
+---@async
+---@param dir string @Directory to treat as cwd
+---@return string | nil @Absolute root dir of test suite
+function neotest_mocha.Adapter.root(dir)
+	local configuration_file = find_nearest_configuration_file(dir)
+
+	if configuration_file ~= nil then
+		return vim.fs.dirname(configuration_file)
+	end
+
+	vim.notify_once('No mocha configuration file found', vim.log.levels.DEBUG)
+
+	local package_root = find_package_root(dir)
 	local ok, package = pcall(lib.files.read, package_root)
 
 	if not ok then
@@ -193,6 +204,55 @@ function neotest_mocha.Adapter.discover_positions(file_path)
 	return lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
 end
 
+local function sanitise_test_name(name)
+	return name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
+end
+
+-- Note: this function is almost entirely taken from https://github.com/nvim-neotest/neotest/blob/master/lua/neotest/lib/file/init.lua#L93-L144
+-- The only difference is that neotest function reads only new lines and this one reads and returns the whole file
+--- Streams data from a file, watching for new data over time
+--- Each time new data arrives function reads whole file and returns its content
+--- Useful for watching a file which is written to by another process.
+---@async
+---@param file_path string
+---@return (fun(): string, fun()) Iterator and callback to stop streaming
+local function stream(file_path)
+	local queue = async.control.queue()
+	local read_semaphore = async.control.semaphore(1)
+
+	local open_err, file_fd = async.uv.fs_open(file_path, 'r', 438)
+	assert(not open_err, open_err)
+
+	local exit_future = async.control.future()
+	local read = function()
+		read_semaphore.with(function()
+			local stat_err, stat = async.uv.fs_fstat(file_fd)
+			assert(not stat_err, stat_err)
+			local read_err, data = async.uv.fs_read(file_fd, stat.size, 0)
+			assert(not read_err, read_err)
+			queue.put(data)
+		end)
+	end
+
+	read()
+	local event = vim.loop.new_fs_event()
+	event:start(file_path, {}, function(err, _, _)
+		assert(not err)
+		async.run(read)
+	end)
+
+	local function stop()
+		exit_future.wait()
+		event:stop()
+		local close_err = async.uv.fs_close(file_fd)
+		assert(not close_err, close_err)
+	end
+
+	async.run(stop)
+
+	return queue.get, exit_future.set
+end
+
 ---@param args neotest.RunArgs
 ---@return nil | neotest.RunSpec | neotest.RunSpec[]
 function neotest_mocha.Adapter.build_spec(args)
@@ -205,6 +265,72 @@ function neotest_mocha.Adapter.build_spec(args)
 
 	local pos = args.tree:data()
 	local testNamePattern = "'.*'"
+
+	vim.print({ pos = pos })
+	if pos.type == 'test' or pos.type == 'namespace' then
+		-- pos.id in form "path/to/file::Describe text::test text"
+		local testName = string.sub(pos.id, string.find(pos.id, '::') + 2)
+		testName, _ = string.gsub(testName, '::', ' ')
+		testNamePattern = sanitise_test_name(testName)
+		testNamePattern = "'^" .. testNamePattern
+		if pos.type == 'test' then
+			testNamePattern = testNamePattern .. "$'"
+		else
+			testNamePattern = testNamePattern .. "'"
+		end
+	end
+
+	-- TODO: Make this configurable
+	local binary = 'npx mocha'
+	-- TODO: Make this configurable and use a smarter default
+	local config = '.mocharc.js'
+	local command = vim.split(binary, '%s+')
+	if util.path.exists(config) then
+		-- only use config if available
+		table.insert(command, '--config=' .. config)
+	end
+
+	vim.list_extend(command, {
+		'--full-trace',
+		'--reporter=json',
+		'--reporter-option=' .. results_path,
+		'-grep=' .. testNamePattern,
+		'--exit',
+		sanitise_test_name(vim.fs.normalize(pos.path)),
+	})
+
+	local cwd = find_package_root(pos.path)
+
+	-- creating empty file for streaming results
+	lib.files.write(results_path, '')
+	local stream_data, stop_stream = stream(results_path)
+
+	return {
+		command = command,
+		cwd = cwd,
+		context = {
+			results_path = results_path,
+			file = pos.path,
+			stop_stream = stop_stream,
+		},
+		stream = function()
+			return function()
+				local new_results = stream_data()
+				local ok, parsed = pcall(vim.json.decode, new_results, { luanil = { object = true } })
+
+				if not ok or not parsed.testResults then
+					return {}
+				end
+
+				return parsed_json_to_results(parsed, results_path, nil)
+			end
+		end,
+		strategy = getStrategyConfig(
+			get_default_strategy_config(args.strategy, command, cwd) or {},
+			args
+		),
+		env = getEnv(args[2] and args[2].env or {}),
+	}
 end
 
 ---@async
