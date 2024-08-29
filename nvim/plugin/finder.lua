@@ -53,6 +53,8 @@ local function initialise_worksapces()
 	return tbl_extend('error', {
 		['conf'] = fs.normalize(loop.os_homedir() .. '/.config'),
 		['data'] = fs.normalize(loop.os_homedir() .. '/.local/share'),
+		['neovim'] = fs.normalize(loop.os_homedir() .. '/Development/nix-neovim'),
+		['system'] = fs.normalize(loop.os_homedir() .. '/.config/nix-darwin'),
 	}, projects)
 end
 
@@ -227,9 +229,12 @@ telescope.setup({
 			},
 		},
 		frecency = {
+			auto_validate = true,
+			db_safe_mode = false,
 			default_workspace = 'CWD',
-			show_scores = true,
 			ignore_patterns = { '*/.git/*', '*/node_modules/*', '*/tmp/*' },
+			matcher = 'fuzzy',
+			show_scores = true,
 			workspaces = initialise_worksapces(),
 		},
 		fzy_native = {

@@ -16,7 +16,13 @@ neotest.setup({
 			jestCommand = 'npm run test:integration --if-present -- ',
 			jest_test_discovery = true,
 		}),
-		require('neotest-vim-test')({}),
+		-- require('lxs.testing.adapters.mocha')({
+		-- 	mochaCommand = 'npm run test:local --if-present -- ',
+		-- 	mocha_test_discovery = true,
+		-- }),
+		require('neotest-vim-test')({
+			ignore_filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+		}),
 	},
 	consumers = {
 		overseer = require('neotest.consumers.overseer'),

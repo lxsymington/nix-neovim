@@ -55,11 +55,11 @@ lsp.handlers['window/showMessage'] = function(_, result, ctx)
 	})
 end
 
-local progress_handler = LSP_Progress:new()
+--[[ local progress_handler = LSP_Progress:new()
 lsp.handlers['$/progress'] = function(_, result, context)
 	-- TODO: consume the currently ignored error
 	progress_handler:handle_progress_message(_, result, context)
-end
+end ]]
 
 lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, {
 	border = 'rounded',
