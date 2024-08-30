@@ -2,16 +2,13 @@ local async = require('neotest.async')
 local lib = require('neotest.lib')
 local logger = require('neotest.logging')
 
-local Fn = vim.fn
 local Fs = vim.fs
 local Iter = vim.iter
 local Json = vim.json
+local List_contains = vim.list_contains
 local List_extend = vim.list_extend
-local Log = vim.log
 local Loop = vim.loop
-local Notify_once = vim.notify_once
 local Split = vim.split
-local System = vim.system
 
 ---@class neotest.MochaOptions
 ---@field mochaCommand? string|fun(): string
@@ -64,14 +61,18 @@ end
 ---@param dir string
 ---@return string | nil
 local find_package_root = function(dir)
-	return Fs.find('package.json', {
+	local package_json_ancestor = Fs.find('package.json', {
 		limit = 1,
 		path = dir,
 		stop = Loop.os_homedir(),
 		type = 'file',
 		upward = true,
 	})[1]
+
+	return Fs.dirname(package_json_ancestor) or nil
 end
+
+local getCwd = find_package_root
 
 --- Returns the path to the mocha command to be used.
 ---@param path string the file path to search from
@@ -79,7 +80,7 @@ end
 local function getMochaCommand(path)
 	local package_root = Fs.root(path or 0, function(name, path)
 		local mocha_bin_path = Fs.join(path, 'node_modules', '.bin', 'mocha')
-		return Fn.executable(mocha_bin_path) == 1
+		return async.fn.executable(mocha_bin_path) == 1
 	end)
 
 	return package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha') or 'npx mocha'
@@ -109,17 +110,17 @@ function Adapter.root(dir)
 		return Fs.dirname(configuration_file)
 	end
 
-	Notify_once('No mocha configuration file found', Log.levels.DEBUG)
+	logger.error('No configuration file found')
 
 	local package_root = find_package_root(dir)
 	local ok, package = pcall(lib.files.read, package_root)
 
 	if not ok then
-		error('Failed to read package.json')
+		logger.error('Failed to read package.json')
 		return nil
 	end
 
-	local package_details = Fn.json_decode(package)
+	local package_details = async.fn.json_decode(package)
 	local is_dependency = package_details['dependencies']
 		and package_details['dependencies']['mocha'] ~= nil
 	local is_dev_dependency = package_details['devDependencies']
@@ -142,7 +143,7 @@ end
 ---@return boolean
 function Adapter.filter_dir(name, rel_path, root)
 	local excluded = { 'coverage', 'node_modules' }
-	if vim.list_contains(excluded, name) then
+	if List_contains(excluded, name) then
 		return false
 	end
 
@@ -151,16 +152,8 @@ function Adapter.filter_dir(name, rel_path, root)
 	local parent_iterator = Iter(Fs.parents(full_path))
 
 	local within_excluded_directory = parent_iterator:any(function(parent)
-		return vim.list_contains(excluded, Fs.basename(parent))
+		return List_contains(excluded, Fs.basename(parent))
 	end)
-
-	vim.print(vim.inspect({
-		name = name,
-		rel_path = rel_path,
-		root = root,
-		full_path = full_path,
-		within_excluded_directory = within_excluded_directory,
-	}))
 
 	return not within_excluded_directory
 end
@@ -180,6 +173,64 @@ local testing_namespaces = {
 	'test',
 }
 
+--- A cache of test files for a project
+---@class ProjectTestCache
+---@field code? integer the exit code of the last test discovery command
+---@field files? table<string> a list table of file paths that are test files within the project
+local project_tests = setmetatable({}, {
+	---The __index metamethod is used to lazily load the test files for a project
+	---@async
+	---@param self ProjectTestCache the project test cache
+	---@param key string the key being accessed on the cache
+	__index = function(self, key)
+		-- TODO: invalidate this cache on a file system event within the project
+		local actual = rawget(self, key)
+
+		if List_contains({ 'code', 'files' }, key) and actual == nil then
+			-- TODO: Make this configurable and use `unpack` to merge with defaults
+			-- TODO: Cache this, it's expensive and run for every file in the project
+			local mocha_dry_run_task = async.process.run({
+				cmd = 'npx',
+				args = {
+					'mocha',
+					'--',
+					'--parallel',
+					'--dry-run',
+					'-R=json',
+				},
+			})
+
+			local mocha_dry_run_output = mocha_dry_run_task.stdout.read()
+			local mocha_dry_run_exit_code = mocha_dry_run_task.result(function()
+				return true
+			end)
+
+			rawset(self, 'code', mocha_dry_run_exit_code)
+
+			if mocha_dry_run_exit_code ~= 0 then
+				return rawget(self, key)
+			end
+
+			local ok, mocha_dry_run_json = pcall(Json.decode, mocha_dry_run_output)
+
+			local test_iterator = Iter(mocha_dry_run_json.tests)
+			local test_files = test_iterator:fold({}, function(dictionary, test)
+				dictionary[Fs.normalize(test.file)] = test
+				return dictionary
+			end)
+
+			rawset(self, 'files', test_files)
+
+			if not ok then
+				rawset(self, 'code', 1)
+				return rawget(self, key)
+			end
+		end
+
+		return actual
+	end,
+})
+
 ---Determines whether the provided file is a test file associated with the adapter.
 ---This should only return a positive result for mocha test files.
 ---@async
@@ -190,19 +241,7 @@ function Adapter.is_test_file(file_path)
 		return false
 	end
 
-	-- TODO: Make this configurable and use `unpack` to merge with defaults
-	-- TODO: Consider using `nio` via `neotest.async` to make this asynchronous
-	-- TODO: Consider using `json-stream` reporter - not compatible with `--parallel`
-	local mocha_dry_run_output = System({
-		'npx',
-		'mocha',
-		'--',
-		'--parallel',
-		'--dry-run',
-		'-R=json',
-	}, { text = true }):wait()
-
-	if mocha_dry_run_output.code ~= 0 then
+	if project_tests.code ~= 0 then
 		local suffixes = Iter(file_extensions):map(function(ext)
 			return Iter(testing_namespaces):map(function(ns)
 				return string.format('.%s.%s$', ns, ext)
@@ -214,16 +253,9 @@ function Adapter.is_test_file(file_path)
 		end)
 	end
 
-	local mocha_dry_run_json = Json.decode(mocha_dry_run_output.stdout)
-
 	local normalized_file_path = Fs.normalize(file_path)
-	local test_iterator = Iter(mocha_dry_run_json.tests)
 
-	local file_is_test_file = test_iterator:any(function(tests)
-		return Fs.normalize(tests.file) == normalized_file_path
-	end)
-
-	vim.print({ file_path = file_path, file_is_test_file = file_is_test_file })
+	local file_is_test_file = project_tests.files[normalized_file_path] ~= nil
 
 	return file_is_test_file
 end
@@ -265,18 +297,16 @@ function Adapter.discover_positions(file_path)
     )) @test.definition
   ]]
 
-	local positions = lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
-
-	vim.print(vim.inspect({ positions = positions }))
-
-	return positions
+	return lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
 end
 
 --- Escape special characters in test name for use in a regular expression
 ---@param name string non-sanitised test name
----@return string, integer sanitised test name
+---@return string sanitised test name
 local function sanitise_test_name(name)
-	return name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
+	-- local file_name = name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
+
+	return name
 end
 
 -- Note: this function is almost entirely taken from https://github.com/nvim-neotest/neotest/blob/master/lua/neotest/lib/file/init.lua#L93-L144
@@ -307,8 +337,8 @@ local function stream(file_path)
 
 	read()
 	local event = Loop.new_fs_event()
-	event:start(file_path, {}, function(err, _, _)
-		assert(not err)
+	event:start(file_path, {}, function(err, two, three)
+		assert(not err, err)
 		async.run(read)
 	end)
 
@@ -325,15 +355,14 @@ local function stream(file_path)
 end
 
 --- Accepts parsed JSON data from mocha and returns a table of results
----@param data any not sure yet UPDATE ME
----@param output_file any not sure yet UPDATE ME
+---@param data string parsed JSON data from mocha
+---@param output_file string path to output file
 ---@param consoleOut any not sure yet UPDATE ME
 local function parsed_json_to_results(data, output_file, consoleOut)
 	vim.print(vim.inspect({ data = data, output_file = output_file, consoleOut = consoleOut }))
 end
 
 local function get_default_strategy_config(strategy, command, cwd)
-	vim.print(vim.inspect({ strategy = strategy, command = command, cwd = cwd }))
 	local config = {
 		dap = function()
 			return {
@@ -349,6 +378,7 @@ local function get_default_strategy_config(strategy, command, cwd)
 			}
 		end,
 	}
+
 	if config[strategy] then
 		return config[strategy]()
 	end
@@ -364,8 +394,6 @@ function Adapter.build_spec(args)
 	local results_path = async.fn.tempname() .. '.json'
 	local tree = args.tree
 
-	vim.print(vim.inspect({ args = args }))
-
 	if not tree then
 		return
 	end
@@ -374,6 +402,7 @@ function Adapter.build_spec(args)
 	local testNamePattern = "'.*'"
 
 	vim.print(vim.inspect({ pos = pos }))
+
 	if pos.type == 'test' or pos.type == 'namespace' then
 		-- pos.id in form "path/to/file::Describe text::test text"
 		local testName = string.sub(pos.id, string.find(pos.id, '::') + 2)
@@ -392,7 +421,7 @@ function Adapter.build_spec(args)
 	-- TODO: Make this configurable and use a smarter default
 	local config = '.mocharc.js'
 	local command = Split(binary, '%s+')
-	if Fn.filereadable(Fs.normalize(config)) then
+	if async.fn.filereadable(Fs.normalize(config)) then
 		-- only use config if available
 		table.insert(command, '--config=' .. config)
 	end
@@ -401,16 +430,18 @@ function Adapter.build_spec(args)
 		'--full-trace',
 		'--reporter=json',
 		'--reporter-option=' .. results_path,
-		'-grep=' .. testNamePattern,
+		'--grep=' .. testNamePattern,
 		'--exit',
 		sanitise_test_name(Fs.normalize(pos.path)),
 	})
 
-	local cwd = find_package_root(pos.path)
+	local cwd = getCwd(pos.path)
 
 	-- creating empty file for streaming results
 	lib.files.write(results_path, '')
 	local stream_data, stop_stream = stream(results_path)
+
+	vim.print(vim.inspect({ command = command, cwd = cwd, results_path = results_path }))
 
 	return {
 		command = command,
@@ -424,6 +455,8 @@ function Adapter.build_spec(args)
 			return function()
 				local new_results = stream_data()
 				local ok, parsed = pcall(Json.decode, new_results, { luanil = { object = true } })
+
+				vim.print(vim.inspect({ new_results = new_results, parsed = parsed, ok = ok }))
 
 				if not ok or not parsed.testResults then
 					return {}
@@ -446,6 +479,7 @@ end
 ---@param tree neotest.Tree
 ---@return table<string, neotest.Result>
 function Adapter.results(spec, result, tree)
+	vim.print(vim.inspect({ spec = spec, result = result }))
 	spec.context.stop_stream()
 
 	local output_file = spec.context.results_path
@@ -457,6 +491,8 @@ function Adapter.results(spec, result, tree)
 		logger.error('No test output file found', output_file)
 		return {}
 	end
+
+	vim.print(vim.inspect({ data = data }))
 
 	local ok, parsed = pcall(Json.decode, data, { luanil = { object = true } })
 
