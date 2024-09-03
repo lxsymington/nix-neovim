@@ -58,12 +58,12 @@ end
 ---Search upwards from a directory for a `package.json` file. If found,
 ---return its path. If not found, return `nil`. Stops at the user's home
 ---directory.
----@param dir string
+---@param dir string | nil
 ---@return string | nil
 local find_package_root = function(dir)
 	local package_json_ancestor = Fs.find('package.json', {
 		limit = 1,
-		path = dir,
+		path = dir or vim.loop.cwd(),
 		stop = Loop.os_homedir(),
 		type = 'file',
 		upward = true,
@@ -75,23 +75,23 @@ end
 local getCwd = find_package_root
 
 --- Returns the path to the mocha command to be used.
----@param path string the file path to search from
+---@param path string | nil the file path to search from
 ---@return string | nil the path to the mocha command
 local function getMochaCommand(path)
-	local package_root = Fs.root(path or 0, function(name, path)
-		local mocha_bin_path = Fs.join(path, 'node_modules', '.bin', 'mocha')
+	-- TODO: suppress mocha logs
+	local package_root = Fs.root(path or 0, function(name, currentPath)
+		vim.print(vim.inspect({ name = name, currentPath = currentPath }))
+		local mocha_bin_path = Fs.join(currentPath, 'node_modules', '.bin', 'mocha')
 		return async.fn.executable(mocha_bin_path) == 1
 	end)
 
-	return package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha') or 'npx mocha'
+	vim.print(vim.inspect({ package_root = package_root }))
+
+	return package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha') or 'npx mocha -- '
 end
 
 local function getEnv(specEnv)
 	return specEnv
-end
-
-local function getCwd()
-	return nil
 end
 
 local is_callable = function(obj)
@@ -185,25 +185,32 @@ local project_tests = setmetatable({}, {
 	__index = function(self, key)
 		-- TODO: invalidate this cache on a file system event within the project
 		local actual = rawget(self, key)
+		local cwd = getCwd(vim.loop.cwd())
+		local mocha_cmd = getMochaCommand(cwd)
+		local cmd_elements = Iter(Split(mocha_cmd or '', '%s+', { trimempty = true }))
+		local cmd = cmd_elements:next()
+		local args = cmd_elements:totable()
 
 		if List_contains({ 'code', 'files' }, key) and actual == nil then
 			-- TODO: Make this configurable and use `unpack` to merge with defaults
 			-- TODO: Cache this, it's expensive and run for every file in the project
 			local mocha_dry_run_task = async.process.run({
-				cmd = 'npx',
-				args = {
-					'mocha',
-					'--',
-					'--parallel',
+				cmd = cmd,
+				args = List_extend(args, {
 					'--dry-run',
 					'-R=json',
-				},
+				}),
 			})
 
 			local mocha_dry_run_output = mocha_dry_run_task.stdout.read()
+			local mocha_dry_run_error = mocha_dry_run_task.stderr.read()
 			local mocha_dry_run_exit_code = mocha_dry_run_task.result(function()
 				return true
 			end)
+
+			if mocha_dry_run_error ~= '' then
+				logger.warn('Error received while running mocha dry run', mocha_dry_run_error)
+			end
 
 			rawset(self, 'code', mocha_dry_run_exit_code)
 
@@ -354,12 +361,130 @@ local function stream(file_path)
 	return queue.get, exit_future.set
 end
 
+---@class MochaStatistics
+---@field duration number The total execution time of the test run in milliseconds
+---@field end string A timestamp of when the test run ended
+---@field failures number The number of failed tests
+---@field passes number The number of passed tests
+---@field pending number The number of pending tests
+---@field start string A timestamp of when the test run started
+---@field suites number The total number of suites
+---@field tests number The total number of tests
+
+--[[ {
+      currentRetry = 0,
+      duration = 1,
+      err = {
+        message = "expected undefined to be null",
+        operator = "strictEqual",
+        showDiff = false,
+        stack = "AssertionError: expected undefined to be null\n    at Context.<anonymous> (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validato
+r/src/customValidator/entryLimit.test.ts:2:2026)\n    at callFn (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/ru
+nnable.js:366:21)\n    at Test.Runnable.run (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runnable.js:354:5)\n
+  at Runner.runTest (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:677:10)\n    at /Users/lxs/Developme
+nt/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:800:12\n    at next (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-
+16662-Limit-Validator/node_modules/mocha/lib/runner.js:592:14)\n    at /Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/
+lib/runner.js:602:7\n    at next (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:485:14)\n    at Immedia
+te.<anonymous> (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:570:5)\n    at processImmediate (node:int
+ernal/timers:483:21)"
+      },
+      file = "/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/src/customValidator/entryLimit.test.ts",
+      fullTitle = "Custom Validator – Entry Limit Validator the one where the value is an empty array and the constraints do not specify a lower limit",
+      title = "the one where the value is an empty array and the constraints do not specify a lower limit"
+    } ]]
+
+---@class MochaError
+---@field message string The error message
+---@field operator string The operator that failed
+---@field showDiff boolean Whether to show the diff
+---@field stack string The stack trace of the error
+
+---@class MochaTestPending
+---@field currentRetry number The current retry count
+---@field err table TODO: vim.empty_dict(),
+---@field file string The file path of the test
+---@field fullTitle string The full title of the test including all parent suites
+---@field title string The title of the test
+
+---@class MochaTestResult: MochaTestPending
+---@field duration number The execution time of the test in milliseconds
+---@field speed string The speed of the test
+
+---@class MochaResult
+---@field stats MochaStatistics
+---@field pending MochaTestResult[]
+---@field failures MochaTestResult[]
+---@field tests MochaTestResult[]
+---@field passes MochaTestResult[]
+
 --- Accepts parsed JSON data from mocha and returns a table of results
----@param data string parsed JSON data from mocha
----@param output_file string path to output file
----@param consoleOut any not sure yet UPDATE ME
+---@param data MochaResult parsed JSON data from mocha
+---@param output_file string path to JSON output file
+---@param consoleOut? string path to console output file
 local function parsed_json_to_results(data, output_file, consoleOut)
-	vim.print(vim.inspect({ data = data, output_file = output_file, consoleOut = consoleOut }))
+	vim.print(vim.inspect({
+		stats = data.stats,
+		failures = data.failures,
+		tests = data.tests,
+		output_file = output_file,
+		consoleOut = consoleOut,
+	}))
+
+	local test_iterator = Iter(data.tests)
+
+	--[[ local tests = {}
+
+	for _, testResult in pairs(data.testResults) do
+		local testFn = testResult.name
+		for _, assertionResult in pairs(testResult.assertionResults) do
+			local status, name = assertionResult.status, assertionResult.title
+
+			if name == nil then
+				logger.error('Failed to find parsed test result ', assertionResult)
+				return {}
+			end
+
+			local keyid = testFn
+
+			for _, value in ipairs(assertionResult.ancestorTitles) do
+				keyid = keyid .. '::' .. value
+			end
+
+			keyid = keyid .. '::' .. name
+
+			if status == 'pending' then
+				status = 'skipped'
+			end
+
+			tests[keyid] = {
+				status = status,
+				short = name .. ': ' .. status,
+				output = consoleOut,
+				location = assertionResult.location,
+			}
+
+			if not vim.tbl_isempty(assertionResult.failureMessages) then
+				local errors = {}
+
+				for i, failMessage in ipairs(assertionResult.failureMessages) do
+					local msg = cleanAnsi(failMessage)
+					local errorLine, errorColumn = findErrorPosition(testFn, msg)
+
+					errors[i] = {
+						line = (errorLine or assertionResult.location.line) - 1,
+						column = (errorColumn or 1) - 1,
+						message = msg,
+					}
+
+					tests[keyid].short = tests[keyid].short .. '\n' .. msg
+				end
+
+				tests[keyid].errors = errors
+			end
+		end
+	end
+
+	return tests ]]
 end
 
 local function get_default_strategy_config(strategy, command, cwd)
@@ -401,8 +526,6 @@ function Adapter.build_spec(args)
 	local pos = args.tree:data()
 	local testNamePattern = "'.*'"
 
-	vim.print(vim.inspect({ pos = pos }))
-
 	if pos.type == 'test' or pos.type == 'namespace' then
 		-- pos.id in form "path/to/file::Describe text::test text"
 		local testName = string.sub(pos.id, string.find(pos.id, '::') + 2)
@@ -417,7 +540,7 @@ function Adapter.build_spec(args)
 	end
 
 	-- TODO: Make this configurable
-	local binary = 'npx mocha --'
+	local binary = getMochaCommand()
 	-- TODO: Make this configurable and use a smarter default
 	local config = '.mocharc.js'
 	local command = Split(binary, '%s+')
@@ -429,7 +552,7 @@ function Adapter.build_spec(args)
 	List_extend(command, {
 		'--full-trace',
 		'--reporter=json',
-		'--reporter-option=' .. results_path,
+		string.format('--reporter-option="output=%s"', results_path),
 		'--grep=' .. testNamePattern,
 		'--exit',
 		sanitise_test_name(Fs.normalize(pos.path)),
@@ -440,8 +563,6 @@ function Adapter.build_spec(args)
 	-- creating empty file for streaming results
 	lib.files.write(results_path, '')
 	local stream_data, stop_stream = stream(results_path)
-
-	vim.print(vim.inspect({ command = command, cwd = cwd, results_path = results_path }))
 
 	return {
 		command = command,
@@ -455,8 +576,6 @@ function Adapter.build_spec(args)
 			return function()
 				local new_results = stream_data()
 				local ok, parsed = pcall(Json.decode, new_results, { luanil = { object = true } })
-
-				vim.print(vim.inspect({ new_results = new_results, parsed = parsed, ok = ok }))
 
 				if not ok or not parsed.testResults then
 					return {}
@@ -491,8 +610,6 @@ function Adapter.results(spec, result, tree)
 		logger.error('No test output file found', output_file)
 		return {}
 	end
-
-	vim.print(vim.inspect({ data = data }))
 
 	local ok, parsed = pcall(Json.decode, data, { luanil = { object = true } })
 
