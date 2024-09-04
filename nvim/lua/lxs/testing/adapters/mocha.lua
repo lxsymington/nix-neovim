@@ -304,7 +304,11 @@ function Adapter.discover_positions(file_path)
     )) @test.definition
   ]]
 
-	return lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
+	local positions = lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
+
+	vim.print(vim.inspect({ positions = positions }))
+
+	return positions
 end
 
 --- Escape special characters in test name for use in a regular expression
@@ -371,37 +375,17 @@ end
 ---@field suites number The total number of suites
 ---@field tests number The total number of tests
 
---[[ {
-      currentRetry = 0,
-      duration = 1,
-      err = {
-        message = "expected undefined to be null",
-        operator = "strictEqual",
-        showDiff = false,
-        stack = "AssertionError: expected undefined to be null\n    at Context.<anonymous> (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validato
-r/src/customValidator/entryLimit.test.ts:2:2026)\n    at callFn (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/ru
-nnable.js:366:21)\n    at Test.Runnable.run (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runnable.js:354:5)\n
-  at Runner.runTest (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:677:10)\n    at /Users/lxs/Developme
-nt/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:800:12\n    at next (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-
-16662-Limit-Validator/node_modules/mocha/lib/runner.js:592:14)\n    at /Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/
-lib/runner.js:602:7\n    at next (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:485:14)\n    at Immedia
-te.<anonymous> (/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/node_modules/mocha/lib/runner.js:570:5)\n    at processImmediate (node:int
-ernal/timers:483:21)"
-      },
-      file = "/Users/lxs/Development/Seccl/validation-utils.git/SECCL-16662-Limit-Validator/src/customValidator/entryLimit.test.ts",
-      fullTitle = "Custom Validator – Entry Limit Validator the one where the value is an empty array and the constraints do not specify a lower limit",
-      title = "the one where the value is an empty array and the constraints do not specify a lower limit"
-    } ]]
-
 ---@class MochaError
 ---@field message string The error message
 ---@field operator string The operator that failed
 ---@field showDiff boolean Whether to show the diff
 ---@field stack string The stack trace of the error
+---@field actual? string The actual value
+---@field expected? string The expected value
 
 ---@class MochaTestPending
 ---@field currentRetry number The current retry count
----@field err table TODO: vim.empty_dict(),
+---@field err table vim.empty_dict(),
 ---@field file string The file path of the test
 ---@field fullTitle string The full title of the test including all parent suites
 ---@field title string The title of the test
@@ -410,17 +394,25 @@ ernal/timers:483:21)"
 ---@field duration number The execution time of the test in milliseconds
 ---@field speed string The speed of the test
 
+---@class MochaTestPass: MochaTestResult
+
+---@class MochaTestFail: MochaTestResult
+---@field err MochaError The error that caused the test to fail
+
+---@class MochaTest: MochaTestPass | MochaTestFail | MochaTestPending
+
 ---@class MochaResult
 ---@field stats MochaStatistics
----@field pending MochaTestResult[]
----@field failures MochaTestResult[]
----@field tests MochaTestResult[]
----@field passes MochaTestResult[]
+---@field pending MochaTestPending[]
+---@field failures MochaTestFail[]
+---@field tests MochaTest[]
+---@field passes MochaTestPass[]
 
 --- Accepts parsed JSON data from mocha and returns a table of results
 ---@param data MochaResult parsed JSON data from mocha
 ---@param output_file string path to JSON output file
 ---@param consoleOut? string path to console output file
+---@return table<string, neotest.Result>
 local function parsed_json_to_results(data, output_file, consoleOut)
 	vim.print(vim.inspect({
 		stats = data.stats,
@@ -430,7 +422,37 @@ local function parsed_json_to_results(data, output_file, consoleOut)
 		consoleOut = consoleOut,
 	}))
 
-	local test_iterator = Iter(data.tests)
+	local pending_test_iterator = Iter(data.pending)
+	local failing_test_iterator = Iter(data.failures)
+	local passing_test_iterator = Iter(data.passes)
+
+	local pending_results = pending_test_iterator:fold({}, function(result_dictionary, test)
+		result_dictionary[test.fullTitle] = {
+			status = 'skipped',
+			name = test.title,
+		}
+
+		return result_dictionary
+	end)
+
+	local failing_results = failing_test_iterator:fold({}, function(result_dictionary, test)
+		local diff = test.err.showDiff and vim.diff(test.err.actual, test.err.expected, {}) or nil
+		result_dictionary[test.fullTitle] = {
+			status = 'failed',
+			name = test.title,
+		}
+
+		return result_dictionary
+	end)
+
+	local passing_results = passing_test_iterator:fold({}, function(result_dictionary, test)
+		result_dictionary[test.fullTitle] = {
+			status = 'passed',
+			name = test.title,
+		}
+
+		return result_dictionary
+	end)
 
 	--[[ local tests = {}
 
@@ -485,6 +507,8 @@ local function parsed_json_to_results(data, output_file, consoleOut)
 	end
 
 	return tests ]]
+
+	return vim.tbl_extend('force', {}, pending_results, failing_results, passing_results)
 end
 
 local function get_default_strategy_config(strategy, command, cwd)
@@ -525,6 +549,8 @@ function Adapter.build_spec(args)
 
 	local pos = args.tree:data()
 	local testNamePattern = "'.*'"
+
+	vim.print(vim.inspect({ pos = pos, list = tree:to_list() }))
 
 	if pos.type == 'test' or pos.type == 'namespace' then
 		-- pos.id in form "path/to/file::Describe text::test text"
@@ -598,7 +624,6 @@ end
 ---@param tree neotest.Tree
 ---@return table<string, neotest.Result>
 function Adapter.results(spec, result, tree)
-	vim.print(vim.inspect({ spec = spec, result = result }))
 	spec.context.stop_stream()
 
 	local output_file = spec.context.results_path
