@@ -15,7 +15,7 @@ M.lines = {
 	'Some body text for testing purposes.',
 }
 
---[[ M.ui = vim.api.nvim_list_uis()[1]
+M.ui = vim.api.nvim_list_uis()[1]
 
 function M.create_notification_pane()
 	local buf = vim.api.nvim_create_buf(false, true)
@@ -47,9 +47,9 @@ function M.create_notification_pane()
 	end, 5000)
 
 	return win_handle
-end ]]
+end
 
-M.numbers = {
+M.numbers = setmetatable({
 	[[
 ▟▛▀▜▙
 █▝▖ █
@@ -110,9 +110,19 @@ M.numbers = {
 ▝▀▀▀█
 ▜▙▄▟▛
   ]],
-}
+}, {
+	__index = function(self, key)
+		if type(key) ~= 'number' then
+			return nil
+		end
 
---[[ function M.identify_tab_panes()
+		if math.abs(key) < 10 then
+			return rawget(self, math.max(key - 1, 0))
+		end
+	end,
+})
+
+function M.identify_tab_panes()
 	local wins = vim.api.nvim_tabpage_list_wins(0)
 
 	local focusable_wins = vim
@@ -134,7 +144,7 @@ M.numbers = {
 
 		local win_handle = vim.api.nvim_open_win(buf, false, {
 			relative = 'win',
-			border = 'rounded',
+			border = 'none',
 			focusable = false,
 			fixed = true,
 			height = 1,
@@ -150,4 +160,6 @@ M.numbers = {
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end, 5000)
 	end)
-end ]]
+end
+
+return M
