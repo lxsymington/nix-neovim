@@ -39,7 +39,7 @@ local configuration_files = {
 ---`nil`. If a configuration file is found, return its path.
 ---@param dir string
 ---@return string | nil
-local function getMochaConfig(dir)
+local function get_mocha_config(dir)
 	local configuration_file = Fs.find(configuration_files, {
 		limit = 1,
 		path = dir,
@@ -69,25 +69,35 @@ local find_package_root = function(dir)
 		upward = true,
 	})[1]
 
-	return Fs.dirname(package_json_ancestor) or nil
+	local package_root = Fs.dirname(package_json_ancestor) or nil
+
+	return package_root
 end
 
-local getCwd = find_package_root
+local get_cwd = find_package_root
 
 --- Returns the path to the mocha command to be used.
 ---@param path string | nil the file path to search from
 ---@return string | nil the path to the mocha command
-local function getMochaCommand(path)
-	-- TODO: suppress mocha logs
+local function get_mocha_command(path)
 	local package_root = Fs.root(path or 0, function(name, currentPath)
-		vim.print(vim.inspect({ name = name, currentPath = currentPath }))
 		local mocha_bin_path = Fs.join(currentPath, 'node_modules', '.bin', 'mocha')
 		return async.fn.executable(mocha_bin_path) == 1
 	end)
 
-	vim.print(vim.inspect({ package_root = package_root }))
+	local mocha_command = package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha')
+		or 'npx mocha -- '
 
-	return package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha') or 'npx mocha -- '
+	vim.notify(
+		vim.inspect({ mocha_command = mocha_command, package_root = package_root }),
+		vim.log.levels.DEBUG,
+		{
+			title = 'get_mocha_command',
+			render = 'wrapped-compact',
+		}
+	)
+
+	return mocha_command
 end
 
 local function getEnv(specEnv)
@@ -95,7 +105,9 @@ local function getEnv(specEnv)
 end
 
 local is_callable = function(obj)
-	return type(obj) == 'function' or (type(obj) == 'table' and obj.__call)
+	local callable_check = type(obj) == 'function' or (type(obj) == 'table' and obj.__call)
+
+	return callable_check
 end
 
 ---Find the project root directory given a current directory to work from.
@@ -104,7 +116,7 @@ end
 ---@param dir string @Directory to treat as cwd
 ---@return string | nil @Absolute root dir of test suite
 function Adapter.root(dir)
-	local configuration_file = getMochaConfig(dir)
+	local configuration_file = get_mocha_config(dir)
 
 	if configuration_file ~= nil then
 		return Fs.dirname(configuration_file)
@@ -129,6 +141,20 @@ function Adapter.root(dir)
 	local includes_mocha_script = Iter(scripts or {}):any(function(_, script)
 		return script:find('(.*%s)?mocha(%s.*)?') ~= nil
 	end)
+
+	vim.notify(
+		vim.inspect({
+			package_root = package_root,
+			is_dependency = is_dependency,
+			is_dev_dependency = is_dev_dependency,
+			includes_mocha_script = includes_mocha_script,
+		}),
+		vim.log.levels.DEBUG,
+		{
+			title = 'Adapter.root',
+			render = 'wrapped-compact',
+		}
+	)
 
 	if is_dependency or is_dev_dependency or includes_mocha_script then
 		return Fs.dirname(package_root)
@@ -185,8 +211,18 @@ local project_tests = setmetatable({}, {
 	__index = function(self, key)
 		-- TODO: invalidate this cache on a file system event within the project
 		local actual = rawget(self, key)
-		local cwd = getCwd(vim.loop.cwd())
-		local mocha_cmd = getMochaCommand(cwd)
+
+		vim.notify(
+			vim.inspect({ actual = actual or 'no `actual` found', key = key }),
+			vim.log.levels.DEBUG,
+			{
+				title = 'ProjectTestCache.__index',
+				render = 'wrapped-compact',
+			}
+		)
+
+		local cwd = get_cwd(vim.loop.cwd())
+		local mocha_cmd = get_mocha_command(cwd)
 		local cmd_elements = Iter(Split(mocha_cmd or '', '%s+', { trimempty = true }))
 		local cmd = cmd_elements:next()
 		local args = cmd_elements:totable()
@@ -226,6 +262,11 @@ local project_tests = setmetatable({}, {
 				return dictionary
 			end)
 
+			vim.notify(vim.inspect({ test_files = test_files }), vim.log.levels.DEBUG, {
+				title = 'ProjectTestCache.__index',
+				render = 'wrapped-compact',
+			})
+
 			rawset(self, 'files', test_files)
 
 			if not ok then
@@ -248,7 +289,14 @@ function Adapter.is_test_file(file_path)
 		return false
 	end
 
-	if project_tests.code ~= 0 then
+	local code = project_tests.code
+
+	vim.notify(vim.inspect({ code = code or 'no `code` found' }), vim.log.levels.DEBUG, {
+		title = 'Adapter.is_test_file',
+		render = 'wrapped-compact',
+	})
+
+	if code ~= 0 then
 		local suffixes = Iter(file_extensions):map(function(ext)
 			return Iter(testing_namespaces):map(function(ns)
 				return string.format('.%s.%s$', ns, ext)
@@ -261,10 +309,61 @@ function Adapter.is_test_file(file_path)
 	end
 
 	local normalized_file_path = Fs.normalize(file_path)
+	local files = project_tests.files
 
-	local file_is_test_file = project_tests.files[normalized_file_path] ~= nil
+	vim.notify(vim.inspect({ files = files or 'no `files` found' }), vim.log.levels.DEBUG, {
+		title = 'Adapter.is_test_file',
+		render = 'wrapped-compact',
+	})
 
-	return file_is_test_file
+	return files[normalized_file_path] ~= nil
+end
+
+--- A helper function to determine the type of match from a treesitter query
+---@param captured_nodes unknown The nodes captured by the query
+local function get_match_type(captured_nodes)
+	if captured_nodes['test.name'] then
+		return 'test'
+	end
+	if captured_nodes['namespace.name'] then
+		return 'namespace'
+	end
+end
+
+--- Construct position data from a treesitter query match
+---@param file_path string The path to the file
+---@param source string The source code of the match
+---@param captured_nodes unknown The nodes captured by the query
+---@return table<string, unknown> | nil a test position object
+function Adapter.build_position(file_path, source, captured_nodes)
+	local match_type = get_match_type(captured_nodes)
+
+	if not match_type then
+		return
+	end
+
+	-- TODO: Something is wrong here take a look at the neotest logs which can be found at
+	-- `~/.local/state/nvim/neotest.log`
+
+	---@type string
+	local name = vim.treesitter.get_node_text(captured_nodes[match_type .. '.name'], source)
+	local definition = captured_nodes[match_type .. '.definition']
+
+	vim.notify(
+		vim.inspect({ match_type = match_type, name = name, definition = definition }),
+		vim.log.levels.DEBUG,
+		{
+			title = 'build_position',
+			render = 'wrapped-compact',
+		}
+	)
+
+	return {
+		type = match_type,
+		path = file_path,
+		name = name,
+		range = { definition:range() },
+	}
 end
 
 ---Given a file path, parse all the tests within it.
@@ -304,9 +403,11 @@ function Adapter.discover_positions(file_path)
     )) @test.definition
   ]]
 
-	local positions = lib.treesitter.parse_positions(file_path, query, { nested_namespaces = true })
-
-	vim.print(vim.inspect({ positions = positions }))
+	local positions = lib.treesitter.parse_positions(file_path, query, {
+		nested_namespaces = true,
+		nested_tests = false,
+		build_position = require('lxs.testing.adapters.mocha').build_position,
+	})
 
 	return positions
 end
@@ -315,7 +416,11 @@ end
 ---@param name string non-sanitised test name
 ---@return string sanitised test name
 local function sanitise_test_name(name)
-	-- local file_name = name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
+	local file_name = name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
+	vim.notify(vim.inspect({ name = name, file_name = file_name }), vim.log.levels.DEBUG, {
+		title = 'sanitise_test_name',
+		render = 'wrapped-compact',
+	})
 
 	return name
 end
@@ -342,6 +447,12 @@ local function stream(file_path)
 			assert(not stat_err, stat_err)
 			local read_err, data = async.uv.fs_read(file_fd, stat.size, 0)
 			assert(not read_err, read_err)
+
+			vim.notify(vim.inspect({ data = data }), vim.log.levels.DEBUG, {
+				title = 'stream',
+				render = 'wrapped-compact',
+			})
+
 			queue.put(data)
 		end)
 	end
@@ -349,6 +460,10 @@ local function stream(file_path)
 	read()
 	local event = Loop.new_fs_event()
 	event:start(file_path, {}, function(err, two, three)
+		vim.notify(vim.inspect({ err = err, two = two, three = three }), vim.log.levels.DEBUG, {
+			title = 'stream',
+			render = 'wrapped-compact',
+		})
 		assert(not err, err)
 		async.run(read)
 	end)
@@ -414,14 +529,6 @@ end
 ---@param consoleOut? string path to console output file
 ---@return table<string, neotest.Result>
 local function parsed_json_to_results(data, output_file, consoleOut)
-	vim.print(vim.inspect({
-		stats = data.stats,
-		failures = data.failures,
-		tests = data.tests,
-		output_file = output_file,
-		consoleOut = consoleOut,
-	}))
-
 	local pending_test_iterator = Iter(data.pending)
 	local failing_test_iterator = Iter(data.failures)
 	local passing_test_iterator = Iter(data.passes)
@@ -437,6 +544,12 @@ local function parsed_json_to_results(data, output_file, consoleOut)
 
 	local failing_results = failing_test_iterator:fold({}, function(result_dictionary, test)
 		local diff = test.err.showDiff and vim.diff(test.err.actual, test.err.expected, {}) or nil
+
+		vim.notify(vim.inspect({ diff = diff }), vim.log.levels.DEBUG, {
+			title = 'parsed_json_to_results',
+			render = 'wrapped-compact',
+		})
+
 		result_dictionary[test.fullTitle] = {
 			status = 'failed',
 			name = test.title,
@@ -550,7 +663,10 @@ function Adapter.build_spec(args)
 	local pos = args.tree:data()
 	local testNamePattern = "'.*'"
 
-	vim.print(vim.inspect({ pos = pos, list = tree:to_list() }))
+	vim.notify(vim.inspect({ id = pos.id, type = pos.type }), vim.log.levels.DEBUG, {
+		title = 'Adapter.build_spec',
+		render = 'wrapped-compact',
+	})
 
 	if pos.type == 'test' or pos.type == 'namespace' then
 		-- pos.id in form "path/to/file::Describe text::test text"
@@ -566,7 +682,7 @@ function Adapter.build_spec(args)
 	end
 
 	-- TODO: Make this configurable
-	local binary = getMochaCommand()
+	local binary = get_mocha_command()
 	-- TODO: Make this configurable and use a smarter default
 	local config = '.mocharc.js'
 	local command = Split(binary, '%s+')
@@ -584,7 +700,7 @@ function Adapter.build_spec(args)
 		sanitise_test_name(Fs.normalize(pos.path)),
 	})
 
-	local cwd = getCwd(pos.path)
+	local cwd = get_cwd(pos.path)
 
 	-- creating empty file for streaming results
 	lib.files.write(results_path, '')
@@ -602,6 +718,11 @@ function Adapter.build_spec(args)
 			return function()
 				local new_results = stream_data()
 				local ok, parsed = pcall(Json.decode, new_results, { luanil = { object = true } })
+
+				vim.notify(vim.inspect({ ok = ok, parsed = parsed }), vim.log.levels.DEBUG, {
+					title = 'Adapter.build_spec.stream',
+					render = 'wrapped-compact',
+				})
 
 				if not ok or not parsed.testResults then
 					return {}
@@ -653,16 +774,16 @@ setmetatable(Adapter, {
 	---@param opts neotest.MochaOptions
 	__call = function(self, opts)
 		if is_callable(opts.mochaCommand) then
-			getMochaCommand = opts.mochaCommand
+			get_mocha_command = opts.mochaCommand
 		elseif opts.mochaCommand then
-			getMochaCommand = function()
+			get_mocha_command = function()
 				return opts.mochaCommand
 			end
 		end
 		if is_callable(opts.mochaConfigFile) then
-			getMochaConfig = opts.mochaConfigFile
+			get_mocha_config = opts.mochaConfigFile
 		elseif opts.mochaConfigFile then
-			getMochaConfig = function()
+			get_mocha_config = function()
 				return opts.mochaConfigFile
 			end
 		end
@@ -674,9 +795,9 @@ setmetatable(Adapter, {
 			end
 		end
 		if is_callable(opts.cwd) then
-			getCwd = opts.cwd
+			get_cwd = opts.cwd
 		elseif opts.cwd then
-			getCwd = function()
+			get_cwd = function(...)
 				return opts.cwd
 			end
 		end

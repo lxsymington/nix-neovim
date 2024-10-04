@@ -27,8 +27,8 @@ end
 
 function M.start()
 	if fn.executable('tsserver') == 1 then
-		lspconfig.tsserver.setup({
-			name = 'tsserver',
+		lspconfig.ts_ls.setup({
+			name = 'typescript-language-server',
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = function(_, buf)
 				keymap.set('n', 'goi', function()
