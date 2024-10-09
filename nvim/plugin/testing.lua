@@ -48,7 +48,7 @@ neotest.setup({
 	jump = {
 		enabled = true,
 	},
-	log_level = vim.log.levels.INFO,
+	log_level = vim.log.levels.DEBUG,
 	output = {
 		enabled = true,
 		open_on_run = true,

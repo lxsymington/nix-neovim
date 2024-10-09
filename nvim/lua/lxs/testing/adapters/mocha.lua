@@ -139,15 +139,13 @@ function Adapter.root(dir)
 		return script:find('(.*%s)?mocha(%s.*)?') ~= nil
 	end)
 
-	logger.debug(
-		vim.inspect({
-			context = 'Adapter.root',
-			package_root = package_root,
-			is_dependency = is_dependency,
-			is_dev_dependency = is_dev_dependency,
-			includes_mocha_script = includes_mocha_script,
-		})
-	)
+	logger.debug(vim.inspect({
+		context = 'Adapter.root',
+		package_root = package_root,
+		is_dependency = is_dependency,
+		is_dev_dependency = is_dev_dependency,
+		includes_mocha_script = includes_mocha_script,
+	}))
 
 	if is_dependency or is_dev_dependency or includes_mocha_script then
 		return Fs.dirname(package_root)
@@ -205,13 +203,11 @@ local project_tests = setmetatable({}, {
 		-- TODO: invalidate this cache on a file system event within the project
 		local actual = rawget(self, key)
 
-		logger.debug(
-			vim.inspect({
-				context = 'ProjectTestCache.__index',
-			  actual = actual or 'no `actual` found',
-			  key = key
-			}),
-		)
+		logger.debug(vim.inspect({
+			context = 'ProjectTestCache.__index',
+			actual = actual or 'no `actual` found',
+			key = key,
+		}))
 
 		local cwd = get_cwd(vim.loop.cwd())
 		local mocha_cmd = get_mocha_command(cwd)
@@ -254,12 +250,10 @@ local project_tests = setmetatable({}, {
 				return dictionary
 			end)
 
-			logger.debug(
-			  vim.inspect({
+			logger.debug(vim.inspect({
 				context = 'ProjectTestCache.__index',
-			    test_files = test_files
-			  })
-			)
+				test_files = test_files,
+			}))
 
 			rawset(self, 'files', test_files)
 
@@ -285,12 +279,10 @@ function Adapter.is_test_file(file_path)
 
 	local code = project_tests.code
 
-	logger.debug(
-	  vim.inspect({
-      context = 'Adapter.is_test_file',
-	    code = code or 'no `code` found'
-	  })
-	)
+	logger.debug(vim.inspect({
+		context = 'Adapter.is_test_file',
+		code = code or 'no `code` found',
+	}))
 
 	if code ~= 0 then
 		local suffixes = Iter(file_extensions):map(function(ext)
@@ -306,15 +298,14 @@ function Adapter.is_test_file(file_path)
 
 	local normalized_file_path = Fs.normalize(file_path)
 	local files = project_tests.files
+	local file_data = files and files[normalized_file_path] or nil
 
-	logger.debug(
-	  vim.inspect({
-      context = 'Adapter.is_test_file',
-      files = files or 'no `files` found'
-    })
-	)
+	logger.debug(vim.inspect({
+		context = 'Adapter.is_test_file',
+		file_data = file_data,
+	}))
 
-	return files[normalized_file_path] ~= nil
+	return file_data ~= nil
 end
 
 --- A helper function to determine the type of match from a treesitter query
@@ -331,7 +322,7 @@ end
 --- Construct position data from a treesitter query match
 ---@param file_path string The path to the file
 ---@param source string The source code of the match
----@param captured_nodes unknown The nodes captured by the query
+---@param captured_nodes TSNode[] The nodes captured by the query
 ---@return table<string, unknown> | nil a test position object
 function Adapter.build_position(file_path, source, captured_nodes)
 	local match_type = get_match_type(captured_nodes)
@@ -343,18 +334,28 @@ function Adapter.build_position(file_path, source, captured_nodes)
 	-- TODO: Something is wrong here take a look at the neotest logs which can be found at
 	-- `~/.local/state/nvim/neotest.log`
 
+	local name_nodes = captured_nodes[match_type .. '.name']
+
+	logger.debug(vim.inspect({
+		captured_nodes = captured_nodes,
+		test = vim.iter(captured_nodes):each(function(node)
+			logger.debug(vim.inspect(node:inspect()))
+		end),
+		context = 'build_position',
+		file_path = file_path,
+		match_type = match_type,
+		source = source,
+	}))
+
 	---@type string
-	local name = vim.treesitter.get_node_text(captured_nodes[match_type .. '.name'], source)
+	local name = vim.treesitter.get_node_text(name_nodes, source)
 	local definition = captured_nodes[match_type .. '.definition']
 
-	logger.debug(
-		vim.inspect({
-			context = 'build_position',
-		  match_type = match_type,
-		  name = name,
-		  definition = definition
-		})
-	)
+	logger.debug(vim.inspect({
+		context = 'build_position',
+		name = name,
+		definition = definition,
+	}))
 
 	return {
 		type = match_type,
@@ -415,13 +416,11 @@ end
 ---@return string sanitised test name
 local function sanitise_test_name(name)
 	local file_name = name:gsub("([%(%)%[%]%*%+%-%?%$%^%/%'])", '%%\\%1')
-	logger.debug(
-	  vim.inspect({
-      context = 'sanitise_test_name',
-	    name = name,
-	    file_name = file_name
-	  })
-	)
+	logger.debug(vim.inspect({
+		context = 'sanitise_test_name',
+		name = name,
+		file_name = file_name,
+	}))
 
 	return name
 end
@@ -449,12 +448,10 @@ local function stream(file_path)
 			local read_err, data = async.uv.fs_read(file_fd, stat.size, 0)
 			assert(not read_err, read_err)
 
-			logger.debug(
-			  vim.inspect({
-          context = 'stream',
-			    data = data
-			  })
-			)
+			logger.debug(vim.inspect({
+				context = 'stream',
+				data = data,
+			}))
 
 			queue.put(data)
 		end)
@@ -463,14 +460,12 @@ local function stream(file_path)
 	read()
 	local event = Loop.new_fs_event()
 	event:start(file_path, {}, function(err, two, three)
-		logger.debug(
-		  vim.inspect({
-        context = 'stream',
-		    err = err,
-		    two = two,
-		    three = three
-		  })
-		)
+		logger.debug(vim.inspect({
+			context = 'stream',
+			err = err,
+			two = two,
+			three = three,
+		}))
 		assert(not err, err)
 		async.run(read)
 	end)
@@ -552,12 +547,10 @@ local function parsed_json_to_results(data, output_file, consoleOut)
 	local failing_results = failing_test_iterator:fold({}, function(result_dictionary, test)
 		local diff = test.err.showDiff and vim.diff(test.err.actual, test.err.expected, {}) or nil
 
-		logger.debug(
-		  vim.inspect({
-        context = 'parsed_json_to_results',
-		    diff = diff
-		  })
-		)
+		logger.debug(vim.inspect({
+			context = 'parsed_json_to_results',
+			diff = diff,
+		}))
 
 		result_dictionary[test.fullTitle] = {
 			status = 'failed',
@@ -672,13 +665,11 @@ function Adapter.build_spec(args)
 	local pos = args.tree:data()
 	local testNamePattern = "'.*'"
 
-	logger.debug(
-	  vim.inspect({
-      context = 'Adapter.build_spec',
-	    id = pos.id,
-	    type = pos.type
-	  })
-	)
+	logger.debug(vim.inspect({
+		context = 'Adapter.build_spec',
+		id = pos.id,
+		type = pos.type,
+	}))
 
 	if pos.type == 'test' or pos.type == 'namespace' then
 		-- pos.id in form "path/to/file::Describe text::test text"
@@ -731,13 +722,11 @@ function Adapter.build_spec(args)
 				local new_results = stream_data()
 				local ok, parsed = pcall(Json.decode, new_results, { luanil = { object = true } })
 
-				logger.debug(
-				  vim.inspect({
-            context = 'Adapter.build_spec.stream',
-				    ok = ok,
-				    parsed = parsed
-				  })
-				)
+				logger.debug(vim.inspect({
+					context = 'Adapter.build_spec.stream',
+					ok = ok,
+					parsed = parsed,
+				}))
 
 				if not ok or not parsed.testResults then
 					return {}
