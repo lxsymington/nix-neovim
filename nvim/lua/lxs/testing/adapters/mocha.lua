@@ -338,23 +338,25 @@ function Adapter.build_position(file_path, source, captured_nodes)
 
 	logger.debug(vim.inspect({
 		captured_nodes = captured_nodes,
-		test = vim.iter(captured_nodes):each(function(node)
-			logger.debug(vim.inspect(node:inspect()))
-		end),
 		context = 'build_position',
 		file_path = file_path,
 		match_type = match_type,
 		source = source,
 	}))
 
+	vim.iter(captured_nodes):each(function(node)
+		logger.debug(vim.inspect(captured_nodes[node]))
+	end)
+
 	---@type string
-	local name = vim.treesitter.get_node_text(name_nodes, source)
+	local name = 'name' -- vim.treesitter.get_node_text(name_nodes, source)
 	local definition = captured_nodes[match_type .. '.definition']
 
 	logger.debug(vim.inspect({
 		context = 'build_position',
 		name = name,
 		definition = definition,
+		range = definition:range(), -- TODO: this doesn't seem to evaluate properly
 	}))
 
 	return {
