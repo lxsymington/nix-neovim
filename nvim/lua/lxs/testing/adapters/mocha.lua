@@ -222,15 +222,15 @@ local project_tests = setmetatable({}, {
 				'-R=json',
 			})
 
-			-- TODO: just want to see the full cmd this doesn't work
-			local full_cmd = table.insert(vim.iter(dry_run_args):totable(), 1, dry_run_cmd)
-			local full_cmd_iter = Iter(full_cmd)
-			local full_cmd_str = full_cmd_iter:join(' ')
+			local full_cmd = vim.list_extend({ dry_run_cmd }, dry_run_args)
 
 			vim.print(vim.inspect({
 				context = 'ProjectTestCache.__index',
 				full_cmd = full_cmd,
 			}))
+
+			local full_cmd_iter = Iter(full_cmd)
+			local full_cmd_str = full_cmd_iter:join(' ')
 
 			vim.notify(string.format('Running:\n\t%s', full_cmd_str), vim.log.levels.INFO, {
 				title = 'Discovering tests',
