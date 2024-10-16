@@ -63,7 +63,7 @@ end
 local find_package_root = function(dir)
 	local package_json_ancestor = Fs.find('package.json', {
 		limit = 1,
-		path = dir or vim.loop.cwd(),
+		path = dir or Loop.cwd(),
 		stop = Loop.os_homedir(),
 		type = 'file',
 		upward = true,
@@ -81,11 +81,11 @@ local get_cwd = find_package_root
 ---@return string | nil the path to the mocha command
 local function get_mocha_command(path)
 	local package_root = Fs.root(path or 0, function(name, currentPath)
-		local mocha_bin_path = Fs.join(currentPath, 'node_modules', '.bin', 'mocha')
+		local mocha_bin_path = Fs.joinpath(currentPath or Loop.cwd(), 'node_modules', '.bin', 'mocha')
 		return async.fn.executable(mocha_bin_path) == 1
 	end)
 
-	local mocha_command = package_root and Fs.join(package_root, 'node_modules', '.bin', 'mocha')
+	local mocha_command = package_root and Fs.joinpath(package_root, 'node_modules', '.bin', 'mocha')
 		or 'npx mocha -- '
 
 	logger.debug(vim.inspect({
@@ -201,11 +201,11 @@ local project_tests = setmetatable({}, {
 	---@param key string the key being accessed on the cache
 	__index = function(self, key)
 		-- TODO: invalidate this cache on a file system event within the project
-		local actual = rawget(self, key)
+		local initial = rawget(self, key)
 
 		logger.debug(vim.inspect({
 			context = 'ProjectTestCache.__index',
-			actual = actual or 'no `actual` found',
+			actual = initial or 'no `actual` found',
 			key = key,
 		}))
 
@@ -215,15 +215,30 @@ local project_tests = setmetatable({}, {
 		local cmd = cmd_elements:next()
 		local args = cmd_elements:totable()
 
-		if List_contains({ 'code', 'files' }, key) and actual == nil then
-			-- TODO: Make this configurable and use `unpack` to merge with defaults
-			-- TODO: Cache this, it's expensive and run for every file in the project
+		if List_contains({ 'code', 'files' }, key) and initial == nil then
+			local dry_run_cmd = cmd
+			local dry_run_args = List_extend(args, {
+				'--dry-run',
+				'-R=json',
+			})
+
+			-- TODO: just want to see the full cmd this doesn't work
+			local full_cmd = table.insert(vim.iter(dry_run_args):totable(), 1, dry_run_cmd)
+			local full_cmd_iter = Iter(full_cmd)
+			local full_cmd_str = full_cmd_iter:join(' ')
+
+			vim.print(vim.inspect({
+				context = 'ProjectTestCache.__index',
+				full_cmd = full_cmd,
+			}))
+
+			vim.notify(string.format('Running:\n\t%s', full_cmd_str), vim.log.levels.INFO, {
+				title = 'Discovering tests',
+			})
+
 			local mocha_dry_run_task = async.process.run({
-				cmd = cmd,
-				args = List_extend(args, {
-					'--dry-run',
-					'-R=json',
-				}),
+				cmd = dry_run_cmd,
+				args = dry_run_args,
 			})
 
 			local mocha_dry_run_output = mocha_dry_run_task.stdout.read()
@@ -242,7 +257,17 @@ local project_tests = setmetatable({}, {
 				return rawget(self, key)
 			end
 
+			vim.print(vim.inspect({
+				context = 'ProjectTestCache.__index',
+				mocha_dry_run_error = mocha_dry_run_error,
+				mocha_dry_run_output = mocha_dry_run_output,
+			}))
+
 			local ok, mocha_dry_run_json = pcall(Json.decode, mocha_dry_run_output)
+
+			if not ok then
+				error(string.format('Failed to parse mocha dry run output:\n%s', mocha_dry_run_output))
+			end
 
 			local test_iterator = Iter(mocha_dry_run_json.tests)
 			local test_files = test_iterator:fold({}, function(dictionary, test)
@@ -259,11 +284,10 @@ local project_tests = setmetatable({}, {
 
 			if not ok then
 				rawset(self, 'code', 1)
-				return rawget(self, key)
 			end
 		end
 
-		return actual
+		return rawget(self, key)
 	end,
 })
 

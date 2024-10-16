@@ -17,7 +17,7 @@ neotest.setup({
 			jest_test_discovery = true,
 		}),
 		require('lxs.testing.adapters.mocha')({
-			mochaCommand = 'npm run --silent test:local --if-present -- ',
+			-- mochaCommand = 'npm run --silent test:local --if-present -- ',
 			mocha_test_discovery = true,
 		}),
 		require('neotest-vim-test')({
