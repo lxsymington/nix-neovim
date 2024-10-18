@@ -223,12 +223,6 @@ local project_tests = setmetatable({}, {
 			})
 
 			local full_cmd = vim.list_extend({ dry_run_cmd }, dry_run_args)
-
-			vim.print(vim.inspect({
-				context = 'ProjectTestCache.__index',
-				full_cmd = full_cmd,
-			}))
-
 			local full_cmd_iter = Iter(full_cmd)
 			local full_cmd_str = full_cmd_iter:join(' ')
 
@@ -256,12 +250,6 @@ local project_tests = setmetatable({}, {
 			if mocha_dry_run_exit_code ~= 0 then
 				return rawget(self, key)
 			end
-
-			vim.print(vim.inspect({
-				context = 'ProjectTestCache.__index',
-				mocha_dry_run_error = mocha_dry_run_error,
-				mocha_dry_run_output = mocha_dry_run_output,
-			}))
 
 			local ok, mocha_dry_run_json = pcall(Json.decode, mocha_dry_run_output)
 
@@ -368,20 +356,9 @@ function Adapter.build_position(file_path, source, captured_nodes)
 		source = source,
 	}))
 
-	vim.iter(captured_nodes):each(function(node)
-		logger.debug(vim.inspect(captured_nodes[node]))
-	end)
-
 	---@type string
 	local name = 'name' -- vim.treesitter.get_node_text(name_nodes, source)
 	local definition = captured_nodes[match_type .. '.definition']
-
-	logger.debug(vim.inspect({
-		context = 'build_position',
-		name = name,
-		definition = definition,
-		range = definition:range(), -- TODO: this doesn't seem to evaluate properly
-	}))
 
 	return {
 		type = match_type,
@@ -750,11 +727,18 @@ function Adapter.build_spec(args)
 
 				logger.debug(vim.inspect({
 					context = 'Adapter.build_spec.stream',
+					new_results = new_results,
 					ok = ok,
 					parsed = parsed,
 				}))
 
-				if not ok or not parsed.testResults then
+				if not ok or not parsed.tests then
+					logger.error(vim.inspect({
+						context = 'Adapter.build_spec.stream',
+						message = 'Failed to parse test output json',
+						ok = ok,
+						tests = parsed.tests,
+					}))
 					return {}
 				end
 
