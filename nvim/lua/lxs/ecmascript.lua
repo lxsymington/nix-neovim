@@ -5,6 +5,7 @@
 ---@brief ]]
 local lspconfig = require('lspconfig')
 local lint = require('lint')
+local typescript_tools = require('typescript-tools')
 
 local api = vim.api
 local fn = vim.fn
@@ -27,7 +28,7 @@ end
 
 function M.start()
 	if fn.executable('tsserver') == 1 then
-		lspconfig.ts_ls.setup({
+		typescript_tools.setup({
 			name = 'typescript-language-server',
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = function(_, buf)
@@ -35,6 +36,24 @@ function M.start()
 					organize_imports(buf)
 				end, { buffer = buf, desc = 'Organise imports' })
 			end,
+			settings = {
+				expose_as_code_action = 'all',
+				tsserver_file_preferences = {
+					includeInlayParameterNameHints = 'all',
+					includeCompletionsForModuleExports = true,
+					quotePreference = 'auto',
+					includeInlayFunctionParameterTypeHints = true,
+					includeInlayVariableTypeHints = true,
+					includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+					includeInlayPropertyDeclarationTypeHints = true,
+					includeInlayFunctionLikeReturnTypeHints = true,
+					includeInlayEnumMemberValueHints = true,
+				},
+				tsserver_format_options = {
+					allowIncompleteCompletions = false,
+					allowRenameOfImportPath = false,
+				},
+			},
 		})
 	end
 

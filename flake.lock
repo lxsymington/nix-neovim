@@ -950,8 +950,7 @@
         "true-zen": "true-zen",
         "tsc-nvim": "tsc-nvim",
         "tslint": "tslint",
-        "vtsls": "vtsls",
-        "vtsls-nvim": "vtsls-nvim",
+        "typescript-tools": "typescript-tools",
         "which-key": "which-key"
       }
     },
@@ -1081,35 +1080,19 @@
         "type": "github"
       }
     },
-    "vtsls": {
+    "typescript-tools": {
       "flake": false,
       "locked": {
-        "lastModified": 1729475847,
-        "narHash": "sha256-04u9tR7uXfcDdMLBoWdI/cQ9KpmmVfJxgcR3xle/3Rg=",
-        "owner": "yioneko",
-        "repo": "vtsls",
-        "rev": "037c2b615bf4cfe9dd65d9affc7a155fbb2ca255",
+        "lastModified": 1721281922,
+        "narHash": "sha256-8WH/eCff1liDVaezZFvu6RqCtXU4Uwq80BlWiH+tQME=",
+        "owner": "pmizio",
+        "repo": "typescript-tools.nvim",
+        "rev": "f8c2e0b36b651c85f52ad5c5373ff8b07adc15a7",
         "type": "github"
       },
       "original": {
-        "owner": "yioneko",
-        "repo": "vtsls",
-        "type": "github"
-      }
-    },
-    "vtsls-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1719540377,
-        "narHash": "sha256-/y1k7FHfzL1WQNGXcskexEIYCsQjHg03DrMFgZ4nuiI=",
-        "owner": "yioneko",
-        "repo": "nvim-vtsls",
-        "rev": "45c6dfea9f83a126e9bfc5dd63430562b3f8af16",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yioneko",
-        "repo": "nvim-vtsls",
+        "owner": "pmizio",
+        "repo": "typescript-tools.nvim",
         "type": "github"
       }
     },

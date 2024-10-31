@@ -156,13 +156,8 @@
       flake = false;
     };
 
-    vtsls = {
-      url = "github:yioneko/vtsls";
-      flake = false;
-    };
-
-    vtsls-nvim = {
-      url = "github:yioneko/nvim-vtsls";
+    typescript-tools = {
+      url = "github:pmizio/typescript-tools.nvim";
       flake = false;
     };
 

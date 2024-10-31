@@ -23,7 +23,7 @@ function M.start()
 	end
 
 	-- Adapters ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-	dap.adapters.javascript = {
+	local js_adapter = {
 		type = 'server',
 		host = 'localhost',
 		port = '${port}',
@@ -32,6 +32,9 @@ function M.start()
 			args = { '${port}' },
 		},
 	}
+
+	dap.adapters['pwa-node'] = js_adapter
+	dap.adapters.javascript = js_adapter
 
 	-- Display ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	dap.defaults.fallback.terminal_win_cmd = '80vsplit new'
@@ -46,6 +49,8 @@ function M.start()
 	}
 
 	-- Events ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	local keymap_restore = {}
+
 	dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
 		local notif_data = notify_utils.get_notif_data('dap', body.progressId)
 
@@ -81,33 +86,6 @@ function M.start()
 			}
 		)
 		notif_data.spinner = nil
-	end
-
-	dap.listeners.after['event_initialized']['me'] = function()
-		for _, buf in pairs(api.nvim_list_bufs()) do
-			local keymaps = api.nvim_buf_get_keymap(buf, 'n')
-			for _, kmap in pairs(keymaps) do
-				if kmap.lhs == 'K' then
-					table.insert(keymap_restore, kmap)
-					keymap.del('n', 'K', { buffer = buf })
-				end
-			end
-		end
-
-		keymap.set('n', 'K', require('dap.ui.widgets').hover, {
-			silent = true,
-			desc = 'DAP » Hover',
-		})
-	end
-
-	dap.listeners.after['event_terminated']['me'] = function()
-		for _, kmap in pairs(keymap_restore) do
-			keymap.set(kmap.mode, kmap.lhs, kmap.rhs, {
-				buffer = kmap.buffer,
-				silent = kmap.silent == 1,
-			})
-		end
-		keymap_restore = {}
 	end
 
 	-- UI ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
@@ -170,56 +148,62 @@ function M.start()
 end
 
 function M.keymaps()
-	keymap.set('n', '<Leader>D=', function()
-		require('dap').set_breakpoint(nil, nil, fn.input('Log point message: '))
+	keymap.set('n', '<Leader>d=', function()
+		dap.set_breakpoint(nil, nil, fn.input('Log point message: '))
 	end, {
 		desc = 'DAP » Toggle Log Point',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>D?', function()
-		require('dap').set_breakpoint(fn.input('Breakpoint condition: '))
+	keymap.set('n', '<Leader>d?', function()
+		dap.set_breakpoint(fn.input('Breakpoint condition: '))
 	end, {
 		desc = 'DAP » Toggle Conditional Breakpoint',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Db', function()
-		require('dap').toggle_breakpoint()
+	keymap.set('n', '<Leader>db', function()
+		dap.toggle_breakpoint()
 	end, {
 		desc = 'DAP » Toggle Breakpoint',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Dc', function()
-		require('dap').continue()
+	keymap.set('n', '<Leader>dc', function()
+		dap.continue()
 	end, {
 		desc = 'DAP » Launch/Continue',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Di', function()
-		require('dap').step_into()
+	keymap.set('n', '<Leader>di', function()
+		dap.step_into()
 	end, {
 		desc = 'DAP » Step Into',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Dl', function()
-		require('dap').run_last()
+	keymap.set('n', '<Leader>dl', function()
+		dap.run_last()
 	end, {
 		desc = 'DAP » Re-run Last Session',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Do', function()
-		require('dap').step_out()
+	keymap.set('n', '<Leader>do', function()
+		dap.step_out()
 	end, {
 		desc = 'DAP » Step Out',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Dr', function()
-		require('dap').repl.open()
+	keymap.set('n', '<Leader>dr', function()
+		dap.repl.open()
 	end, {
 		desc = 'DAP » Open REPL',
 		silent = true,
 	})
-	keymap.set('n', '<Leader>Ds', function()
-		require('dap').step_over({})
+	keymap.set('n', '<Leader>dp', function()
+		dap.preview()
+	end, {
+		desc = 'DAP » Preview',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>ds', function()
+		dap.step_over({})
 	end, {
 		desc = 'DAP » Step Over',
 		silent = true,

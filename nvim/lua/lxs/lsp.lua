@@ -73,9 +73,16 @@ local function refresh_codeLens(bufnr, client)
 	end
 
 	local group = api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {})
+
 	if
-		client.server_capabilities.codeLensProvider ~= nil
-		and client.server_capabilities.codeLensProvider.resolveProvider
+		(
+			type(client.server_capabilities.codeLensProvider) == 'boolean'
+			and client.server_capabilities.codeLensProvider == true
+		)
+		or (
+			type(client.server_capabilities.codeLensProvider) == 'table'
+			and client.server_capabilities.codeLensProvider.resolveProvider
+		)
 	then
 		api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
 			group = group,

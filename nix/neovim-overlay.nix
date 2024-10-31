@@ -94,7 +94,7 @@ with final.pkgs.lib; let
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
-    # Rainbow brackets | 
+    (mkNvimPlugin inputs.typescript-tools "typescript-tools") # TypeScript tools | httpe://github.com/pmizio/typescript-tools.nvim/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
@@ -181,7 +181,6 @@ with final.pkgs.lib; let
     nodePackages_latest.nodejs
     nodePackages_latest.prettier
     nodePackages_latest.ts-node
-    nodePackages_latest.typescript-language-server
     nodePackages_latest.vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     nodePackages_latest.yaml-language-server
     prettierd
