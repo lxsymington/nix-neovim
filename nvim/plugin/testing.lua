@@ -13,7 +13,7 @@ local keymap = vim.keymap
 neotest.setup({
 	adapters = {
 		require('neotest-jest')({
-			jestCommand = 'npm run --silent test:integration --if-present -- ',
+			-- jestCommand = 'npm run --silent test:integration --if-present -- ',
 			jest_test_discovery = true,
 		}),
 		-- require('lxs.testing.adapters.mocha')({

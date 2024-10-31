@@ -1,6 +1,7 @@
 local dressing = require('dressing')
 local icons = require('mini.icons')
 local hipatterns = require('mini.hipatterns')
+local satellite = require('satellite')
 
 -- Dressing ——————————————————————————————————————————————————————————————————
 dressing.setup({
@@ -22,4 +23,9 @@ hipatterns.setup({
 			inline_text = '⬤  ',
 		}),
 	},
+})
+
+-- Satellite —————————————————————————————————————————————————————————————————
+satellite.setup({
+	current_only = true,
 })
