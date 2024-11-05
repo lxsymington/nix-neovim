@@ -107,6 +107,7 @@ let
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
+    (mkNvimPlugin inputs.neotest-mocha "neotest-mocha") # Mocha support | https://github.com/adrigzr/neotest-mocha/
     {
       plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
       optional = true;

@@ -662,6 +662,22 @@
         "type": "github"
       }
     },
+    "neotest-mocha": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722347316,
+        "narHash": "sha256-Fbe7xuu5Qy6GXKsvQbVcE5oG7dgKjghuX470V7sjmqA=",
+        "owner": "adrigzr",
+        "repo": "neotest-mocha",
+        "rev": "8239023d299a692784176f202f6a4a5e0a698ad2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "adrigzr",
+        "repo": "neotest-mocha",
+        "type": "github"
+      }
+    },
     "neotest-vim-test": {
       "flake": false,
       "locked": {
@@ -936,6 +952,7 @@
         "mini-surround": "mini-surround",
         "neogit": "neogit",
         "neorg-overlay": "neorg-overlay",
+        "neotest-mocha": "neotest-mocha",
         "neotest-vim-test": "neotest-vim-test",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_3",
