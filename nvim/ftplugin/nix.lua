@@ -7,9 +7,19 @@ if vim.fn.executable('nil') ~= 1 then
 	return
 end
 
-lspconfig.nil_ls.setup({
-	name = 'nil_ls',
+lspconfig.nixd.setup({
+	name = 'nixd',
 	capabilities = require('lxs.lsp').make_client_capabilities(),
+	settings = {
+		nixd = {
+			nixpkgs = {
+				expr = 'import <nixpkgs> { }',
+			},
+			formatting = {
+				command = { 'nixfmt' },
+			},
+		},
+	},
 })
 
 lint.linters_by_ft = {

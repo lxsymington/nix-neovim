@@ -200,7 +200,7 @@
           buildInputs = with pkgs; [
             # Tools for Lua and Nix development, useful for editing files in this repo
             lua-language-server
-            nil
+            nixd
             stylua
             luajitPackages.luacheck
           ];

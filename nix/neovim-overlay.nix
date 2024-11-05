@@ -1,6 +1,6 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
 { inputs, system }: final: prev:
-with final.pkgs.lib; let
+let
   inherit (builtins) elem;
 
   pkgs = final;
@@ -176,7 +176,7 @@ with final.pkgs.lib; let
     gopls
     hurl
     lua-language-server
-    nil # Nix LSP
+    nixd
     nodePackages_latest.jsonlint
     nodePackages_latest.nodejs
     nodePackages_latest.prettier
