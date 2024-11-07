@@ -16,6 +16,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    blink-cmp = {
+      url = "github:Saghen/blink.cmp";
+      flake = true;
+    };
+
+    blink-compat = {
+      url = "github:Saghen/blink.compat";
+      flake = false;
+    };
+
     copilot = {
       url = "github:zbirenbaum/copilot.lua";
       flake = false;
@@ -48,6 +58,11 @@
 
     luvit-meta = {
       url = "github:Bilal2453/luvit-meta";
+      flake = false;
+    };
+
+    lazydev = {
+      url = "github:folke/lazydev.nvim";
       flake = false;
     };
 

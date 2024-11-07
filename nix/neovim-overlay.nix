@@ -35,8 +35,10 @@ let
     nvim-treesitter.withAllGrammars
     luasnip # snippets | https://github.com/l3mon4d3/luasnip/
     nvim-lspconfig # LSP client configs | https://github.com/neovim/nvim-lspconfig/
-    # nvim-cmp (autocompletion) and extensions
-    nvim-cmp # https://github.com/hrsh7th/nvim-cmp
+    # Autocompletion and extensions
+    # nvim-cmp # https://github.com/hrsh7th/nvim-cmp
+    inputs.blink-cmp.packages.${system}.blink-cmp # Performant, batteries-included completion plugin for Neovim | https://github.com/Saghen/blink.cmp
+    (mkNvimPlugin inputs.blink-compat "blink-compat") # Compatibility layer for blink-cmp | htttps://github.com/Saghen/blink-compat
     cmp_luasnip # snippets autocompletion extension for nvim-cmp | https://github.com/saadparwaiz1/cmp_luasnip/
     lspkind-nvim # vscode-like LSP pictograms | https://github.com/onsails/lspkind.nvim/
     cmp-nvim-lsp # LSP as completion source | https://github.com/hrsh7th/cmp-nvim-lsp/
@@ -44,10 +46,10 @@ let
     cmp-buffer # current buffer as completion source | https://github.com/hrsh7th/cmp-buffer/
     cmp-path # file paths as completion source | https://github.com/hrsh7th/cmp-path/
     cmp-nvim-lua # neovim lua API as completion source | https://github.com/hrsh7th/cmp-nvim-lua/
-    cmp-cmdline # cmp command line suggestions
-    cmp-cmdline-history # cmp command line history suggestions
+    # cmp-cmdline # cmp command line suggestions
+    # cmp-cmdline-history # cmp command line history suggestions
     cmp-git # cmp git suggestions | https://github.com/petertriho/cmp-git/
-    # ^ nvim-cmp extensions
+    # ^ Autocompletion and extensions
     (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
     # git integration plugins
@@ -145,7 +147,7 @@ let
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
     (mkNvimPlugin inputs.luvit-meta "luvit-meta") # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
-    lazydev-nvim
+    (mkNvimPlugin inputs.lazydev "lazydev")
     # ^ Vim utilities
     # Miscellaneous
     vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
