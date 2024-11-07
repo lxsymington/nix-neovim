@@ -29,7 +29,6 @@ end
 function M.start()
 	if fn.executable('tsserver') == 1 then
 		typescript_tools.setup({
-			name = 'typescript-language-server',
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = function(_, buf)
 				keymap.set('n', 'goi', function()
@@ -38,6 +37,8 @@ function M.start()
 			end,
 			settings = {
 				expose_as_code_action = 'all',
+				separate_diagnostic_server = true,
+				publish_diagnostic_on = 'change',
 				tsserver_file_preferences = {
 					includeInlayParameterNameHints = 'all',
 					includeCompletionsForModuleExports = true,
