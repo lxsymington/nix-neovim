@@ -3,7 +3,7 @@ local lspconfig = require('lspconfig')
 local icons = require('mini.icons')
 
 -- Exit if the language server isn't available
-if vim.fn.executable('nil') ~= 1 then
+if vim.fn.executable('nixd') ~= 1 then
 	return
 end
 
