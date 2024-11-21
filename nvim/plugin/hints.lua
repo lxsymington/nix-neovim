@@ -9,7 +9,7 @@ wk.setup({
 		{ '<leader>g', group = 'Git', mode = 'n', desc = 'Git Client' },
 		{ '<leader>h', group = 'Height', mode = 'n', desc = 'Window Height Operations' },
 		{ '<leader>n', group = 'Notes', mode = 'n', desc = 'Note Taking' },
-		{ '<leader>r', group = 'Refactoring', mode = 'n', desc = 'Refactoring Operations' },
+		{ '<leader>r', group = 'Refactoring', mode = { 'n', 'v' }, desc = 'Refactoring Operations' },
 		{ '<leader>s', group = 'Sessions', mode = 'n', desc = 'Session Operations' },
 		{ '<leader>t', group = 'Testing', mode = 'n', desc = 'Testing Operations' },
 		{ '<leader>w', group = 'Width', mode = 'n', desc = 'Window Width Operations' },
@@ -21,6 +21,9 @@ wk.setup({
 		},
 		{ '<leader>z', group = 'Zen', mode = 'n', desc = 'Focus / Zen mode' },
 		{ '<leader>/', group = 'Search', mode = 'n', desc = 'Telescope Search' },
+		{ 'ga', group = 'AI', mode = { 'n', 'v' }, desc = 'Chat with AI' },
+		{ 'gr', group = 'Refactoring', mode = { 'n', 'v' }, desc = 'Refactoring' },
+		{ 'gw', group = 'Workspace', mode = { 'n', 'v' }, desc = 'Workspace' },
 	},
 	win = {
 		wo = {

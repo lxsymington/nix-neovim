@@ -16,10 +16,3 @@ api.nvim_create_autocmd({
 		lint.try_lint()
 	end,
 })
-
-if vim.fn.executable('biome') == 1 then
-	require('lspconfig').biome.setup({
-		name = 'biome',
-		capabilities = require('lxs.lsp').make_client_capabilities(),
-	})
-end

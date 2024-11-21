@@ -1,26 +1,10 @@
 local lint = require('lint')
-local lspconfig = require('lspconfig')
 local icons = require('mini.icons')
 
 -- Exit if the language server isn't available
 if vim.fn.executable('nixd') ~= 1 then
 	return
 end
-
-lspconfig.nixd.setup({
-	name = 'nixd',
-	capabilities = require('lxs.lsp').make_client_capabilities(),
-	settings = {
-		nixd = {
-			nixpkgs = {
-				expr = 'import <nixpkgs> { }',
-			},
-			formatting = {
-				command = { 'nixfmt' },
-			},
-		},
-	},
-})
 
 lint.linters_by_ft = {
 	nix = { 'deadnix', 'nix', 'statix' },

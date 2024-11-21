@@ -5,8 +5,18 @@
 ---@brief ]]
 
 local api = vim.api
+local bo = vim.bo
+local env = vim.env
+local fn = vim.fn
+local log = vim.log
 local keymap = vim.keymap
 local lsp = vim.lsp
+local notify = vim.notify
+local opt_local = vim.opt_local
+local tbl_deep_extend = vim.tbl_deep_extend
+local tbl_isempty = vim.tbl_isempty
+local uv = vim.uv
+
 local M = {}
 
 ---Gets a 'ClientCapabilities' object, describing the LSP client capabilities
@@ -17,7 +27,7 @@ function M.make_client_capabilities()
 	-- Add com_nvim_lsp capabilities
 	local cmp_lsp = require('cmp_nvim_lsp')
 	local cmp_lsp_capabilities = cmp_lsp.default_capabilities()
-	capabilities = vim.tbl_deep_extend('force', capabilities, cmp_lsp_capabilities)
+	capabilities = tbl_deep_extend('force', capabilities, cmp_lsp_capabilities)
 	-- Add any additional plugin capabilities here.
 	capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 	-- Make sure to follow the instructions provided in the plugin's docs.
@@ -47,14 +57,14 @@ local function document_highlight(bufnr, client)
 end
 
 local function preview_location_callback(_, result)
-	if result == nil or vim.tbl_isempty(result) then
+	if result == nil or tbl_isempty(result) then
 		return nil
 	end
-	vim.print(result)
+
 	local buf, _ = lsp.util.preview_location(result[1], { border = 'rounded' })
 	if buf then
-		local cur_buf = vim.api.nvim_get_current_buf()
-		vim.bo[buf].filetype = vim.bo[cur_buf].filetype
+		local cur_buf = api.nvim_get_current_buf()
+		bo[buf].filetype = bo[cur_buf].filetype
 	end
 end
 
@@ -96,15 +106,12 @@ local function refresh_codeLens(bufnr, client)
 	end
 end
 
-function M.attach(ev)
-	local bufnr = ev.buf
-	local client = lsp.get_client_by_id(ev.data.client_id)
-
-	vim.cmd.setlocal('signcolumn=yes')
-	vim.bo[bufnr].bufhidden = 'hide'
+function M.attach(client, bufnr)
+	opt_local.signcolumn = 'yes'
+	bo[bufnr].bufhidden = 'hide'
 
 	-- Enable completion triggered by <c-x><c-o>
-	vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+	bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 	local function desc(description)
 		return { noremap = true, silent = true, buffer = bufnr, desc = description }
@@ -122,7 +129,9 @@ function M.attach(ev)
 	keymap.set('n', 'gWa', lsp.buf.add_workspace_folder, desc('[lsp] add workspace folder'))
 	keymap.set('n', 'gWr', lsp.buf.remove_workspace_folder, desc('[lsp] remove workspace folder'))
 	keymap.set('n', 'gWl', function()
-		vim.print(lsp.buf.list_workspace_folders())
+		notify(vim.iter(lsp.buf.list_workspace_folders()):join(', '), log.levels.INFO, {
+			title = 'LSP Workspaces',
+		})
 	end, desc('[lsp] list workspace folders'))
 	keymap.set('n', 'gR', lsp.buf.rename, desc('[lsp] rename'))
 	keymap.set('n', 'g#', lsp.buf.document_symbol, desc('[lsp] document symbol'))
@@ -145,6 +154,191 @@ function M.attach(ev)
 	document_highlight(bufnr, client)
 
 	lsp.inlay_hint.enable(true, { bufnr = bufnr })
+end
+
+-- `lspconfig` does not support `ftplugin` files 😢
+function M.setup()
+	local lspconfig = require('lspconfig')
+	local schemastore = require('schemastore')
+
+	-- Check if lua-language-server is available
+	if fn.executable('lua-language-server') == 1 then
+		lspconfig.lua_ls.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			on_init = function(client)
+				local path = client.workspace_folders[1].name
+				if uv.fs_stat(path .. '/.luarc.json') or uv.fs_stat(path .. '/.luarc.jsonc') then
+					return
+				end
+
+				client.config.settings.Lua = tbl_deep_extend('force', client.config.settings.Lua, {
+					runtime = {
+						-- Tell the language server which version of Lua you're using
+						-- (most likely LuaJIT in the case of Neovim)
+						version = 'LuaJIT',
+					},
+					-- Make the server aware of Neovim runtime files
+					workspace = {
+						checkThirdParty = false,
+						library = {
+							env.VIMRUNTIME,
+							-- Depending on the usage, you might want to add additional paths here.
+							'${3rd}/luv/library',
+							'${3rd}/busted/library',
+						},
+					},
+				})
+			end,
+			settings = {
+				Lua = {
+					runtime = {
+						version = 'LuaJIT',
+					},
+					completion = {
+						callSnippet = 'Replace',
+					},
+					diagnostics = {
+						-- Get the language server to recognize the `vim` global, etc.
+						globals = {
+							'vim',
+							'describe',
+							'it',
+							'assert',
+							'stub',
+						},
+						disable = {
+							'duplicate-set-field',
+						},
+					},
+					telemetry = {
+						enable = false,
+					},
+					hint = { -- inlay hints (supported in Neovim >= 0.10)
+						enable = true,
+					},
+				},
+			},
+		})
+	end
+
+	if fn.executable('vscode-eslint-language-server') == 1 then
+		lspconfig.eslint.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+		})
+	end
+
+	if fn.executable('deno') == 1 then
+		lspconfig.denols.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
+		})
+	end
+
+	if fn.executable('tsserver') == 1 and fn.executable('vtsls') == 1 then
+		require('lspconfig.configs').vtsls = require('vtsls').lspconfig -- set default server config, optional but recommended
+
+		-- If the lsp setup is taken over by other plugin, it is the same to call the counterpart setup function
+		require('lspconfig').vtsls.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			settings = {
+				typescript = {
+					inlayHints = {
+						parameterNames = { enabled = 'literals' },
+						parameterTypes = { enabled = true },
+						variableTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+						enumMemberValues = { enabled = true },
+					},
+				},
+			},
+		})
+
+		-- TODO: establish if this is best placed elsewhere
+		lsp.commands['editor.action.showReferences'] = function(command, ctx)
+			local locations = command.arguments[3]
+			local client = lsp.get_client_by_id(ctx.client_id)
+			if locations and #locations > 0 then
+				local items = lsp.util.locations_to_items(locations, client.offset_encoding)
+				fn.setloclist(0, {}, ' ', { title = 'References', items = items, context = ctx })
+				api.nvim_command('lopen')
+			end
+		end
+	end
+
+	if fn.executable('terraform') == 1 then
+		lspconfig.terraform.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+		})
+	end
+
+	if fn.executable('yaml-language-server') == 1 then
+		lspconfig.yamlls.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			settings = {
+				yaml = {
+					schemaStore = {
+						-- You must disable built-in schemaStore support if you want to use
+						-- this plugin and its advanced options like `ignore`.
+						enable = false,
+						-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+						url = '',
+					},
+					schemas = schemastore.yaml.schemas(),
+				},
+			},
+		})
+	end
+
+	if fn.executable('nixd') == 1 then
+		lspconfig.nixd.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			settings = {
+				nixd = {
+					nixpkgs = {
+						expr = 'import <nixpkgs> { }',
+					},
+					formatting = {
+						command = { 'nixfmt' },
+					},
+				},
+			},
+		})
+	end
+
+	if fn.executable('vscode-json-languageserver') == 1 then
+		lspconfig.json.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			settings = {
+				json = {
+					schemas = schemastore.json.schemas(),
+					validate = { enable = true },
+				},
+			},
+		})
+	end
+
+	if fn.executable('ast-grep') == 1 then
+		lspconfig.ast_grep.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+		})
+	end
+
+	if fn.executable('biome') == 1 then
+		require('lspconfig').biome.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+		})
+	end
 end
 
 return M

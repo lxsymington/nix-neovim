@@ -9,3 +9,6 @@ cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 
 -- Compatible ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 opt.compatible = false
+
+-- LSP –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+require('lxs.lsp').setup()

@@ -31,6 +31,11 @@
       flake = false;
     };
 
+    copilot-chat = {
+      url = "github:CopilotC-Nvim/CopilotChat.nvim";
+      flake = false;
+    };
+
     copilot-cmp = {
       url = "github:zbirenbaum/copilot-cmp";
       flake = false;
@@ -106,10 +111,10 @@
       flake = false;
     };
 
-    neorg-overlay = {
+    /* neorg-overlay = {
       url = "github:nvim-neorg/nixpkgs-neorg-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
+    }; */
 
     neotest-mocha = {
       url = "github:adrigzr/neotest-mocha";
@@ -176,8 +181,8 @@
       flake = false;
     };
 
-    typescript-tools = {
-      url = "github:pmizio/typescript-tools.nvim";
+    nvim-vtsls = {
+      url = "github:yioneko/nvim-vtsls";
       flake = false;
     };
 
@@ -187,9 +192,9 @@
     };
   };
 
+  # neorg-overlay
   outputs =
-    inputs @ { neorg-overlay
-    , nixpkgs
+    inputs @ { nixpkgs
     , flake-utils
     , gen-luarc
     , ...
@@ -212,7 +217,7 @@
             # containing the Neovim API all plugins in the workspace directory.
             # The generated file can be symlinked in the devShell's shellHook.
             gen-luarc.overlays.default
-            neorg-overlay.overlays.default
+            # neorg-overlay.overlays.default
           ];
         };
         shell = pkgs.mkShell {
@@ -223,6 +228,7 @@
             nixd
             stylua
             luajitPackages.luacheck
+            luajitPackages.tiktoken_core
           ];
           shellHook = ''
             # symlink the .luarc.json generated in the overlay
@@ -242,7 +248,7 @@
         overlays = {
           default = pkgs.lib.composeManyExtensions [
             gen-luarc.overlays.default
-            neorg-overlay.overlays.default
+            # neorg-overlay.overlays.default
             (neovim-overlay { inherit system; })
           ];
         };

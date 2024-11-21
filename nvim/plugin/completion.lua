@@ -43,7 +43,7 @@ blink.setup({
 				'lazydev',
 				'lsp',
 				'luasnip',
-				'neorg',
+				-- 'neorg',
 				'path',
 				'snippets',
 			},
@@ -54,6 +54,7 @@ blink.setup({
 				module = 'blink.compat.source',
 				enabled = true,
 				max_items = 3,
+				score_offset = -2,
 				opts = {
 					comparator = copilot_comparators.default,
 				},
@@ -74,12 +75,17 @@ blink.setup({
 				name = 'luasnip',
 				module = 'blink.compat.source',
 				enabled = true,
+				score_offset = -3,
+				opts = {
+					use_show_condition = false,
+					show_autosnippets = true,
+				},
 			},
-			neorg = {
+			--[[ neorg = {
 				name = 'neorg',
 				module = 'blink.compat.source',
 				enabled = true,
-			},
+			}, ]]
 			nvim_lua = {
 				name = 'nvim lua',
 				module = 'blink.compat.source',
@@ -201,10 +207,10 @@ blink.setup({
 		},
 		documentation = {
 			auto_show = true,
-			border = 'none',
+			border = 'rounded',
 		},
 		signature_help = {
-			border = 'none',
+			border = 'rounded',
 			scrollbar = true,
 		},
 	},

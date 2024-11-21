@@ -24,11 +24,6 @@ api.nvim_create_autocmd('TermOpen', {
 	end,
 })
 
-vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-	callback = require('lxs.lsp').attach,
-})
-
 -- More examples, disabled by default
 
 -- Toggle between relative/absolute line numbers

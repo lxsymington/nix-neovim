@@ -52,6 +52,7 @@ let
     # ^ Autocompletion and extensions
     (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
+    (mkNvimPlugin inputs.copilot-chat "copilot-chat") # Copilot Chat | https://github.com/CopilotC-Nvim/CopilotChat.nvim
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
     (mkNvimPlugin inputs.neogit "neogit") # Git Client | https://github.com/TimUntersberger/neogit/
@@ -96,7 +97,7 @@ let
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
-    (mkNvimPlugin inputs.typescript-tools "typescript-tools") # TypeScript tools | httpe://github.com/pmizio/typescript-tools.nvim/
+    (mkNvimPlugin inputs.nvim-vtsls "nvim-vtsls") # VTSLS | httpe://github.com/yioneko/nvim-vtsls/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
@@ -150,10 +151,10 @@ let
     (mkNvimPlugin inputs.lazydev "lazydev")
     # ^ Vim utilities
     # Miscellaneous
-    vim-markdown-composer # Markdown support | https://github.com/euclio/vim-markdown-composer/
     (mkNvimPlugin inputs.hurl-nvim "hurl-nvim") # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
-    neorg # Note taking | https://github.com/nvim-neorg/neorg/
-    neorg-telescope # Neorg telescope integration
+    # TODO:  reinstate neorg
+    # neorg # Note taking | https://github.com/nvim-neorg/neorg/
+    # neorg-telescope # Neorg telescope integration
     # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
     # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
     # ^ Miscellaneous
@@ -228,6 +229,7 @@ let
     (vale.withStyles (s: [ s.write-good s.readability s.proselint ]))
     vim-vint # Vim linter
     vscode-js-debug
+    vtsls
   ];
 in
 {
