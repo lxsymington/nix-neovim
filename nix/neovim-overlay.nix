@@ -77,7 +77,7 @@ let
     (mkNvimPlugin inputs.which-key "which-key") # Keybindings helper | https://github.com/folke/which-key.nvim/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
-    marks-nvim # Mark enhancements | https://github.com/chentoast/marks.nvim/
+    (mkNvimPlugin inputs.marks "marks") # Mark enhancements | https://github.com/chentoast/marks.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
@@ -185,7 +185,6 @@ let
     nodePackages_latest.nodejs
     nodePackages_latest.prettier
     nodePackages_latest.ts-node
-    nodePackages_latest.vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     nodePackages_latest.yaml-language-server
     prettierd
     rust-analyzer # Rust LSP
@@ -229,6 +228,7 @@ let
     (vale.withStyles (s: [ s.write-good s.readability s.proselint ]))
     vim-vint # Vim linter
     vscode-js-debug
+    vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     vtsls
   ];
 in

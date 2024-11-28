@@ -71,6 +71,11 @@
       flake = false;
     };
 
+    marks = {
+      url = "github:chentoast/marks.nvim";
+      flake = false;
+    };
+
     markview = {
       url = "github:OXY2DEV/markview.nvim";
       flake = false;

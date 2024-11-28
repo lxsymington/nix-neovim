@@ -3,14 +3,14 @@ local icons = require('mini.icons')
 local hipatterns = require('mini.hipatterns')
 local satellite = require('satellite')
 
--- Dressing ——————————————————————————————————————————————————————————————————
+-- Dressing ————————————————————————————————————————————————————————————————————
 dressing.setup({
 	input = {
 		insert_only = false,
 	},
 })
 
--- Icons —————————————————————————————————————————————————————————————————————
+-- Icons ———————————————————————————————————————————————————————————————————————
 icons.setup()
 icons.mock_nvim_web_devicons()
 
@@ -25,7 +25,7 @@ hipatterns.setup({
 	},
 })
 
--- Satellite —————————————————————————————————————————————————————————————————
+-- Satellite ———————————————————————————————————————————————————————————————————
 satellite.setup({
 	current_only = true,
 })

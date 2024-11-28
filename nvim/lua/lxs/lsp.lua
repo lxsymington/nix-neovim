@@ -271,7 +271,7 @@ function M.setup()
 	end
 
 	if fn.executable('terraform') == 1 then
-		lspconfig.terraform.setup({
+		lspconfig.terraform_lsp.setup({
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = require('lxs.lsp').attach,
 		})
