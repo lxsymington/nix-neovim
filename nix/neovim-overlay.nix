@@ -143,7 +143,7 @@ let
     (mkNvimPlugin inputs.mini-icons "mini-icons") # Additional icons | https://github.com/echasnovski/mini.icons/
     vim-repeat
     (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
-    nvim-bqf # Better quickfix | https://github.com/kevinhwang91/nvim-bqf/
+    (mkNvimPlugin inputs.quicker "quicker")
     # ^ libraries that other plugins depend on
     # Vim utilities
     (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
@@ -174,6 +174,7 @@ let
     #   buildInputs = [ mongodb mongodb-tools mongosh ];
     # })
     deno
+    fd
     fzf
     gh
     gojq

@@ -146,6 +146,11 @@
       flake = false;
     };
 
+    quicker = {
+      url = "github:stevearc/quicker.nvim";
+      flake = false;
+    };
+
     reactive = {
       url = "github:rasulomaroff/reactive.nvim";
       flake = false;
