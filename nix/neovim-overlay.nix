@@ -77,7 +77,6 @@ let
     (mkNvimPlugin inputs.which-key "which-key") # Keybindings helper | https://github.com/folke/which-key.nvim/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
-    (mkNvimPlugin inputs.marks "marks") # Mark enhancements | https://github.com/chentoast/marks.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
@@ -143,6 +142,7 @@ let
     (mkNvimPlugin inputs.mini-icons "mini-icons") # Additional icons | https://github.com/echasnovski/mini.icons/
     vim-repeat
     (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
+    # (mkNvimPlugin inputs.bqf "bqf")
     (mkNvimPlugin inputs.quicker "quicker")
     # ^ libraries that other plugins depend on
     # Vim utilities
@@ -157,6 +157,10 @@ let
     # neorg-telescope # Neorg telescope integration
     # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
     # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
+    {
+      plugin = mkNvimPlugin inputs.csvview "csvview"; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
+      optional = true;
+    }
     # ^ Miscellaneous
   ];
 

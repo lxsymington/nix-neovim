@@ -149,14 +149,18 @@ blink.setup({
 		},
 	},
 	snippets = {
-		expand = luasnip.lsp_expand,
+		expand = function(snippet)
+			luasnip.lsp_expand(snippet)
+		end,
 		active = function(filter)
 			if filter and filter.direction then
 				return luasnip.jumpable(filter.direction)
 			end
 			return luasnip.in_snippet()
 		end,
-		jump = luasnip.jump,
+		jump = function(direction)
+			luasnip.jump(direction)
+		end,
 	},
 	sources = {
 		completion = {
@@ -169,7 +173,6 @@ blink.setup({
 				'luasnip',
 				-- 'neorg',
 				'path',
-				'snippets',
 			},
 		},
 		providers = {
@@ -194,16 +197,6 @@ blink.setup({
 			},
 			lsp = {
 				fallback_for = { 'lazydev' },
-			},
-			luasnip = {
-				name = 'luasnip',
-				module = 'blink.compat.source',
-				enabled = true,
-				score_offset = -3,
-				opts = {
-					use_show_condition = false,
-					show_autosnippets = true,
-				},
 			},
 			--[[ neorg = {
 				name = 'neorg',

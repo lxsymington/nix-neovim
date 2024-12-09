@@ -38,19 +38,8 @@ function M.start()
 
 	-- Display ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	dap.defaults.fallback.terminal_win_cmd = '80vsplit new'
-	dap.defaults.fallback.external_terminal = {
-		command = 'tmux',
-		args = {
-			'split-window',
-			'-h',
-			'-l',
-			'80',
-		},
-	}
-
+	--
 	-- Events ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-	local keymap_restore = {}
-
 	dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
 		local notif_data = notify_utils.get_notif_data('dap', body.progressId)
 

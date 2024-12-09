@@ -26,6 +26,11 @@
       flake = false;
     };
 
+    /* bqf = {
+      url = "github:kevinhwang91/nvim-bqf";
+      flake = false;
+    }; */
+
     copilot = {
       url = "github:zbirenbaum/copilot.lua";
       flake = false;
@@ -38,6 +43,11 @@
 
     copilot-cmp = {
       url = "github:zbirenbaum/copilot-cmp";
+      flake = false;
+    };
+
+    csvview = {
+      url = "github:hat0uma/csvview.nvim";
       flake = false;
     };
 
@@ -68,11 +78,6 @@
 
     lazydev = {
       url = "github:folke/lazydev.nvim";
-      flake = false;
-    };
-
-    marks = {
-      url = "github:chentoast/marks.nvim";
       flake = false;
     };
 
