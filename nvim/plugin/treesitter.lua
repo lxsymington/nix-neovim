@@ -105,4 +105,6 @@ require('treesitter-context').setup({
 	max_lines = 5,
 })
 
+require('treesj').setup({})
+
 pcall(vim.treesitter.language.register, 'terraform', 'terraform-vars')

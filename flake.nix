@@ -176,8 +176,18 @@
       flake = false;
     };
 
+    symbol-usage = {
+      url = "github:Wansmer/symbol-usage.nvim";
+      flake = false;
+    };
+
     telescope-frecency = {
       url = "github:nvim-telescope/telescope-frecency.nvim";
+      flake = false;
+    };
+
+    treesj = {
+      url = "github:Wansmer/treesj";
       flake = false;
     };
 

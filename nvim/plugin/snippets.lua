@@ -229,7 +229,3 @@ ls.add_snippets('all', {
 -- ls.add_snippets('gitcommit', {
 -- 	commit_snippet,
 -- })
-
--- ls.filetype_extend('gitcommit', {
--- 	'NeogitCommitMessage',
--- })

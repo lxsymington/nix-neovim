@@ -87,6 +87,7 @@ let
     (mkNvimPlugin inputs.markview "markview") # Mark view | https://github.com/OXY2DEV/markview.nvim/
     (mkNvimPlugin inputs.helpview "helpview") # help view | https://github.com/OXY2DEV/helpview.nvim/
     (mkNvimPlugin inputs.mini-hipatterns "mini-hipatterns") # highlighting | https://github.com/echasnovski/mini.hipatterns/
+    (mkNvimPlugin inputs.symbol-usage "symbol-usage") # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -102,6 +103,7 @@ let
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
+    (mkNvimPlugin inputs.treesj "treesj") # https://github.com/Wansmer/treesj/
     (mkNvimPlugin inputs.mini-pairs "mini-pairs") # Auto pairs | https://github.com/echasnovski/mini.pairs/
     (mkNvimPlugin inputs.resession "resession") # Session management | https://github.com/stevearc/resession.nvim/
     (mkNvimPlugin inputs.mini-surround "mini-surround") # Surround operator | https://github.com/echasnovski/mini.surround/
@@ -166,6 +168,7 @@ let
 
   extraPackages = with pkgs; [
     # language servers, etc.
+    actionlint
     biome
     # NOTE: it looks as if the nvim-dbee package in `nixpkgs` includes the binary so we don't need
     # to include it as an extra package here.
@@ -194,6 +197,7 @@ let
     prettierd
     rust-analyzer # Rust LSP
     selene # Lua linter
+    shellcheck
     stylua
     terraform
     terraform-ls
