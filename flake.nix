@@ -21,6 +21,11 @@
       flake = true;
     };
 
+    blink-cmp-copilot = {
+      url = "github:giuxtaposition/blink-cmp-copilot";
+      flake = false;
+    };
+
     blink-compat = {
       url = "github:Saghen/blink.compat";
       flake = false;
@@ -71,13 +76,18 @@
       flake = false;
     };
 
-    luvit-meta = {
-      url = "github:Bilal2453/luvit-meta";
+    lazydev = {
+      url = "github:folke/lazydev.nvim";
       flake = false;
     };
 
-    lazydev = {
-      url = "github:folke/lazydev.nvim";
+    luasnip = {
+      url = "github:L3MON4D3/LuaSnip?ref=v2.3.0";
+      flake = false;
+    };
+
+    luvit-meta = {
+      url = "github:Bilal2453/luvit-meta";
       flake = false;
     };
 

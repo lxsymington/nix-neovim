@@ -9,7 +9,7 @@ local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
--- vim.o.completefunc = 'v:lua.require("cmp").complete()'
+vim.o.completefunc = 'v:lua.require("blink").show()'
 
 lspkind.init({
 	symbol_map = {
@@ -27,7 +27,9 @@ blink.setup({
 		},
 		documentation = {
 			auto_show = true,
-			border = 'rounded',
+			window = {
+				border = 'rounded',
+			},
 		},
 		list = {
 			max_items = 30,
@@ -163,28 +165,23 @@ blink.setup({
 		end,
 	},
 	sources = {
-		completion = {
-			enabled_providers = {
-				'buffer',
-				'copilot',
-				'git',
-				'lazydev',
-				'lsp',
-				'luasnip',
-				-- 'neorg',
-				'path',
-			},
+		default = {
+			'buffer',
+			'copilot',
+			'git',
+			'lazydev',
+			'lsp',
+			'luasnip',
+			-- 'neorg',
+			'path',
 		},
 		providers = {
 			copilot = {
 				name = 'copilot',
-				module = 'blink.compat.source',
+				module = 'blink-cmp-copilot',
 				enabled = true,
 				max_items = 3,
 				score_offset = -2,
-				opts = {
-					comparator = copilot_comparators.default,
-				},
 			},
 			git = {
 				name = 'git',
@@ -194,9 +191,7 @@ blink.setup({
 			lazydev = {
 				name = 'LazyDev',
 				module = 'lazydev.integrations.blink',
-			},
-			lsp = {
-				fallback_for = { 'lazydev' },
+				fallbacks = { 'lsp' },
 			},
 			--[[ neorg = {
 				name = 'neorg',
@@ -208,11 +203,6 @@ blink.setup({
 				module = 'blink.compat.source',
 				enabled = true,
 			},
-		},
-	},
-	trigger = {
-		signature_help = {
-			enabled = true,
 		},
 	},
 })

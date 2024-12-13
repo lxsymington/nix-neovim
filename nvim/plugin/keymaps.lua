@@ -219,3 +219,11 @@ keymap.set(
 	cmd.Inspect,
 	{ silent = true, desc = 'Show treesitter highlight information' }
 )
+
+-- TODO: Evaluate the current line
+keymap.set(
+	'n',
+	'<Leader>=',
+	'<cmd>s/.*/\\=luaeval(submatch(0))<CR>',
+	{ silent = true, desc = 'Evaluate the current line' }
+)

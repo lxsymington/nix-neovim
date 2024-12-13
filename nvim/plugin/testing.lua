@@ -20,7 +20,9 @@ neotest.setup({
 		-- 	mochaCommand = 'npm run --silent test:local --if-present -- ',
 		-- 	mocha_test_discovery = true,
 		-- }),
-		require('neotest-mocha')({}),
+		require('neotest-mocha')({
+			command = 'volta run npm run test:local --',
+		}),
 		require('neotest-vim-test')({
 			ignore_filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
 		}),
