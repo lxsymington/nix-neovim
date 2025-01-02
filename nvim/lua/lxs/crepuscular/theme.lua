@@ -227,9 +227,9 @@ local theme = lush(function(injected_functions)
 		FloatBorder({ fg = dim.grey }), -- Border of floating windows.
 		FloatTitle({ fg = bright.grey }), -- Title of floating windows.
 		Pmenu({ fg = dim.grey }), -- Popup menu: Normal item.
-		PmenuSel({ bg = Normal.bg.hue(standard.blue.h), fg = bright.orange, blend = 20 }), -- Popup menu: Selected item.
+		PmenuSel({ bg = Normal.bg.hue(standard.green.h), blend = 30 }), -- Popup menu: Selected item.
 		PmenuKind({ bg = standard.grey, fg = standard.black }), -- Popup menu: Normal item "kind"
-		PmenuKindSel({ bg = bright.green, fg = standard.black }), -- Popup menu: Selected item "kind"
+		PmenuKindSel({ bg = Normal.bg.hue(bright.cyan.h), blend = 30 }), -- Popup menu: Selected item "kind"
 		PmenuExtra({ fg = dim.foreground }), -- Popup menu: Normal item "extra text"
 		PmenuExtraSel({ fg = standard.yellow }), -- Popup menu: Selected item "extra text"
 		PmenuSbar({ fg = Normal.bg.mix(dim.grey, 33) }), -- Popup menu: Scrollbar.

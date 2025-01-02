@@ -1,5 +1,4 @@
 local copilot = require('copilot')
-local copilot_cmp = require('copilot_cmp')
 local chat = require('CopilotChat')
 local actions = require('CopilotChat.actions')
 local select = require('CopilotChat.select')
@@ -16,8 +15,6 @@ copilot.setup({
 	suggestion = { enabled = true, auto_trigger = false },
 	panel = { enabled = true },
 })
-
-copilot_cmp.setup()
 
 -- Copilot Auto Suggestions –––––––––––––––––––––––––––––––––––––––––––––
 g.copilot_no_tab_map = true

@@ -31,10 +31,10 @@
       flake = false;
     };
 
-    /* bqf = {
+    bqf = {
       url = "github:kevinhwang91/nvim-bqf";
       flake = false;
-    }; */
+    };
 
     copilot = {
       url = "github:zbirenbaum/copilot.lua";
@@ -43,11 +43,6 @@
 
     copilot-chat = {
       url = "github:CopilotC-Nvim/CopilotChat.nvim";
-      flake = false;
-    };
-
-    copilot-cmp = {
-      url = "github:zbirenbaum/copilot-cmp";
       flake = false;
     };
 

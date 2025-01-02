@@ -4,7 +4,6 @@ end
 vim.g.did_load_completion_plugin = true
 
 local blink = require('blink.cmp')
-local copilot_comparators = require('copilot_cmp.comparators')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
@@ -18,191 +17,184 @@ lspkind.init({
 	},
 })
 
-blink.setup({
-	completion = {
-		accept = {
-			auto_brackets = {
-				enabled = true,
-			},
-		},
-		documentation = {
-			auto_show = true,
-			window = {
-				border = 'rounded',
-			},
-		},
-		list = {
-			max_items = 30,
-		},
-		menu = {
-			draw = {
-				columns = {
-					{ 'kind_icon' },
-					{ 'label', 'label_description', fill = true, gap = 1 },
-					{ 'kind' },
-					{ 'source_name' },
-				},
-				components = {
-					kind_icon = {
-						ellipsis = false,
-						text = function(ctx)
-							local padding = ctx.self.padding or 1
-							local left_padding, right_padding =
-								type(padding) == 'table' and unpack(ctx.self.padding) or padding, padding
-							return string.format(
-								'%s%s%s%s',
-								string.rep(' ', left_padding),
-								ctx.kind_icon,
-								string.rep(' ', right_padding),
-								ctx.icon_gap
-							)
-						end,
-					},
+--- @type blink.cmp.AppearanceConfig
+local appearance = {
+	nerd_font_variant = 'normal',
+}
 
-					kind = {
-						ellipsis = false,
-						width = { fill = true },
-						text = function(ctx)
-							local padding = ctx.self.padding or 1
-							local left_padding, right_padding =
-								type(padding) == 'table' and unpack(ctx.self.padding) or padding, padding
-							return string.format(
-								'%s%s%s',
-								string.rep(' ', left_padding),
-								ctx.kind,
-								string.rep(' ', right_padding)
-							)
-						end,
-					},
-
-					label = {
-						width = { fill = true, max = 60 },
-						text = function(ctx)
-							local padding = ctx.self.padding or 1
-							local left_padding, right_padding =
-								type(padding) == 'table' and unpack(ctx.self.padding) or padding, padding
-							return string.format(
-								'%s%s%s',
-								string.rep(' ', left_padding),
-								ctx.label,
-								' ',
-								ctx.label_detail,
-								string.rep(' ', right_padding)
-							)
-						end,
-						highlight = function(ctx)
-							-- label and label details
-							local highlights = {
-								{
-									0,
-									#ctx.label,
-									group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel',
-								},
-							}
-							if ctx.label_detail then
-								table.insert(
-									highlights,
-									{ #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' }
-								)
-							end
-
-							-- characters matched on the label by the fuzzy matcher
-							for _, idx in ipairs(ctx.label_matched_indices) do
-								table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
-							end
-
-							return highlights
-						end,
-					},
-
-					label_description = {
-						width = { max = 30 },
-						ellipsis = true,
-						text = function(ctx)
-							local padding = ctx.self.padding or 1
-							local left_padding, right_padding =
-								type(padding) == 'table' and unpack(ctx.self.padding) or padding, padding
-							return string.format(
-								'%s%s%s',
-								string.rep(' ', left_padding),
-								ctx.label_description,
-								string.rep(' ', right_padding)
-							)
-						end,
-					},
-				},
-			},
+--- @type blink.cmp.CompletionConfig
+local completion = {
+	accept = {
+		auto_brackets = {
+			enabled = true,
 		},
 	},
-	fuzzy = {
-		prebuilt_binaries = {
-			download = false,
-		},
-	},
-	keymap = {
-		preset = 'default',
-		['<C-k>'] = { 'snippet_forward', 'fallback' },
-		['<C-j>'] = { 'snippet_backward', 'fallback' },
-	},
-	signature = {
-		enabled = true,
+	documentation = {
+		auto_show = true,
 		window = {
 			border = 'rounded',
 		},
 	},
-	snippets = {
-		expand = function(snippet)
-			luasnip.lsp_expand(snippet)
-		end,
-		active = function(filter)
-			if filter and filter.direction then
-				return luasnip.jumpable(filter.direction)
-			end
-			return luasnip.in_snippet()
-		end,
-		jump = function(direction)
-			luasnip.jump(direction)
-		end,
+	ghost_text = {
+		enabled = true,
 	},
-	sources = {
-		default = {
-			'buffer',
-			'copilot',
-			'git',
-			'lazydev',
-			'lsp',
-			'luasnip',
-			-- 'neorg',
-			'path',
+	keyword = {
+		range = 'full',
+	},
+	list = {
+		max_items = 30,
+	},
+	menu = {
+		draw = {
+			columns = {
+				{ 'kind_icon' },
+				{ 'label', 'label_description', fill = true, gap = 1 },
+				{ 'kind' },
+				{ 'source_name' },
+			},
+			components = {
+				kind_icon = {
+					ellipsis = false,
+					text = function(ctx)
+						local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+						local padding = ctx.self.padding or 1
+						local left_padding, right_padding =
+							unpack(type(padding) == 'table' and padding or { padding, padding })
+						return string.format(
+							'%s%s%s',
+							string.rep(' ', left_padding),
+							kind_icon,
+							string.rep(' ', right_padding)
+						)
+					end,
+					-- Optionally, you may also use the highlights from mini.icons
+					highlight = function(ctx)
+						local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+						return hl
+					end,
+				},
+
+				kind = {
+					ellipsis = false,
+					width = { fill = true },
+					text = function(ctx)
+						local padding = ctx.self.padding or 1
+						local left_padding, right_padding =
+							unpack(type(padding) == 'table' and padding or { padding, padding })
+						return string.format(
+							'%s%s%s',
+							string.rep(' ', left_padding),
+							ctx.kind,
+							string.rep(' ', right_padding)
+						)
+					end,
+					highlight = function(ctx)
+						local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+						return hl
+					end,
+				},
+
+				label = {
+					width = { fill = true, max = 60 },
+				},
+
+				label_description = {
+					width = { max = 30 },
+					ellipsis = true,
+				},
+			},
+			treesitter = { 'lsp' },
 		},
-		providers = {
-			copilot = {
-				name = 'copilot',
-				module = 'blink-cmp-copilot',
-				enabled = true,
-				max_items = 3,
-				score_offset = -2,
-			},
-			git = {
-				name = 'git',
-				module = 'blink.compat.source',
-				enabled = true,
-			},
-			lazydev = {
-				name = 'LazyDev',
-				module = 'lazydev.integrations.blink',
-				fallbacks = { 'lsp' },
-			},
-			--[[ neorg = {
+	},
+}
+
+--- @type blink.cmp.FuzzyConfig
+local fuzzy = {
+	prebuilt_binaries = {
+		download = false,
+	},
+}
+
+--- @type blink.cmp.KeymapConfig
+local keymap = {
+	preset = 'default',
+	['<C-k>'] = { 'snippet_forward', 'fallback' },
+	['<C-j>'] = { 'snippet_backward', 'fallback' },
+}
+
+--- @type blink.cmp.SignatureConfig
+local signature = {
+	enabled = true,
+	window = {
+		border = 'rounded',
+	},
+}
+
+--- @type blink.cmp.SnippetsConfig
+local snippets = {
+	expand = function(snippet)
+		luasnip.lsp_expand(snippet)
+	end,
+	active = function(filter)
+		if filter and filter.direction then
+			return luasnip.jumpable(filter.direction)
+		end
+		return luasnip.in_snippet()
+	end,
+	jump = function(direction)
+		luasnip.jump(direction)
+	end,
+}
+
+--- @type blink.cmp.SourceConfig
+local sources = {
+	default = {
+		'buffer',
+		'copilot',
+		'git',
+		'lazydev',
+		'luasnip',
+		-- 'neorg',
+		'path',
+	},
+	providers = {
+		copilot = {
+			name = 'copilot',
+			module = 'blink-cmp-copilot',
+			enabled = true,
+			max_items = 3,
+			score_offset = 50,
+		},
+		git = {
+			name = 'git',
+			module = 'blink.compat.source',
+			enabled = true,
+			score_offset = 20,
+		},
+		lazydev = {
+			name = 'LazyDev',
+			module = 'lazydev.integrations.blink',
+			fallbacks = { 'lsp' },
+			score_offset = 70,
+		},
+		luasnip = {
+			name = 'LuaSnip',
+			score_offset = 40,
+		},
+		--[[ neorg = {
 				name = 'neorg',
 				module = 'blink.compat.source',
 				enabled = true,
 			}, ]]
-			nvim_lua = {
-				name = 'nvim lua',
-				module = 'blink.compat.source',
-				enabled = true,
-			},
-		},
 	},
+}
+
+blink.setup({
+	appearance = appearance,
+	completion = completion,
+	fuzzy = fuzzy,
+	keymap = keymap,
+	signature = signature,
+	snippets = snippets,
+	sources = sources,
 })

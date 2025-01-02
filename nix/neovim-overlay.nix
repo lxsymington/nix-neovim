@@ -8,9 +8,14 @@ let
   isDarwin = elem system pkgs.lib.platforms.darwin;
 
   # Use this to create a plugin from a flake input
-  mkNvimPlugin = src: pname:
+  mkNvimPlugin =
+    { dependencies ? [ ]
+    , nvimSkipModule ? [ ]
+    , pname
+    , src
+    }:
     pkgs.vimUtils.buildVimPlugin {
-      inherit pname src;
+      inherit dependencies nvimSkipModule pname src;
       version = src.lastModifiedDate;
     };
 
@@ -20,6 +25,198 @@ let
 
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
+
+  luasnip = mkNvimPlugin {
+    pname = "luasnip";
+    src = inputs.luasnip;
+  };
+  copilot = mkNvimPlugin {
+    pname = "copilot";
+    src = inputs.copilot;
+  };
+  blink-compat = mkNvimPlugin {
+    pname = "blink-compat";
+    src = inputs.blink-compat;
+  };
+  blink-cmp-copilot = mkNvimPlugin {
+    dependencies = [ copilot ];
+    pname = "blink-cmp-copilot";
+    src = inputs.blink-cmp-copilot;
+  };
+  copilot-chat = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+      copilot
+      pkgs.vimPlugins.fzf-lua
+      pkgs.vimPlugins.telescope-nvim
+    ];
+    pname = "copilot-chat";
+    src = inputs.copilot-chat;
+  };
+  neogit = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.diffview-nvim
+      pkgs.vimPlugins.plenary-nvim
+      pkgs.vimPlugins.telescope-nvim
+    ];
+    nvimSkipModule = [
+      "neogit.integrations.diffview"
+      "neogit.popups.diff.init"
+      "neogit.popups.diff.actions"
+    ];
+    pname = "neogit";
+    src = inputs.neogit;
+  };
+  gitsigns = mkNvimPlugin {
+    pname = "gitsigns";
+    src = inputs.gitsigns;
+  };
+  mini-git = mkNvimPlugin {
+    pname = "mini-git";
+    src = inputs.mini-git;
+  };
+  telescope-frecency = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    nvimSkipModule = [
+      "frecency.types"
+    ];
+    pname = "telescope-frecency";
+    src = inputs.telescope-frecency;
+  };
+  statuscol = mkNvimPlugin {
+    pname = "statuscol";
+    src = inputs.statuscol;
+  };
+  which-key = mkNvimPlugin {
+    nvimSkipModule = [
+      "which-key.docs"
+    ];
+    pname = "which-key";
+    src = inputs.which-key;
+  };
+  reactive = mkNvimPlugin {
+    pname = "reactive";
+    src = inputs.reactive;
+  };
+  screenkey = mkNvimPlugin {
+    pname = "screenkey";
+    src = inputs.screenkey;
+  };
+  true-zen = mkNvimPlugin {
+    pname = "true-zen";
+    src = inputs.true-zen;
+  };
+  mini-starter = mkNvimPlugin {
+    pname = "mini-starter";
+    src = inputs.mini-starter;
+  };
+  nougat = mkNvimPlugin {
+    pname = "nougat";
+    src = inputs.nougat;
+  };
+  markview = mkNvimPlugin {
+    pname = "markview";
+    src = inputs.markview;
+  };
+  helpview = mkNvimPlugin {
+    pname = "helpview";
+    src = inputs.helpview;
+  };
+  mini-hipatterns = mkNvimPlugin {
+    pname = "mini-hipatterns";
+    src = inputs.mini-hipatterns;
+  };
+  symbol-usage = mkNvimPlugin {
+    pname = "symbol-usage";
+    src = inputs.symbol-usage;
+  };
+  nvim-vtsls = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.nvim-lspconfig
+    ];
+    pname = "nvim-vtsls";
+    src = inputs.nvim-vtsls;
+  };
+  treesj = mkNvimPlugin {
+    pname = "treesj";
+    src = inputs.treesj;
+  };
+  mini-pairs = mkNvimPlugin {
+    pname = "mini-pairs";
+    src = inputs.mini-pairs;
+  };
+  resession = mkNvimPlugin {
+    pname = "resession";
+    src = inputs.resession;
+  };
+  mini-surround = mkNvimPlugin {
+    pname = "mini-surround";
+    src = inputs.mini-surround;
+  };
+  neotest-mocha = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.neotest
+      pkgs.vimPlugins.nvim-nio
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "neotest-mocha";
+    src = inputs.neotest-mocha;
+  };
+  neotest-vim-test = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.neotest
+      pkgs.vimPlugins.nvim-nio
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "neotest-vim-test";
+    src = inputs.neotest-vim-test;
+  };
+  mini-icons = mkNvimPlugin {
+    pname = "mini-icons";
+    src = inputs.mini-icons;
+  };
+  nui = mkNvimPlugin {
+    pname = "nui";
+    src = inputs.nui-nvim;
+  };
+  bqf = mkNvimPlugin {
+    pname = "bqf";
+    src = inputs.bqf;
+  };
+  quicker = mkNvimPlugin {
+    pname = "quicker";
+    src = inputs.quicker;
+  };
+  nvim-luaref = mkNvimPlugin {
+    pname = "nvim-luaref";
+    src = inputs.nvim-luaref;
+  };
+  luvit-meta = mkNvimPlugin {
+    pname = "luvit-meta";
+    src = inputs.luvit-meta;
+  };
+  lazydev = mkNvimPlugin {
+    pname = "lazydev";
+    src = inputs.lazydev;
+  };
+  hurl-nvim = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+      nui
+    ];
+    nvimSkipModule = [
+      "hurl.popup"
+      "hurl.split"
+    ];
+    pname = "hurl-nvim";
+    src = inputs.hurl-nvim;
+  };
+  csvview = mkNvimPlugin {
+    pname = "csvview";
+    src = inputs.csvview;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -33,54 +230,53 @@ let
     # plugins from nixpkgs go in here.
     # https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=vimPlugins
     nvim-treesitter.withAllGrammars
-    (mkNvimPlugin inputs.luasnip "luasnip") # snippets | https://github.com/l3mon4d3/luasnip/
+    luasnip # snippets | https://github.com/l3mon4d3/luasnip/
     nvim-lspconfig # LSP client configs | https://github.com/neovim/nvim-lspconfig/
     # Autocompletion and extensions
     # nvim-cmp # https://github.com/hrsh7th/nvim-cmp
     inputs.blink-cmp.packages.${system}.blink-cmp # Performant, batteries-included completion plugin for Neovim | https://github.com/Saghen/blink.cmp
-    (mkNvimPlugin inputs.blink-cmp-copilot "blink-cmp-copilot") # Copilot source for blink-cmp | htttps://github.com/giuxtaposition/blink-cmp-copilot
-    (mkNvimPlugin inputs.blink-compat "blink-compat") # Compatibility layer for blink-cmp | htttps://github.com/Saghen/blink-compat
+    blink-cmp-copilot # Copilot source for blink-cmp | htttps://github.com/giuxtaposition/blink-cmp-copilot
+    blink-compat # Compatibility layer for blink-cmp | htttps://github.com/Saghen/blink-compat
     lspkind-nvim # vscode-like LSP pictograms | https://github.com/onsails/lspkind.nvim/
     cmp-git # cmp git suggestions | https://github.com/petertriho/cmp-git/
     # ^ Autocompletion and extensions
-    (mkNvimPlugin inputs.copilot "copilot") # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
-    (mkNvimPlugin inputs.copilot-cmp "copilot-cmp") # Copilot Completion | https://github.com/zbirenbaum/copilot.lua
-    (mkNvimPlugin inputs.copilot-chat "copilot-chat") # Copilot Chat | https://github.com/CopilotC-Nvim/CopilotChat.nvim
+    copilot # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
+    copilot-chat # Copilot Chat | https://github.com/CopilotC-Nvim/CopilotChat.nvim
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
-    (mkNvimPlugin inputs.neogit "neogit") # Git Client | https://github.com/TimUntersberger/neogit/
-    (mkNvimPlugin inputs.gitsigns "gitsigns") # Diff Editor Integration | https://github.com/lewis6991/gitsigns.nvim/
-    (mkNvimPlugin inputs.mini-git "mini-git") # Git Editor Integration | https://github.com/echasnovski/mini-git/
+    neogit # Git Client | https://github.com/TimUntersberger/neogit/
+    gitsigns # Diff Editor Integration | https://github.com/lewis6991/gitsigns.nvim/
+    mini-git # Git Editor Integration | https://github.com/echasnovski/mini-git/
     octo-nvim # GitHub Integration | https://github.com/pwntester/octo.nvim/
     # ^ git integration plugins
     # telescope and extensions
     telescope-nvim # https://github.com/nvim-telescope/telescope.nvim/
     telescope-fzy-native-nvim # https://github.com/nvim-telescope/telescope-fzy-native.nvim
-    (mkNvimPlugin inputs.telescope-frecency "telescope-frecency") # https://github.com/nvim-telescope/telescope-frecency.nvim/
+    telescope-frecency # https://github.com/nvim-telescope/telescope-frecency.nvim/
     telescope-symbols-nvim # https://github.com/nvim-telescope/telescope-symbols.nvim/
     # ^ telescope and extensions
     # UI
     lush-nvim # colorscheme | https://github.com/rktjmp/lush.nvim/
     rose-pine # colorscheme | https://github.com/rose-pine/neovim
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
-    (mkNvimPlugin inputs.statuscol "statuscol") # Status column | https://github.com/luukvbaal/statuscol.nvim/
+    statuscol # Status column | https://github.com/luukvbaal/statuscol.nvim/
     nvim-treesitter-context # nvim-treesitter-context
     nvim-notify # Editor notification | https://github.com/rcarriga/nvim-notify/
     dressing-nvim # UI Enhancements | https://github.com/stevearc/dressing.nvim/
-    (mkNvimPlugin inputs.which-key "which-key") # Keybindings helper | https://github.com/folke/which-key.nvim/
+    which-key # Keybindings helper | https://github.com/folke/which-key.nvim/
     todo-comments-nvim # Smarter comments | https://github.com/folke/todo-comments.nvim/
     indent-blankline-nvim # Indent guides | https://github.com/lukas-reineke/indent-blankline.nvim/
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
-    (mkNvimPlugin inputs.reactive "reactive") # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
-    (mkNvimPlugin inputs.screenkey "screenkey") # Screenkey | https://github.com/NStefan002/screenkey.nvim/
+    reactive # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
+    screenkey # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
-    (mkNvimPlugin inputs.true-zen "true-zen") # Zen mode | https://github.com/Pocco81/true-zen.nvim/
-    (mkNvimPlugin inputs.mini-starter "mini-starter") # Dashboard | https://github.com/echasnovski/mini.starter/
-    (mkNvimPlugin inputs.nougat "nougat") # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
-    (mkNvimPlugin inputs.markview "markview") # Mark view | https://github.com/OXY2DEV/markview.nvim/
-    (mkNvimPlugin inputs.helpview "helpview") # help view | https://github.com/OXY2DEV/helpview.nvim/
-    (mkNvimPlugin inputs.mini-hipatterns "mini-hipatterns") # highlighting | https://github.com/echasnovski/mini.hipatterns/
-    (mkNvimPlugin inputs.symbol-usage "symbol-usage") # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
+    true-zen # Zen mode | https://github.com/Pocco81/true-zen.nvim/
+    mini-starter # Dashboard | https://github.com/echasnovski/mini.starter/
+    nougat # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
+    markview # Mark view | https://github.com/OXY2DEV/markview.nvim/
+    helpview # help view | https://github.com/OXY2DEV/helpview.nvim/
+    mini-hipatterns # highlighting | https://github.com/echasnovski/mini.hipatterns/
+    symbol-usage # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -90,27 +286,27 @@ let
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
-    (mkNvimPlugin inputs.nvim-vtsls "nvim-vtsls") # VTSLS | httpe://github.com/yioneko/nvim-vtsls/
+    nvim-vtsls # VTSLS | httpe://github.com/yioneko/nvim-vtsls/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
-    (mkNvimPlugin inputs.treesj "treesj") # https://github.com/Wansmer/treesj/
-    (mkNvimPlugin inputs.mini-pairs "mini-pairs") # Auto pairs | https://github.com/echasnovski/mini.pairs/
-    (mkNvimPlugin inputs.resession "resession") # Session management | https://github.com/stevearc/resession.nvim/
-    (mkNvimPlugin inputs.mini-surround "mini-surround") # Surround operator | https://github.com/echasnovski/mini.surround/
+    treesj # https://github.com/Wansmer/treesj/
+    mini-pairs # Auto pairs | https://github.com/echasnovski/mini.pairs/
+    resession # Session management | https://github.com/stevearc/resession.nvim/
+    mini-surround # Surround operator | https://github.com/echasnovski/mini.surround/
     # ^ navigation/editing enhancement plugins
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
-    (mkNvimPlugin inputs.neotest-mocha "neotest-mocha") # Mocha support | https://github.com/adrigzr/neotest-mocha/
+    neotest-mocha # Mocha support | https://github.com/adrigzr/neotest-mocha/
     {
       plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
       optional = true;
     }
     vim-test # Testing framework | https://github.com/vim-test/vim-test/
-    (mkNvimPlugin inputs.neotest-vim-test "neotest-vim-test") # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
+    neotest-vim-test # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
     {
       plugin = overseer-nvim; # task management | https://github.com/stevearc/overseer.nvim/
       optional = true;
@@ -134,26 +330,26 @@ let
     sqlite-lua
     plenary-nvim
     nvim-web-devicons
-    (mkNvimPlugin inputs.mini-icons "mini-icons") # Additional icons | https://github.com/echasnovski/mini.icons/
+    mini-icons # Additional icons | https://github.com/echasnovski/mini.icons/
     vim-repeat
-    (mkNvimPlugin inputs.nui-nvim "nui") # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
-    # (mkNvimPlugin inputs.bqf "bqf")
-    (mkNvimPlugin inputs.quicker "quicker")
+    nui # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
+    bqf
+    quicker
     # ^ libraries that other plugins depend on
     # Vim utilities
-    (mkNvimPlugin inputs.nvim-luaref "nvim-luaref") # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
-    (mkNvimPlugin inputs.luvit-meta "luvit-meta") # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
-    (mkNvimPlugin inputs.lazydev "lazydev")
+    nvim-luaref # Lua reference for Nvim | https://github.com/milisims/nvim-luaref
+    luvit-meta # vim.uv types | htttps://github.com/Bilal2453/luvit-meta
+    lazydev
     # ^ Vim utilities
     # Miscellaneous
-    (mkNvimPlugin inputs.hurl-nvim "hurl-nvim") # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
+    hurl-nvim # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
     # TODO:  reinstate neorg
     # neorg # Note taking | https://github.com/nvim-neorg/neorg/
     # neorg-telescope # Neorg telescope integration
     # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
     # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
     {
-      plugin = mkNvimPlugin inputs.csvview "csvview"; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
+      plugin = csvview; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
       optional = true;
     }
     # ^ Miscellaneous
