@@ -431,10 +431,9 @@ local theme = lush(function(injected_functions)
 		CmpItemAbbrDeprecated({ fg = bright.yellow, gui = Strikethrough.gui, blend = 20 }),
 		BlinkCmpLabelDeprecated({ fg = bright.yellow, gui = 'strikethrough' }),
 		CmpItemAbbrMatch({ fg = standard.green, gui = Bold.gui, blend = 20 }),
-		-- BlinkCmpMenuSelection({ fg = light.yellow, gui = Bol.gui }),
+		BlinkCmpMenuSelection({ bg = Normal.bg.mix(bright.yellow, 20), gui = Bold.gui }),
 		CmpItemAbbrMatchFuzzy({ fg = dim.orange, gui = Bold.gui, blend = 20 }),
 		BlinkCmpLabelMatch({ fg = standard.green, gui = 'bold' }),
-
 		CmpItemKind({ bg = dim.grey, fg = dim.background, blend = 20 }),
 		BlinkCmpKind({ bg = dim.grey, fg = dim.background, blend = 20 }),
 		CmpItemMenu({ Comment, blend = 20 }),
