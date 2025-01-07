@@ -66,25 +66,33 @@ configs.setup({
 			enable = true,
 			set_jumps = true, -- whether to set jumps in the jumplist
 			goto_next_start = {
-				[']m'] = '@function.outer',
+				[']a'] = '@argument.outer',
+				[']f'] = '@function.outer',
+				[']m'] = '@method.outer',
 				[']P'] = '@parameter.outer',
 				[']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
 				[']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
 			},
 			goto_next_end = {
-				[']M'] = '@function.outer',
+				[']A'] = '@argument.outer',
+				[']F'] = '@function.outer',
+				[']M'] = '@method.outer',
 				[']P'] = '@parameter.outer',
 				[']S'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
 				[']Z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
 			},
 			goto_previous_start = {
-				['[m'] = '@function.outer',
+				['[a'] = '@argument.outer',
+				['[f'] = '@function.outer',
+				['[m'] = '@method.outer',
 				['[P'] = '@parameter.outer',
 				['[s'] = { query = '@scope', query_group = 'locals', desc = 'Previous scope' },
 				['[z'] = { query = '@fold', query_group = 'folds', desc = 'Previous fold' },
 			},
 			goto_previous_end = {
-				['[M'] = '@function.outer',
+				['[A'] = '@argument.outer',
+				['[F'] = '@function.outer',
+				['[M'] = '@method.outer',
 				['[P'] = '@parameter.outer',
 				['[S'] = { query = '@scope', query_group = 'locals', desc = 'Previous scope' },
 				['[Z'] = { query = '@fold', query_group = 'folds', desc = 'Previous fold' },
@@ -93,6 +101,7 @@ configs.setup({
 		lsp_interop = {
 			enable = true,
 			border = 'rounded',
+			floating_preview_opts = {},
 			peek_definition_code = {
 				['<leader>fo'] = '@function.outer',
 				['<leader>Fo'] = '@class.outer',

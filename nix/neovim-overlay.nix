@@ -217,6 +217,18 @@ let
     pname = "csvview";
     src = inputs.csvview;
   };
+  demicolon = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      pkgs.vimPlugins.nvim-treesitter-textobjects
+    ];
+    pname = "demicolon";
+    src = inputs.demicolon;
+  };
+  eyeliner = mkNvimPlugin {
+    pname = "eyeliner";
+    src = inputs.eyeliner;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -296,6 +308,8 @@ let
     mini-pairs # Auto pairs | https://github.com/echasnovski/mini.pairs/
     resession # Session management | https://github.com/stevearc/resession.nvim/
     mini-surround # Surround operator | https://github.com/echasnovski/mini.surround/
+    demicolon # Semicolon helper | https://github.com/mawkler/demicolon.nvim/
+    eyeliner # Visual cues | https://github.com/jinh0/eyeliner.nvim/
     # ^ navigation/editing enhancement plugins
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/

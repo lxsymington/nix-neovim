@@ -22,6 +22,8 @@ function M.start()
 	end
 
 	opt.wildignore:append([[ '*/node_modules/*' ]])
+
+	opt.spelloptions = 'camel'
 end
 
 return M

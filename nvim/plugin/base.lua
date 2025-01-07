@@ -112,8 +112,8 @@ opt.diffopt = {
 	'filler',
 	'iblank',
 	'internal',
-	'iwhite',
-	'linematch:60',
+	'iwhiteall',
+	'linematch:20',
 }
 
 -- Keep an undo file (undo changes after closing)
@@ -163,3 +163,6 @@ opt.virtualedit = 'block'
 
 -- Enable project specific settings
 opt.exrc = true
+
+-- Keep the text on the same screen line when opening, closing or resizing horizontal splits
+opt.splitkeep = 'screen'

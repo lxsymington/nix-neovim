@@ -431,7 +431,7 @@ local theme = lush(function(injected_functions)
 		CmpItemAbbrDeprecated({ fg = bright.yellow, gui = Strikethrough.gui, blend = 20 }),
 		BlinkCmpLabelDeprecated({ fg = bright.yellow, gui = 'strikethrough' }),
 		CmpItemAbbrMatch({ fg = standard.green, gui = Bold.gui, blend = 20 }),
-		BlinkCmpMenuSelection({ bg = Normal.bg.mix(bright.yellow, 20), gui = Bold.gui }),
+		BlinkCmpMenuSelection({ bg = Normal.bg.mix(bright.purple, 20), gui = Bold.gui }),
 		CmpItemAbbrMatchFuzzy({ fg = dim.orange, gui = Bold.gui, blend = 20 }),
 		BlinkCmpLabelMatch({ fg = standard.green, gui = 'bold' }),
 		CmpItemKind({ bg = dim.grey, fg = dim.background, blend = 20 }),
@@ -518,6 +518,7 @@ local theme = lush(function(injected_functions)
 		BlinkCmpKindUnit({ bg = bright.red, fg = standard.background, gui = BoldUnderdouble.gui }),
 		CmpItemKindValue({ bg = standard.red, fg = standard.background }),
 		BlinkCmpKindValue({ bg = standard.red, fg = standard.background }),
+		BlinkCmpGhostTest({ fg = Normal.bg.mix(dim.green, 15), gui = Underdot.gui }),
 
 		NotifyERRORBorder({ fg = dim.red }),
 		NotifyWARNBorder({ fg = dim.yellow }),
@@ -589,6 +590,9 @@ local theme = lush(function(injected_functions)
 		SnippetVirtTextInsertVisited({ fg = bright.purple }),
 		SnippetVirtTextInsertUnvisited({ fg = bright.blue }),
 		SnippetVirtTextInsertSnippetPassive({ fg = bright.grey }),
+
+		EyelinerPrimary({ fg = standard.cyan, gui = Underdash.gui, sp = bright.orange }),
+		EyelinerSecondary({ fg = dim.cyan, gui = Underdash.gui, sp = dim.orange }),
 	}
 end)
 

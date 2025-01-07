@@ -7,8 +7,8 @@ if vim.fn.exists('+termguicolors') then
 	opt.termguicolors = true
 end
 
--- Sets the background to be dark
-opt.background = 'dark'
+-- Sets the background to be dark - Latest versions of neovim may be able to detect this
+-- opt.background = 'dark'
 
 -- Sets the colorscheme to be Crepuscular
 cmd.colorscheme('crepuscular')

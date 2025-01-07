@@ -56,6 +56,16 @@
       flake = false;
     };
 
+    demicolon = {
+      url = "github:mawkler/demicolon.nvim";
+      flake = false;
+    };
+
+    eyeliner = {
+      url = "github:jinh0/eyeliner.nvim";
+      flake = false;
+    };
+
     gitsigns = {
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;

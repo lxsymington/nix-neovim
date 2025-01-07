@@ -9,10 +9,11 @@ if g.neovide then
 	g.neovide_padding_right = 8
 	g.neovide_padding_top = 8
 	g.neovide_theme = 'auto'
-	g.neovide_transparency = 0.0
+	g.transparency = 0.85
+	g.neovide_transparency = 0.85
 	g.neovide_window_blurred = true
 	g.neovide_input_macos_option_key_is_meta = 'only_left'
 
-	opt.guifont = 'CommitMono_Nerd_Font_Propo,RecMono_Nerd_Font_Propo:h12'
+	opt.guifont = 'RecMonoDuotone_Nerd_Font_Propo,CommitMono_Nerd_Font_Propo:h12'
 	opt.linespace = 4
 end
