@@ -1,5 +1,10 @@
 local M = {}
 
+local api = vim.api
+local defer_fn = vim.defer_fn
+local iter = vim.iter
+local split = vim.split
+
 M.icons = {
 	debug = 'Ⓓ ',
 	error = 'Ⓔ ',
@@ -15,14 +20,14 @@ M.lines = {
 	'Some body text for testing purposes.',
 }
 
-M.ui = vim.api.nvim_list_uis()[1]
+M.ui = api.nvim_list_uis()[1]
 
 function M.create_notification_pane()
-	local buf = vim.api.nvim_create_buf(false, true)
+	local buf = api.nvim_create_buf(false, true)
 
-	vim.api.nvim_buf_set_lines(buf, 0, -1, true, M.lines)
+	api.nvim_buf_set_lines(buf, 0, -1, true, M.lines)
 
-	local win_handle = vim.api.nvim_open_win(buf, false, {
+	local win_handle = api.nvim_open_win(buf, false, {
 		anchor = 'SE',
 		border = 'rounded',
 		col = M.ui.width - 1,
@@ -41,13 +46,18 @@ function M.create_notification_pane()
 		zindex = 1000,
 	})
 
-	vim.defer_fn(function()
-		vim.api.nvim_win_close(win_handle, true)
-		vim.api.nvim_buf_delete(buf, { force = true })
+	defer_fn(function()
+		api.nvim_win_close(win_handle, true)
+		api.nvim_buf_delete(buf, { force = true })
 	end, 5000)
 
 	return win_handle
 end
+
+local glyph_dimensions = {
+	col = 5,
+	row = 4,
+}
 
 M.numbers = setmetatable({
 	[[
@@ -123,42 +133,54 @@ M.numbers = setmetatable({
 })
 
 function M.identify_tab_panes()
-	local wins = vim.api.nvim_tabpage_list_wins(0)
+	local wins = api.nvim_tabpage_list_wins(0)
 
-	local focusable_wins = vim
-		.iter(wins)
+	local focusable_wins = iter(wins)
 		:filter(function(win)
-			local win_config = vim.api.nvim_win_get_config(win)
-
-			vim.print(win_config)
+			local win_config = api.nvim_win_get_config(win)
 
 			return win_config.focusable == true
 		end)
 		:totable()
 
-	vim.iter(ipairs(focusable_wins)):each(function(i, win)
-		local buf = vim.api.nvim_create_buf(false, true)
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, {
-			string.format('%d', i),
-		})
+	iter(ipairs(focusable_wins)):each(function(i, win)
+		local buf = api.nvim_create_buf(false, true)
+		api.nvim_buf_set_lines(buf, 0, -1, true, split(M.numbers[i], '\n'))
 
-		local win_handle = vim.api.nvim_open_win(buf, false, {
+		local win_handle = api.nvim_open_win(buf, false, {
 			relative = 'win',
-			border = 'none',
+			border = 'rounded',
 			focusable = false,
 			fixed = true,
-			height = 1,
-			width = 1,
+			height = glyph_dimensions.row,
+			width = glyph_dimensions.col,
 			style = 'minimal',
 			win = win,
-			col = vim.api.nvim_win_get_width(win) / 2,
-			row = vim.api.nvim_win_get_height(win) / 2,
+			col = api.nvim_win_get_width(win) / 2 - glyph_dimensions.col,
+			row = api.nvim_win_get_height(win) / 2 - glyph_dimensions.row,
 		})
 
 		vim.defer_fn(function()
-			vim.api.nvim_win_close(win_handle, true)
-			vim.api.nvim_buf_delete(buf, { force = true })
-		end, 5000)
+			api.nvim_win_close(win_handle, true)
+			api.nvim_buf_delete(buf, { force = true })
+		end, 30000)
+	end)
+end
+
+function M.register()
+	local sequence = api.nvim_replace_termcodes('<C-W>', true, true, true)
+
+	vim.on_key(function(keys)
+		local mode = api.nvim_get_mode().mode
+		if not mode:match('n') then
+			return
+		end
+
+		if keys ~= sequence then
+			return
+		end
+
+		M.identify_tab_panes()
 	end)
 end
 

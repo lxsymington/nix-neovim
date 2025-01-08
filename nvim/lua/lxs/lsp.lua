@@ -115,7 +115,11 @@ function M.attach(client, bufnr)
 	keymap.set('n', 'gD', lsp.buf.declaration, desc('[lsp] go to declaration'))
 	keymap.set('n', 'gd', lsp.buf.definition, desc('[lsp] go to definition'))
 	keymap.set('n', 'g$', lsp.buf.type_definition, desc('[lsp] go to type definition'))
-	keymap.set('n', 'K', lsp.buf.hover, desc('[lsp] hover'))
+	keymap.set('n', 'K', function()
+		lsp.buf.hover({
+			border = 'rounded',
+		})
+	end, desc('[lsp] hover'))
 	keymap.set('n', "g'", peek_definition, desc('[lsp] peek definition'))
 	keymap.set('n', 'g"', peek_type_definition, desc('[lsp] peek type definition'))
 	keymap.set('n', 'gI', lsp.buf.implementation, desc('[lsp] go to implementation'))

@@ -8,7 +8,7 @@ local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-vim.o.completefunc = 'v:lua.require("blink").show()'
+vim.opt.completefunc = 'v:lua.require("blink").show()'
 
 lspkind.init({
 	symbol_map = {
@@ -17,12 +17,12 @@ lspkind.init({
 	},
 })
 
---- @type blink.cmp.AppearanceConfig
+--- @type blink.cmp.AppearanceConfigPartial
 local appearance = {
 	nerd_font_variant = 'normal',
 }
 
---- @type blink.cmp.CompletionConfig
+--- @type blink.cmp.CompletionConfigPartial
 local completion = {
 	accept = {
 		auto_brackets = {
@@ -33,6 +33,7 @@ local completion = {
 		auto_show = true,
 		window = {
 			border = 'rounded',
+			winblend = 15,
 		},
 	},
 	ghost_text = {
@@ -63,7 +64,7 @@ local completion = {
 						return string.format(
 							'%s%s%s',
 							string.rep(' ', left_padding),
-							kind_icon,
+							kind_icon or ctx.kind_icon,
 							string.rep(' ', right_padding)
 						)
 					end,
@@ -108,7 +109,7 @@ local completion = {
 	},
 }
 
---- @type blink.cmp.FuzzyConfig
+--- @type blink.cmp.FuzzyConfigPartial
 local fuzzy = {
 	prebuilt_binaries = {
 		download = false,
@@ -122,42 +123,58 @@ local keymap = {
 	['<C-j>'] = { 'snippet_backward', 'fallback' },
 }
 
---- @type blink.cmp.SignatureConfig
+--- @type blink.cmp.SignatureConfigPartial
 local signature = {
 	enabled = true,
 	window = {
 		border = 'rounded',
+		winblend = 15,
 	},
 }
 
---- @type blink.cmp.SnippetsConfig
+--- @type blink.cmp.SnippetsConfigPartial
 local snippets = {
-	expand = function(snippet)
-		luasnip.lsp_expand(snippet)
-	end,
-	active = function(filter)
-		if filter and filter.direction then
-			return luasnip.jumpable(filter.direction)
-		end
-		return luasnip.in_snippet()
-	end,
-	jump = function(direction)
-		luasnip.jump(direction)
-	end,
+	preset = 'luasnip',
 }
 
---- @type blink.cmp.SourceConfig
+--- @type blink.cmp.SourceConfigPartial
 local sources = {
 	default = {
 		'buffer',
 		'copilot',
 		'git',
-		'lazydev',
-		'luasnip',
-		-- 'neorg',
+		'lsp',
+		'snippets',
 		'path',
 	},
+	per_filetype = {
+		lua = {
+			'buffer',
+			'copilot',
+			'git',
+			'lazydev',
+			'lsp',
+			'snippets',
+			'path',
+		},
+		norg = {
+			'buffer',
+			'copilot',
+			'git',
+			'lazydev',
+			'lsp',
+			'snippets',
+			-- 'neorg',
+			'path',
+		},
+	},
 	providers = {
+		buffer = {
+			name = 'Buffer',
+			enabled = true,
+			module = 'blink.cmp.sources.buffer',
+			score_offset = 5,
+		},
 		copilot = {
 			name = 'copilot',
 			module = 'blink-cmp-copilot',
@@ -173,12 +190,21 @@ local sources = {
 		},
 		lazydev = {
 			name = 'LazyDev',
+			enabled = true,
 			module = 'lazydev.integrations.blink',
 			fallbacks = { 'lsp' },
 			score_offset = 70,
 		},
-		luasnip = {
-			name = 'LuaSnip',
+		lsp = {
+			name = 'LSP',
+			enabled = true,
+			module = 'blink.cmp.sources.lsp',
+			score_offset = 60,
+		},
+		snippets = {
+			name = 'Snippets',
+			enabled = true,
+			module = 'blink.cmp.sources.snippets',
 			score_offset = 40,
 		},
 		--[[ neorg = {
@@ -186,6 +212,12 @@ local sources = {
 				module = 'blink.compat.source',
 				enabled = true,
 			}, ]]
+		path = {
+			name = 'Path',
+			enabled = true,
+			module = 'blink.cmp.sources.path',
+			score_offset = 10,
+		},
 	},
 }
 

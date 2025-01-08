@@ -1,3 +1,7 @@
+--[[ package.loaded['pane-relief'] = nil
+local pane_relief = require('pane-relief')
+pane_relief.register() ]]
+
 local wk = require('which-key')
 local symbol_usage = require('symbol-usage')
 

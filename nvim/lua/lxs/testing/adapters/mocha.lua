@@ -7,7 +7,7 @@ local Iter = vim.iter
 local Json = vim.json
 local List_contains = vim.list_contains
 local List_extend = vim.list_extend
-local Loop = vim.loop
+local UV = vim.uv
 local Split = vim.split
 
 ---@class neotest.MochaOptions
@@ -43,7 +43,7 @@ local function get_mocha_config(dir)
 	local configuration_file = Fs.find(configuration_files, {
 		limit = 1,
 		path = dir,
-		stop = Loop.os_homedir(),
+		stop = UV.os_homedir(),
 		type = 'file',
 		upward = true,
 	})[1] or Fs.find(configuration_files, {
@@ -63,8 +63,8 @@ end
 local find_package_root = function(dir)
 	local package_json_ancestor = Fs.find('package.json', {
 		limit = 1,
-		path = dir or Loop.cwd(),
-		stop = Loop.os_homedir(),
+		path = dir or UV.cwd(),
+		stop = UV.os_homedir(),
 		type = 'file',
 		upward = true,
 	})[1]
@@ -81,7 +81,7 @@ local get_cwd = find_package_root
 ---@return string | nil the path to the mocha command
 local function get_mocha_command(path)
 	local package_root = Fs.root(path or 0, function(name, currentPath)
-		local mocha_bin_path = Fs.joinpath(currentPath or Loop.cwd(), 'node_modules', '.bin', 'mocha')
+		local mocha_bin_path = Fs.joinpath(currentPath or UV.cwd(), 'node_modules', '.bin', 'mocha')
 		return async.fn.executable(mocha_bin_path) == 1
 	end)
 
@@ -291,11 +291,6 @@ function Adapter.is_test_file(file_path)
 
 	local code = project_tests.code
 
-	logger.debug(vim.inspect({
-		context = 'Adapter.is_test_file',
-		code = code or 'no `code` found',
-	}))
-
 	if code ~= 0 then
 		local suffixes = Iter(file_extensions):map(function(ext)
 			return Iter(testing_namespaces):map(function(ns)
@@ -315,6 +310,8 @@ function Adapter.is_test_file(file_path)
 	logger.debug(vim.inspect({
 		context = 'Adapter.is_test_file',
 		file_data = file_data,
+		files = files,
+		normalized_file_path = normalized_file_path,
 	}))
 
 	return file_data ~= nil
@@ -334,7 +331,7 @@ end
 --- Construct position data from a treesitter query match
 ---@param file_path string The path to the file
 ---@param source string The source code of the match
----@param captured_nodes TSNode[] The nodes captured by the query
+---@param captured_nodes table<string, userdata> The nodes captured by the query
 ---@return table<string, unknown> | nil a test position object
 function Adapter.build_position(file_path, source, captured_nodes)
 	local match_type = get_match_type(captured_nodes)
@@ -348,17 +345,16 @@ function Adapter.build_position(file_path, source, captured_nodes)
 
 	local name_nodes = captured_nodes[match_type .. '.name']
 
+	local name = vim.treesitter.get_node_text(name_nodes, source)
+	local definition = captured_nodes[match_type .. '.definition']
+
 	logger.debug(vim.inspect({
-		captured_nodes = captured_nodes,
 		context = 'build_position',
 		file_path = file_path,
 		match_type = match_type,
+		name = name,
 		source = source,
 	}))
-
-	---@type string
-	local name = 'name' -- vim.treesitter.get_node_text(name_nodes, source)
-	local definition = captured_nodes[match_type .. '.definition']
 
 	return {
 		type = match_type,
@@ -461,7 +457,7 @@ local function stream(file_path)
 	end
 
 	read()
-	local event = Loop.new_fs_event()
+	local event = UV.new_fs_event()
 	event:start(file_path, {}, function(err, two, three)
 		logger.debug(vim.inspect({
 			context = 'stream',
@@ -572,60 +568,6 @@ local function parsed_json_to_results(data, output_file, consoleOut)
 		return result_dictionary
 	end)
 
-	--[[ local tests = {}
-
-	for _, testResult in pairs(data.testResults) do
-		local testFn = testResult.name
-		for _, assertionResult in pairs(testResult.assertionResults) do
-			local status, name = assertionResult.status, assertionResult.title
-
-			if name == nil then
-				logger.error('Failed to find parsed test result ', assertionResult)
-				return {}
-			end
-
-			local keyid = testFn
-
-			for _, value in ipairs(assertionResult.ancestorTitles) do
-				keyid = keyid .. '::' .. value
-			end
-
-			keyid = keyid .. '::' .. name
-
-			if status == 'pending' then
-				status = 'skipped'
-			end
-
-			tests[keyid] = {
-				status = status,
-				short = name .. ': ' .. status,
-				output = consoleOut,
-				location = assertionResult.location,
-			}
-
-			if not vim.tbl_isempty(assertionResult.failureMessages) then
-				local errors = {}
-
-				for i, failMessage in ipairs(assertionResult.failureMessages) do
-					local msg = cleanAnsi(failMessage)
-					local errorLine, errorColumn = findErrorPosition(testFn, msg)
-
-					errors[i] = {
-						line = (errorLine or assertionResult.location.line) - 1,
-						column = (errorColumn or 1) - 1,
-						message = msg,
-					}
-
-					tests[keyid].short = tests[keyid].short .. '\n' .. msg
-				end
-
-				tests[keyid].errors = errors
-			end
-		end
-	end
-
-	return tests ]]
-
 	return vim.tbl_extend('force', {}, pending_results, failing_results, passing_results)
 end
 
@@ -670,8 +612,7 @@ function Adapter.build_spec(args)
 
 	logger.debug(vim.inspect({
 		context = 'Adapter.build_spec',
-		id = pos.id,
-		type = pos.type,
+		pos = pos,
 	}))
 
 	if pos.type == 'test' or pos.type == 'namespace' then
@@ -725,13 +666,6 @@ function Adapter.build_spec(args)
 				local new_results = stream_data()
 				local ok, parsed = pcall(Json.decode, new_results, { luanil = { object = true } })
 
-				logger.debug(vim.inspect({
-					context = 'Adapter.build_spec.stream',
-					new_results = new_results,
-					ok = ok,
-					parsed = parsed,
-				}))
-
 				if not ok or not parsed.tests then
 					logger.error(vim.inspect({
 						context = 'Adapter.build_spec.stream',
@@ -741,6 +675,14 @@ function Adapter.build_spec(args)
 					}))
 					return {}
 				end
+
+				logger.debug(vim.inspect({
+					context = 'Adapter.build_spec.stream',
+					message = 'Succeeded in parsing test output json',
+					new_results = new_results,
+					ok = ok,
+					parsed = parsed,
+				}))
 
 				return parsed_json_to_results(parsed, results_path, nil)
 			end
