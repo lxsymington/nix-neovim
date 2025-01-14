@@ -16,9 +16,8 @@ neotest.setup({
 			-- jestCommand = 'npm run --silent test:integration --if-present -- ',
 			jest_test_discovery = true,
 		}),
-		require('lxs.testing.adapters.mocha')({
+		require('neotest-mocha')({
 			mochaCommand = 'volta run npm run --silent test:local --if-present -- ',
-			mocha_test_discovery = true,
 		}),
 		require('neotest-vim-test')({
 			ignore_filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },

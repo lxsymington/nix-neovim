@@ -141,6 +141,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     }; */
 
+    neotest-mocha = {
+      url = "github:adrigzr/neotest-mocha";
+      flake = false;
+    };
+
     neotest-vim-test = {
       url = "github:nvim-neotest/neotest-vim-test";
       flake = false;

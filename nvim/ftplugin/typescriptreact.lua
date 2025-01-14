@@ -1,5 +1,5 @@
-local ecmascript = require('lxs.ecmasript')
-local typescript = require('lxs.typesript')
+local ecmascript = require('lxs.ecmascript')
+local typescript = require('lxs.typescript')
 
 -- TypeScript React Configuration ––––––––––––––––––––––––––––––––––––––––––––––
 ecmascript.start()

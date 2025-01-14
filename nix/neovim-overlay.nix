@@ -155,6 +155,15 @@ let
     pname = "mini-surround";
     src = inputs.mini-surround;
   };
+  neotest-mocha = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.neotest
+      pkgs.vimPlugins.nvim-nio
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "neotest-mocha";
+    src = inputs.neotest-mocha;
+  };
   neotest-vim-test = mkNvimPlugin {
     dependencies = [
       pkgs.vimPlugins.neotest
@@ -305,6 +314,7 @@ let
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
+    neotest-mocha # Mocha support | https://github.com/nvim-neotest/neotest-mocha/
     {
       plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
       optional = true;
@@ -346,7 +356,8 @@ let
     lazydev
     # ^ Vim utilities
     # Miscellaneous
-    hurl-nvim # Rest client in Nvim | https://github.com/jellydn/hurl.nvim/
+    hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
+    rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/
     # TODO:  reinstate neorg
     # neorg # Note taking | https://github.com/nvim-neorg/neorg/
     # neorg-telescope # Neorg telescope integration
