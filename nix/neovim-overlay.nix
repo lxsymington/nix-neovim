@@ -43,16 +43,6 @@ let
     pname = "blink-cmp-copilot";
     src = inputs.blink-cmp-copilot;
   };
-  copilot-chat = mkNvimPlugin {
-    dependencies = [
-      pkgs.vimPlugins.plenary-nvim
-      copilot
-      pkgs.vimPlugins.fzf-lua
-      pkgs.vimPlugins.telescope-nvim
-    ];
-    pname = "copilot-chat";
-    src = inputs.copilot-chat;
-  };
   neogit = mkNvimPlugin {
     dependencies = [
       pkgs.vimPlugins.diffview-nvim
@@ -229,6 +219,21 @@ let
     pname = "eyeliner";
     src = inputs.eyeliner;
   };
+  codecompanion = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+      pkgs.vimPlugins.plenary-nvim
+      pkgs.vimPlugins.telescope-nvim
+    ];
+    nvimSkipModule = [
+      "codecompanion.providers.actions.mini_pick"
+      "codecompanion.actions.static"
+      "codecompanion.actions.init"
+      "minimal"
+    ];
+    pname = "codecompanion";
+    src = inputs.codecompanion;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -253,7 +258,7 @@ let
     cmp-git # cmp git suggestions | https://github.com/petertriho/cmp-git/
     # ^ Autocompletion and extensions
     copilot # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
-    copilot-chat # Copilot Chat | https://github.com/CopilotC-Nvim/CopilotChat.nvim
+    codecompanion # Assistant Chat | https://github.com/olimorris/codecompanion.nvim
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
     neogit # Git Client | https://github.com/TimUntersberger/neogit/
@@ -392,6 +397,13 @@ let
     gopls
     hurl
     lua-language-server
+    (luajit.withPackages (p: [
+      p.luarocks
+      p.luacheck
+      p.mimetypes
+      p.tiktoken_core
+      p.xml2lua
+    ]))
     nixd
     nodePackages_latest.jsonlint
     nodePackages_latest.nodejs

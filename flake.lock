@@ -68,6 +68,22 @@
         "type": "github"
       }
     },
+    "codecompanion": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736882994,
+        "narHash": "sha256-qTpzO/yPef+AJVDhSzM2siMT4o+7McaMly6orWpzEBM=",
+        "owner": "olimorris",
+        "repo": "codecompanion.nvim",
+        "rev": "e3c528aab52f32513fdb771e3e27d93efe57e12a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "olimorris",
+        "repo": "codecompanion.nvim",
+        "type": "github"
+      }
+    },
     "copilot": {
       "flake": false,
       "locked": {
@@ -81,22 +97,6 @@
       "original": {
         "owner": "zbirenbaum",
         "repo": "copilot.lua",
-        "type": "github"
-      }
-    },
-    "copilot-chat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1734194565,
-        "narHash": "sha256-IPP5jXIX+05Tb0MEXUu6EjcL/RHgV1qkoXPEdaEfhNM=",
-        "owner": "CopilotC-Nvim",
-        "repo": "CopilotChat.nvim",
-        "rev": "2ebe591cff06018e265263e71e1dbc4c5aa8281e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "CopilotC-Nvim",
-        "repo": "CopilotChat.nvim",
         "type": "github"
       }
     },
@@ -449,11 +449,11 @@
     "gitsigns": {
       "flake": false,
       "locked": {
-        "lastModified": 1736536783,
-        "narHash": "sha256-4x/3UQtN9fecGUNoulFUQEKCjRtSJd7I8qmpEIc/58c=",
+        "lastModified": 1736874685,
+        "narHash": "sha256-yG4KxAJG4k0+WcMWbu04r4v1bIx4i7iqqOH8brqgNvw=",
         "owner": "lewis6991",
         "repo": "gitsigns.nvim",
-        "rev": "abcd00a7d5bc1a9470cb21b023c575acade3e4db",
+        "rev": "76d88f3b584e1f83b2aa51663a32cc6ee8d97eff",
         "type": "github"
       },
       "original": {
@@ -696,11 +696,11 @@
     "neogit": {
       "flake": false,
       "locked": {
-        "lastModified": 1736283513,
-        "narHash": "sha256-eWjSChLCZtsNEqz2MpUsrZ5CHEIp07583OSlkuz8MGI=",
+        "lastModified": 1736888010,
+        "narHash": "sha256-sqyVBHx92q+fFaosWfdTngsBJR1Os+EjdNz4O/3XVG4=",
         "owner": "NeogitOrg",
         "repo": "neogit",
-        "rev": "a1fc4e50fa494e04097cf2d02e86bcd7ac5760d6",
+        "rev": "060a625660b2816649d83dbd6c7ab1b4345ea8bc",
         "type": "github"
       },
       "original": {
@@ -968,30 +968,14 @@
         "type": "github"
       }
     },
-    "rest-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1735710590,
-        "narHash": "sha256-5ahhcjeAhSv43o6GNm8GZV/Cc7Y+6S5t6lkoD7BDd2U=",
-        "owner": "rest-nvim",
-        "repo": "rest.nvim",
-        "rev": "62606c3599bd304227457d6e20580965939b191e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rest-nvim",
-        "repo": "rest.nvim",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "blink-cmp": "blink-cmp",
         "blink-cmp-copilot": "blink-cmp-copilot",
         "blink-compat": "blink-compat",
         "bqf": "bqf",
+        "codecompanion": "codecompanion",
         "copilot": "copilot",
-        "copilot-chat": "copilot-chat",
         "csvview": "csvview",
         "dbee-binary": "dbee-binary",
         "demicolon": "demicolon",
@@ -1023,7 +1007,6 @@
         "quicker": "quicker",
         "reactive": "reactive",
         "resession": "resession",
-        "rest-nvim": "rest-nvim",
         "screenkey": "screenkey",
         "statuscol": "statuscol",
         "symbol-usage": "symbol-usage",

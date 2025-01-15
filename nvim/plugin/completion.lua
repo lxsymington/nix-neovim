@@ -141,6 +141,7 @@ local snippets = {
 local sources = {
 	default = {
 		'buffer',
+		'codecompanion',
 		'copilot',
 		'git',
 		'lsp',
@@ -150,6 +151,7 @@ local sources = {
 	per_filetype = {
 		lua = {
 			'buffer',
+			'codecompanion',
 			'copilot',
 			'git',
 			'lazydev',
@@ -159,6 +161,7 @@ local sources = {
 		},
 		norg = {
 			'buffer',
+			'codecompanion',
 			'copilot',
 			'git',
 			'lazydev',
