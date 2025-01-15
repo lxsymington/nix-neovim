@@ -14,7 +14,6 @@ copilot.setup({
 g.copilot_no_tab_map = true
 g.copilot_hide_during_completion = 0
 g.copilot_proxy_strict_ssl = 0
-
 codecompanion.setup({
 	display = {
 		action_pallete = {
@@ -30,11 +29,9 @@ codecompanion.setup({
 		chat = {
 			window = {
 				layout = 'vertical', -- float|vertical|horizontal|buffer
-				position = nil, -- left|right|top|bottom (nil will default depending on vim.opt.splitright|vim.opt.splitbelow)
 				border = 'single',
 				height = 1,
-				width = 67,
-				relative = 'editor',
+				width = 80,
 				opts = {
 					breakindent = true,
 					cursorcolumn = false,
@@ -46,6 +43,20 @@ codecompanion.setup({
 					signcolumn = 'no',
 					spell = false,
 					wrap = true,
+				},
+			},
+		},
+	},
+	strategies = {
+		inline = {
+			keymaps = {
+				accept_change = {
+					modes = { n = 'gaa' },
+					description = 'Accept the suggested change',
+				},
+				reject_change = {
+					modes = { n = 'gar' },
+					description = 'Reject the suggested change',
 				},
 			},
 		},

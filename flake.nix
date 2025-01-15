@@ -101,6 +101,11 @@
       flake = false;
     };
 
+    mini-diff = {
+      url = "github:echasnovski/mini.diff";
+      flake = false;
+    };
+
     mini-git = {
       url = "github:echasnovski/mini-git";
       flake = false;

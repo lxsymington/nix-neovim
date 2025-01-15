@@ -597,6 +597,22 @@
         "type": "github"
       }
     },
+    "mini-diff": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735324663,
+        "narHash": "sha256-dRvW/1lfVShiHmRU0mQA5g5xDyQ0EVtVLLZ0y6WSedg=",
+        "owner": "echasnovski",
+        "repo": "mini.diff",
+        "rev": "00f072250061ef498f91ed226918c9ec31a416a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "echasnovski",
+        "repo": "mini.diff",
+        "type": "github"
+      }
+    },
     "mini-git": {
       "flake": false,
       "locked": {
@@ -989,6 +1005,7 @@
         "luasnip": "luasnip",
         "luvit-meta": "luvit-meta_2",
         "markview": "markview",
+        "mini-diff": "mini-diff",
         "mini-git": "mini-git",
         "mini-hipatterns": "mini-hipatterns",
         "mini-icons": "mini-icons",

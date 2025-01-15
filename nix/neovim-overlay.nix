@@ -61,6 +61,10 @@ let
     pname = "gitsigns";
     src = inputs.gitsigns;
   };
+  mini-diff = mkNvimPlugin {
+    pname = "mini-diff";
+    src = inputs.mini-diff;
+  };
   mini-git = mkNvimPlugin {
     pname = "mini-git";
     src = inputs.mini-git;
@@ -221,6 +225,7 @@ let
   };
   codecompanion = mkNvimPlugin {
     dependencies = [
+      mini-diff
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       pkgs.vimPlugins.plenary-nvim
       pkgs.vimPlugins.telescope-nvim
@@ -263,6 +268,7 @@ let
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
     neogit # Git Client | https://github.com/TimUntersberger/neogit/
     gitsigns # Diff Editor Integration | https://github.com/lewis6991/gitsigns.nvim/
+    mini-diff # Diff helper | https://github.com/echasnovski/mini.diff/
     mini-git # Git Editor Integration | https://github.com/echasnovski/mini-git/
     octo-nvim # GitHub Integration | https://github.com/pwntester/octo.nvim/
     # ^ git integration plugins
