@@ -1,13 +1,13 @@
 local create_highlights = require('reactive.presets')
 
-package.loaded['lxs.' .. vim.g.colors_name .. '.colours'] = nil
-local colours = require('lxs.' .. vim.g.colors_name .. '.colours')
+package.loaded['lxs.crepuscular.colours'] = nil
+local colours = require('lxs.crepuscular.colours')
 
 local dark = colours.dark
 local modes = create_highlights(dark)
 
 return {
-	name = 'crepuscular_dark',
+	name = 'crepuscular_dusk',
 	init = function()
 		-- making our cursor to use `MyCursor` highlight group
 		vim.opt_local.guicursor:append({

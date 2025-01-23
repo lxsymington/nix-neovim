@@ -1025,6 +1025,7 @@
         "reactive": "reactive",
         "resession": "resession",
         "screenkey": "screenkey",
+        "shipwright": "shipwright",
         "statuscol": "statuscol",
         "symbol-usage": "symbol-usage",
         "telescope-frecency": "telescope-frecency",
@@ -1065,6 +1066,22 @@
       "original": {
         "owner": "NStefan002",
         "repo": "screenkey.nvim",
+        "type": "github"
+      }
+    },
+    "shipwright": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1711725275,
+        "narHash": "sha256-xh/2m//Cno5gPucjOYih79wVZj3X1Di/U3/IQhKXjc0=",
+        "owner": "rktjmp",
+        "repo": "shipwright.nvim",
+        "rev": "e596ab48328c31873f4f4d2e070243bf9de16ff3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rktjmp",
+        "repo": "shipwright.nvim",
         "type": "github"
       }
     },

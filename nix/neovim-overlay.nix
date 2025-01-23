@@ -239,6 +239,10 @@ let
     pname = "codecompanion";
     src = inputs.codecompanion;
   };
+  shipwright = mkNvimPlugin {
+    pname = "shipwright";
+    src = inputs.shipwright;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -280,6 +284,7 @@ let
     # ^ telescope and extensions
     # UI
     lush-nvim # colorscheme | https://github.com/rktjmp/lush.nvim/
+    shipwright # build system | https://github.com/rktjmp/shipwright.nvim/
     rose-pine # colorscheme | https://github.com/rose-pine/neovim
     aerial-nvim # Document Outline | https://github.com/stevearc/aerial.nvim
     statuscol # Status column | https://github.com/luukvbaal/statuscol.nvim/

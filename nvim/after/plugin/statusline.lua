@@ -4,7 +4,7 @@ end
 vim.g.did_load_statusline_plugin = true
 
 local nougat = require('nougat')
-local color = require('nougat.color').get()
+local color = require('nougat.color.' .. vim.g.colors_name).get()
 local core = require('nougat.core')
 local Bar = require('nougat.bar')
 local Item = require('nougat.item')

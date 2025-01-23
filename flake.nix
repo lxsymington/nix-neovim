@@ -191,6 +191,11 @@
       flake = false;
     };
 
+    shipwright = {
+      url = "github:rktjmp/shipwright.nvim";
+      flake = false;
+    };
+
     statuscol = {
       url = "github:luukvbaal/statuscol.nvim";
       flake = false;

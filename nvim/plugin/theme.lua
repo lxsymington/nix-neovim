@@ -1,14 +1,48 @@
+local api = vim.api
 local cmd = vim.cmd
+local cwd = vim.uv.cwd
+local fn = vim.fn
+local fs = vim.fs
+local log = vim.log
+local notify = vim.notify
 local opt = vim.opt
 
 -- Theme –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 -- Set terminal to use true color
-if vim.fn.exists('+termguicolors') then
+if fn.exists('+termguicolors') then
 	opt.termguicolors = true
 end
 
+local shipwright_group = api.nvim_create_augroup('Shipwright build', {
+	clear = true,
+})
+
+local crepuscular_init = fs.joinpath(cwd(), 'nvim', 'lua', 'lxs', 'crepuscular', 'build.lua')
+
+api.nvim_create_autocmd('BufWritePost', {
+	callback = function()
+		cmd.Shipwright(crepuscular_init)
+		notify('Updating crepuscular colorscheme', log.levels.INFO, {
+			title = 'Crepuscular',
+		})
+	end,
+	desc = 'Build native colourschemes from lush specifications',
+	group = shipwright_group,
+	pattern = '*/lxs/crepuscular/{colours,dawn,dusk,theme}.lua',
+})
+--
 -- Sets the background to be dark - Latest versions of neovim may be able to detect this
 -- opt.background = 'dark'
+local function colourscheme_variant()
+	return opt.background:get() == 'dark' and 'crepuscular_dusk' or 'crepuscular_dawn'
+end
 
 -- Sets the colorscheme to be Crepuscular
-cmd.colorscheme('crepuscular')
+cmd.colorscheme(colourscheme_variant())
+
+api.nvim_create_autocmd('OptionSet', {
+	callback = function()
+		cmd.colorscheme(colourscheme_variant())
+	end,
+	desc = 'Switch colourscheme variant based on background option',
+})
