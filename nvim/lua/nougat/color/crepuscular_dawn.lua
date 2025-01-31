@@ -1,57 +1,37 @@
 local M = {}
 
-package.loaded['lxs.crepuscular.colours'] = nil
 local colours = require('lxs.crepuscular.colours')
 local light = colours.light
-
---[[ color.red
-color.accent.blue
-color.accent.cyan
-color.accent.green
-color.accent.magenta
-color.accent.red
-color.accent.yellow
-color.blue
-color.cyan
-color.green
-color.magenta
-color.yellow
-
-color.bg
-color.accent.bg
-color.bg0
-color.bg1
-color.bg2
-color.bg3
-color.bg4
-
-color.fg
-color.accent.fg
-color.fg0
-color.fg1
-color.fg2
-color.fg3
-color.fg4 ]]
 
 function M.get()
 	---@class nougat.color.crepuscular_dawn: nougat.color
 	local color = {
-		foreground = light.standard.foreground.hex,
-		background = light.standard.background.hex,
+		fg = light.standard.foreground.hex,
+		fg0 = light.standard.foreground.hex,
+		fg1 = light.dim.grey.hex,
+		fg2 = light.standard.grey.hex,
+		fg3 = light.bright.grey.hex,
+		fg4 = light.dim.background.hex,
+		bg = light.standard.background.hex,
+		bg0 = light.standard.background.hex,
+		bg1 = light.bright.grey.hex,
+		bg2 = light.standard.grey.hex,
+		bg3 = light.dim.grey.hex,
+		bg4 = light.dim.foreground.hex,
 		blue = light.standard.blue.hex,
 		cyan = light.standard.cyan.hex,
 		green = light.standard.green.hex,
 		magenta = light.standard.purple.hex,
 		yellow = light.standard.yellow.hex,
 		accent = {
-			foreground = light.standard.foreground.hex,
-			background = light.bright.background.hex,
-			blue = light.bright.blue.hex,
-			cyan = light.bright.cyan.hex,
-			green = light.bright.green.hex,
-			magenta = light.bright.purple.hex,
-			red = light.bright.red.hex,
-			yellow = light.bright.yellow.hex,
+			fg = light.standard.foreground.hex,
+			bg = light.dim.background.hex,
+			blue = light.dim.blue.hex,
+			cyan = light.dim.cyan.hex,
+			green = light.dim.green.hex,
+			magenta = light.dim.purple.hex,
+			red = light.dim.red.hex,
+			yellow = light.dim.yellow.hex,
 		},
 	}
 	-- set the values here

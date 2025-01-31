@@ -5,7 +5,6 @@ vim.g.did_load_completion_plugin = true
 
 local blink = require('blink.cmp')
 local lspkind = require('lspkind')
-local luasnip = require('luasnip')
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.completefunc = 'v:lua.require("blink").show()'
@@ -20,6 +19,11 @@ lspkind.init({
 --- @type blink.cmp.AppearanceConfigPartial
 local appearance = {
 	nerd_font_variant = 'normal',
+	kind_icons = {
+		Copilot = '',
+		Snippet = '✂️',
+		TypeParameter = '󰅴',
+	},
 }
 
 --- @type blink.cmp.CompletionConfigPartial
@@ -180,10 +184,15 @@ local sources = {
 		},
 		copilot = {
 			name = 'copilot',
-			module = 'blink-cmp-copilot',
+			module = 'blink-copilot',
 			enabled = true,
 			max_items = 3,
 			score_offset = 50,
+			async = true,
+			opts = {
+				max_completions = 3,
+				max_attempts = 4,
+			},
 		},
 		git = {
 			name = 'git',

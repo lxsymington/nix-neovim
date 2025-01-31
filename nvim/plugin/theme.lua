@@ -17,11 +17,11 @@ local shipwright_group = api.nvim_create_augroup('Shipwright build', {
 	clear = true,
 })
 
-local crepuscular_init = fs.joinpath(cwd(), 'nvim', 'lua', 'lxs', 'crepuscular', 'build.lua')
+local crepuscular_build = fs.joinpath(cwd(), 'nvim', 'lua', 'lxs', 'crepuscular', 'build.lua')
 
 api.nvim_create_autocmd('BufWritePost', {
 	callback = function()
-		cmd.Shipwright(crepuscular_init)
+		cmd.Shipwright(crepuscular_build)
 		notify('Updating crepuscular colorscheme', log.levels.INFO, {
 			title = 'Crepuscular',
 		})
@@ -34,13 +34,22 @@ api.nvim_create_autocmd('BufWritePost', {
 -- Sets the background to be dark - Latest versions of neovim may be able to detect this
 -- opt.background = 'dark'
 local function colourscheme_variant()
-	return opt.background:get() == 'dark' and 'crepuscular_dusk' or 'crepuscular_dawn'
+	local variant = opt.background:get() == 'dark' and 'crepuscular_dusk' or 'crepuscular_dawn'
+
+	vim.g.colors_name = variant
+
+	return variant
 end
 
--- Sets the colorscheme to be Crepuscular
 cmd.colorscheme(colourscheme_variant())
 
+local theme_group = api.nvim_create_augroup('Theme', {
+	clear = false,
+})
+
 api.nvim_create_autocmd('OptionSet', {
+	group = theme_group,
+	pattern = { 'background' },
 	callback = function()
 		cmd.colorscheme(colourscheme_variant())
 	end,

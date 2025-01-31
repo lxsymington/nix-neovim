@@ -32,11 +32,14 @@ local light_palette_metatable = {
 
 local palette_metatable = {
 	__index = function(self, key)
-		local variant = vim.opt.background:get()
+		if vim.tbl_contains({ 'light', 'dark' }, key) then
+			return rawget(self, key)
+		end
 
 		if vim.tbl_contains({ 'bright', 'dim', 'standard' }, key) then
-			return self[variant][key]
+			return self[vim.opt.background:get()][key]
 		end
+
 		return self[key]
 	end,
 }
@@ -134,25 +137,5 @@ local colours = setmetatable({
 		}, light_palette_metatable),
 	},
 }, palette_metatable)
-
-local bright = colours[vim.opt.background:get()].bright
-local standard = colours[vim.opt.background:get()].standard
-
-vim.g.terminal_color_0 = standard.black.hex -- black
-vim.g.terminal_color_8 = standard.grey.hex -- bright black
-vim.g.terminal_color_1 = standard.red.hex -- red
-vim.g.terminal_color_9 = bright.red.hex -- bright red
-vim.g.terminal_color_2 = standard.green.hex -- green
-vim.g.terminal_color_10 = bright.green.hex -- bright green
-vim.g.terminal_color_3 = standard.yellow.hex -- yellow
-vim.g.terminal_color_11 = bright.yellow.hex -- bright yellow
-vim.g.terminal_color_4 = standard.blue.hex -- blue
-vim.g.terminal_color_12 = bright.blue.hex -- bright blue
-vim.g.terminal_color_5 = standard.purple.hex -- magenta
-vim.g.terminal_color_13 = bright.purple.hex -- bright magenta
-vim.g.terminal_color_6 = standard.cyan.hex -- cyan
-vim.g.terminal_color_14 = bright.cyan.hex -- bright cyan
-vim.g.terminal_color_7 = standard.white.hex -- white
-vim.g.terminal_color_15 = bright.white.hex -- bright white
 
 return colours

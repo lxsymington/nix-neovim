@@ -113,7 +113,6 @@ end
 
 Tasks.compile = function(self)
 	local compiler = self.instance.compiler
-	vim.print(compiler)
 
 	if compiler ~= nil then
 		cmd.CompilerOpen()

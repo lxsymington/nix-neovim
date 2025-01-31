@@ -1,18 +1,14 @@
 -- colors/crepuscular_dusk.lua
 local api = vim.api
 local cmd = vim.cmd
-local g = vim.g
+local opt = vim.opt
 
 local colors = {
 	-- content here will not be touched
 	-- PATCH_OPEN
 	Normal = { fg = '#FAEFE5', bg = '#170C21' },
 	NormalNC = { link = 'Normal' },
-	NotifyDEBUGBody = { link = 'Normal' },
-	NotifyERRORBody = { link = 'Normal' },
-	NotifyINFOBody = { link = 'Normal' },
-	NotifyTRACEBody = { link = 'Normal' },
-	NotifyWARNBody = { link = 'Normal' },
+	NotifyBackground = { link = 'Normal' },
 	StatusLine = { link = 'Normal' },
 	Altfont = { altfont = true, nocombine = true },
 	Background = { fg = '#170C21' },
@@ -390,21 +386,26 @@ local colors = {
 	NormalFloat = { fg = '#FAEFE5', bg = '#170C21', blend = 12 },
 	StatusLineNC = { link = 'NormalFloat' },
 	TelescopeNormal = { link = 'NormalFloat' },
+	NotifyDEBUGBody = { fg = '#F6E9DE' },
 	NotifyDEBUGBorder = { fg = '#ABB7CB' },
 	NotifyDEBUGIcon = { fg = '#9BB6F0' },
-	NotifyDEBUGTitle = { fg = '#A9B4E7' },
+	NotifyDEBUGTitle = { fg = '#A9B4E7', bold = true, nocombine = true },
+	NotifyERRORBody = { fg = '#F8E8DC' },
 	NotifyERRORBorder = { fg = '#D5ACB1' },
 	NotifyERRORIcon = { fg = '#F99D9D' },
-	NotifyERRORTitle = { fg = '#E0A8A9' },
+	NotifyERRORTitle = { fg = '#E0A8A9', bold = true, nocombine = true },
+	NotifyINFOBody = { fg = '#F6E9DF' },
 	NotifyINFOBorder = { fg = '#BDB1CD' },
 	NotifyINFOIcon = { fg = '#C4A9F3' },
-	NotifyINFOTitle = { fg = '#C7A9EC' },
+	NotifyINFOTitle = { fg = '#C7A9EC', bold = true, nocombine = true },
+	NotifyTRACEBody = { fg = '#F9E8DB' },
 	NotifyTRACEBorder = { fg = '#E6A88A' },
 	NotifyTRACEIcon = { fg = '#FF9F5A' },
-	NotifyTRACETitle = { fg = '#F7A179' },
+	NotifyTRACETitle = { fg = '#F7A179', bold = true, nocombine = true },
+	NotifyWARNBody = { fg = '#F9E8D9' },
 	NotifyWARNBorder = { fg = '#C9B392' },
 	NotifyWARNIcon = { fg = '#E9AB32' },
-	NotifyWARNTitle = { fg = '#EEA83F' },
+	NotifyWARNTitle = { fg = '#EEA83F', bold = true, nocombine = true },
 	Number = { fg = '#F7A179' },
 	['@number'] = { link = 'Number' },
 	Operator = { fg = '#6AC5BD' },
@@ -527,7 +528,11 @@ local colors = {
 
 -- colorschemes generally want to do this
 cmd.highlight('clear')
-g.colors_name = 'crepuscular_dusk'
+vim.g.colors_name = 'crepuscular_dusk'
+opt.background = 'dark'
+
+-- Sets the colorscheme to be Crepuscular
+cmd.colorscheme(vim.g.colors_name)
 
 -- apply highlight groups
 for group, attrs in pairs(colors) do

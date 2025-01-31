@@ -38,10 +38,10 @@ let
     pname = "blink-compat";
     src = inputs.blink-compat;
   };
-  blink-cmp-copilot = mkNvimPlugin {
+  blink-copilot = mkNvimPlugin {
     dependencies = [ copilot ];
-    pname = "blink-cmp-copilot";
-    src = inputs.blink-cmp-copilot;
+    pname = "blink-copilot";
+    src = inputs.blink-copilot;
   };
   neogit = mkNvimPlugin {
     dependencies = [
@@ -58,6 +58,9 @@ let
     src = inputs.neogit;
   };
   gitsigns = mkNvimPlugin {
+    nvimSkipModule = [
+      "lualsreport"
+    ];
     pname = "gitsigns";
     src = inputs.gitsigns;
   };
@@ -111,6 +114,48 @@ let
     src = inputs.nougat;
   };
   markview = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+    ];
+    nvimSkipModule = [
+      "markview.renderers.markdown"
+      "markview.renderers.typst"
+      "markview.renderers.html"
+      "markview.renderers.yaml"
+      "markview.renderers.latex"
+      "markview.renderers.markdown_inline"
+      "markview.parsers.markdown"
+      "markview.parsers.typst"
+      "markview.parsers.html"
+      "markview.parsers.yaml"
+      "markview.parsers.latex"
+      "markview.parsers.markdown_inline"
+      "markview.renderer"
+      "markview.parser"
+      "markview.health"
+      "markview.symbols"
+      "markview.spec"
+      "markview.entities"
+      "markview.filetypes"
+      "markview.presets"
+      "markview.utils"
+      "markview.links"
+      "markview.highlights"
+      "markview.extras.checkboxes"
+      "markview.extras.editor"
+      "markview.extras.headings"
+      "definitions.markdown"
+      "definitions.preview"
+      "definitions.typst"
+      "definitions.config"
+      "definitions.html"
+      "definitions.yaml"
+      "definitions.common"
+      "definitions.latex"
+      "definitions.markdown_inline"
+      "markview"
+      "cmp-markview"
+    ];
     pname = "markview";
     src = inputs.markview;
   };
@@ -261,7 +306,7 @@ let
     # Autocompletion and extensions
     # nvim-cmp # https://github.com/hrsh7th/nvim-cmp
     inputs.blink-cmp.packages.${system}.blink-cmp # Performant, batteries-included completion plugin for Neovim | https://github.com/Saghen/blink.cmp
-    blink-cmp-copilot # Copilot source for blink-cmp | htttps://github.com/giuxtaposition/blink-cmp-copilot
+    blink-copilot # Copilot source for blink-cmp | htttps://github.com/giuxtaposition/blink-cmp-copilot
     blink-compat # Compatibility layer for blink-cmp | htttps://github.com/Saghen/blink-compat
     lspkind-nvim # vscode-like LSP pictograms | https://github.com/onsails/lspkind.nvim/
     cmp-git # cmp git suggestions | https://github.com/petertriho/cmp-git/

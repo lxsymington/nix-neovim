@@ -21,8 +21,8 @@
       flake = true;
     };
 
-    blink-cmp-copilot = {
-      url = "github:giuxtaposition/blink-cmp-copilot";
+    blink-copilot = {
+      url = "github:fang2hou/blink-copilot";
       flake = false;
     };
 

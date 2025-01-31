@@ -313,8 +313,8 @@ function M.setup()
 		})
 	end
 
-	if fn.executable('vscode-json-languageserver') == 1 then
-		lspconfig.json.setup({
+	if fn.executable('vscode-json-language-server') == 1 then
+		lspconfig.jsonls.setup({
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = require('lxs.lsp').attach,
 			settings = {

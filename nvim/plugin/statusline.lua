@@ -4,7 +4,7 @@ end
 vim.g.did_load_statusline_plugin = true
 
 local nougat = require('nougat')
-local color = require('nougat.color.' .. vim.g.colors_name).get()
+local color = require('nougat.color').get()
 local core = require('nougat.core')
 local Bar = require('nougat.bar')
 local Item = require('nougat.item')
@@ -127,13 +127,17 @@ local filename = Item({
 			sep_left = sep.space(),
 		}),
 		nut.buf.fileformat({
-			hl = 'Grey',
+			hl = {
+				fg = color.bg1,
+			},
 			sep_left = sep.space(),
 			suffix = '·',
 			sep_right = sep.none(),
 		}),
 		nut.buf.fileencoding({
-			hl = 'DimGrey',
+			hl = {
+				fg = color.bg3,
+			},
 			sep_left = sep.none(),
 			sep_right = sep.none(),
 		}),
@@ -274,21 +278,22 @@ local gitstatus = stl:add_item(nut.git.status.create({
 			suffix = function(_, ctx)
 				return (ctx.gitstatus.changed > 0 or ctx.gitstatus.removed > 0) and ' ' or ''
 			end,
-			hl = { fg = color.green },
+			hl = { fg = color.accent.green },
 		}),
 		nut.git.status.count('changed', {
 			prefix = '󱕍 ',
 			suffix = function(_, ctx)
 				return ctx.gitstatus.removed > 0 and ' ' or ''
 			end,
-			hl = { fg = color.yellow },
+			hl = { fg = color.accent.yellow },
 		}),
 		nut.git.status.count('removed', {
 			prefix = '󰍵 ',
-			hl = { fg = color.red },
+			hl = { fg = color.accent.red },
 		}),
 	},
 }))
+
 stl:add_item(paired_space(gitstatus))
 stl:add_item(filename)
 stl:add_item(nut.spacer())
@@ -336,17 +341,23 @@ tal:add_item(nut.tab.tablist.tabs({
 		content = {
 			nut.tab.tablist.icon({ sep_right = sep.space() }),
 			nut.tab.tablist.label({
-				hl = 'Foreground',
+				hl = {
+					fg = color.fg,
+				},
 			}),
 			nut.tab.tablist.modified({
 				sep_left = sep.space(),
 				config = { text = '●' },
-				hl = 'Yellow',
+				hl = {
+					fg = color.yellow,
+				},
 			}),
 			nut.tab.tablist.close({
 				sep_left = sep.space(),
 				config = { text = '󰅖' },
-				hl = 'Red',
+				hl = {
+					fg = color.red,
+				},
 			}),
 		},
 		hl = 'TabLineSel',
@@ -360,7 +371,9 @@ tal:add_item(nut.tab.tablist.tabs({
 		content = {
 			nut.tab.tablist.icon({ sep_right = sep.space() }),
 			nut.tab.tablist.label({
-				hl = 'DimGrey',
+				hl = {
+					fg = color.bg3,
+				},
 			}),
 			nut.tab.tablist.diagnostic_count({
 				sep_left = sep.space(),
@@ -368,12 +381,16 @@ tal:add_item(nut.tab.tablist.tabs({
 			nut.tab.tablist.modified({
 				sep_left = sep.space(),
 				config = { text = '●' },
-				hl = 'DimYellow',
+				hl = {
+					fg = color.accent.yellow,
+				},
 			}),
 			nut.tab.tablist.close({
 				sep_left = sep.space(),
 				config = { text = '󰅖' },
-				hl = 'DimRed',
+				hl = {
+					fg = color.accent.red,
+				},
 			}),
 		},
 		hl = 'TabLine',
