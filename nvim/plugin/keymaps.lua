@@ -12,9 +12,6 @@ local diagnostic = vim.diagnostic
 -- Convenient normal mode
 keymap.set('i', 'jj', '<esc>', { silent = true, desc = 'Return to normal mode' })
 
--- Yank from current position till end of current line
-keymap.set('n', 'Y', 'y$', { silent = true, desc = '[Y]ank to end of line' })
-
 -- Buffer list navigation
 keymap.set('n', '[b', vim.cmd.bprevious, { silent = true, desc = 'previous [b]uffer' })
 keymap.set('n', ']b', vim.cmd.bnext, { silent = true, desc = 'next [b]uffer' })
@@ -39,61 +36,6 @@ local function toggle_qf_list()
 end
 
 keymap.set('n', '\\q', toggle_qf_list, { desc = 'toggle quickfix list' })
-
-local function try_fallback_notify(opts)
-	local success, _ = pcall(opts.try)
-	if success then
-		return
-	end
-	success, _ = pcall(opts.fallback)
-	if success then
-		return
-	end
-	vim.notify(opts.notify, vim.log.levels.INFO)
-end
-
--- Cycle the quickfix and location lists
-local function cleft()
-	try_fallback_notify({
-		try = vim.cmd.cprev,
-		fallback = vim.cmd.clast,
-		notify = 'Quickfix list is empty!',
-	})
-end
-
-local function cright()
-	try_fallback_notify({
-		try = vim.cmd.cnext,
-		fallback = vim.cmd.cfirst,
-		notify = 'Quickfix list is empty!',
-	})
-end
-
-keymap.set('n', '[q', cleft, { silent = true, desc = 'cycle [q]uickfix left' })
-keymap.set('n', ']q', cright, { silent = true, desc = 'cycle [q]uickfix right' })
-keymap.set('n', '[Q', vim.cmd.cfirst, { silent = true, desc = 'first [Q]uickfix entry' })
-keymap.set('n', ']Q', vim.cmd.clast, { silent = true, desc = 'last [Q]uickfix entry' })
-
-local function lleft()
-	try_fallback_notify({
-		try = vim.cmd.lprev,
-		fallback = vim.cmd.llast,
-		notify = 'Location list is empty!',
-	})
-end
-
-local function lright()
-	try_fallback_notify({
-		try = vim.cmd.lnext,
-		fallback = vim.cmd.lfirst,
-		notify = 'Location list is empty!',
-	})
-end
-
-keymap.set('n', '[l', lleft, { silent = true, desc = 'cycle [l]oclist left' })
-keymap.set('n', ']l', lright, { silent = true, desc = 'cycle [l]oclist right' })
-keymap.set('n', '[L', vim.cmd.lfirst, { silent = true, desc = 'first [L]oclist entry' })
-keymap.set('n', ']L', vim.cmd.llast, { silent = true, desc = 'last [L]oclist entry' })
 
 -- Resize vertical splits
 local toIntegral = math.ceil
@@ -132,12 +74,9 @@ keymap.set('c', '%%', function()
 	end
 end, { expr = true, desc = "expand to current buffer's directory" })
 
-keymap.set('n', '<space>tn', vim.cmd.tabnew, { desc = '[t]ab: [n]ew' })
-keymap.set('n', '<space>tq', vim.cmd.tabclose, { desc = '[t]ab: [q]uit/close' })
-
 local severity = diagnostic.severity
 
-keymap.set('n', '<space>e', function()
+keymap.set('n', '<leader>e', function()
 	local _, winid = diagnostic.open_float(nil, { scope = 'line' })
 	if not winid then
 		vim.notify('no diagnostics found', vim.log.levels.INFO)
@@ -145,46 +84,42 @@ keymap.set('n', '<space>e', function()
 	end
 	vim.api.nvim_win_set_config(winid or 0, { focusable = true })
 end, { noremap = true, silent = true, desc = 'diagnostics floating window' })
-keymap.set('n', '[d', function()
-	diagnostic.jump({
-		count = -1,
-	})
-end, { noremap = true, silent = true, desc = 'previous [d]iagnostic' })
-keymap.set('n', ']d', function()
-	diagnostic.jump({
-		count = 1,
-	})
-end, { noremap = true, silent = true, desc = 'next [d]iagnostic' })
+
 keymap.set('n', '[e', function()
 	diagnostic.jump({
 		count = -1,
 		severity = severity.ERROR,
 	})
 end, { noremap = true, silent = true, desc = 'previous [e]rror diagnostic' })
+
 keymap.set('n', ']e', function()
 	diagnostic.jump({
 		count = 1,
 		severity = severity.ERROR,
 	})
 end, { noremap = true, silent = true, desc = 'next [e]rror diagnostic' })
+
 keymap.set('n', '[w', function()
 	diagnostic.jump({
 		count = -1,
 		severity = severity.WARN,
 	})
 end, { noremap = true, silent = true, desc = 'previous [w]arning diagnostic' })
+
 keymap.set('n', ']w', function()
 	diagnostic.jump({
 		count = 1,
 		severity = severity.WARN,
 	})
 end, { noremap = true, silent = true, desc = 'next [w]arning diagnostic' })
+
 keymap.set('n', '[?', function()
 	diagnostic.jump({
 		count = -1,
 		severity = severity.HINT,
 	})
 end, { noremap = true, silent = true, desc = 'previous hint[?] diagnostic' })
+
 keymap.set('n', ']?', function()
 	diagnostic.jump({
 		count = 1,

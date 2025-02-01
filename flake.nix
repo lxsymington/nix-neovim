@@ -236,6 +236,11 @@
       flake = false;
     };
 
+    vimade = {
+      url = "github:TaDaa/vimade";
+      flake = false;
+    };
+
     which-key = {
       url = "github:folke/which-key.nvim";
       flake = false;

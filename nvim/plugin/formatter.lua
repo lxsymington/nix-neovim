@@ -14,12 +14,15 @@ local slow_format_filetypes = {}
 conform.setup({
 	formatters_by_ft = {
 		-- Use a sub-list to run only the first available formatter
-		javascript = { { 'prettierd', 'prettier' } },
+		javascript = { 'prettierd', 'prettier' },
 		lua = { 'stylua' },
 		nix = { 'nixpkgs_fmt' },
 		tf = { 'terraform_fmt' },
 		terraform = { 'terraform_fmt' },
 		['terraform-vars'] = { 'terraform_fmt' },
+	},
+	default_format_opts = {
+		stop_after_first = true,
 	},
 	format_on_save = function(bufnr)
 		if vim.tbl_contains(ignore_filetypes, bo[bufnr].filetype) then

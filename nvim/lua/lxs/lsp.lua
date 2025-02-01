@@ -114,7 +114,7 @@ function M.attach(client, bufnr)
 	end
 	keymap.set('n', 'gD', lsp.buf.declaration, desc('[lsp] go to declaration'))
 	keymap.set('n', 'gd', lsp.buf.definition, desc('[lsp] go to definition'))
-	keymap.set('n', 'g$', lsp.buf.type_definition, desc('[lsp] go to type definition'))
+	keymap.set('n', 'gT', lsp.buf.type_definition, desc('[lsp] go to type definition'))
 	keymap.set('n', 'K', function()
 		lsp.buf.hover({
 			border = 'rounded',
@@ -144,7 +144,7 @@ function M.attach(client, bufnr)
 	keymap.set('n', 'gh', function()
 		lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
 	end, desc('[lsp] toggle inlay hints'))
-	keymap.set('n', 'gT', function()
+	keymap.set('n', 'g$', function()
 		lsp.buf.typehierarchy('subtypes')
 	end, desc('[lsp] type hierarchy subtypes'))
 

@@ -16,7 +16,7 @@ notify.setup({
 vim.notify = notify
 
 -- Notifications –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-keymap.set('n', '<Leader>N/', function()
+keymap.set('n', '<Leader>/n', function()
 	local telescope_available, telescope = pcall(require, 'telescope')
 
 	if telescope_available then

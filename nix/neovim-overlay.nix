@@ -116,45 +116,7 @@ let
   markview = mkNvimPlugin {
     dependencies = [
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-    ];
-    nvimSkipModule = [
-      "markview.renderers.markdown"
-      "markview.renderers.typst"
-      "markview.renderers.html"
-      "markview.renderers.yaml"
-      "markview.renderers.latex"
-      "markview.renderers.markdown_inline"
-      "markview.parsers.markdown"
-      "markview.parsers.typst"
-      "markview.parsers.html"
-      "markview.parsers.yaml"
-      "markview.parsers.latex"
-      "markview.parsers.markdown_inline"
-      "markview.renderer"
-      "markview.parser"
-      "markview.health"
-      "markview.symbols"
-      "markview.spec"
-      "markview.entities"
-      "markview.filetypes"
-      "markview.presets"
-      "markview.utils"
-      "markview.links"
-      "markview.highlights"
-      "markview.extras.checkboxes"
-      "markview.extras.editor"
-      "markview.extras.headings"
-      "definitions.markdown"
-      "definitions.preview"
-      "definitions.typst"
-      "definitions.config"
-      "definitions.html"
-      "definitions.yaml"
-      "definitions.common"
-      "definitions.latex"
-      "definitions.markdown_inline"
-      "markview"
-      "cmp-markview"
+      pkgs.vimPlugins.nvim-treesitter-textobjects
     ];
     pname = "markview";
     src = inputs.markview;
@@ -288,6 +250,15 @@ let
     pname = "shipwright";
     src = inputs.shipwright;
   };
+  vimade = mkNvimPlugin {
+    nvimSkipModule = [
+      "vimade.focus.providers.hlchunk"
+      "vimade.focus.providers.snacks"
+      "vimade.focus.providers.mini"
+    ];
+    pname = "vimade";
+    src = inputs.vimade;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -342,7 +313,6 @@ let
     satellite-nvim # Mini map | https://github.com/lewis6991/satellite.nvim/
     reactive # Contextual highlighting | https://github.com/rasulomaroff/reactive.nvim/
     screenkey # Screenkey | https://github.com/NStefan002/screenkey.nvim/
-    twilight-nvim # Focus mode | https://github.com/folke/twilight.nvim/
     true-zen # Zen mode | https://github.com/Pocco81/true-zen.nvim/
     mini-starter # Dashboard | https://github.com/echasnovski/mini.starter/
     nougat # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
@@ -350,6 +320,7 @@ let
     helpview # help view | https://github.com/OXY2DEV/helpview.nvim/
     mini-hipatterns # highlighting | https://github.com/echasnovski/mini.hipatterns/
     symbol-usage # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
+    vimade # Pane focus contrast | https://github.com/TaDaa/vimade/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/

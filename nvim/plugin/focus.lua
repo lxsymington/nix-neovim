@@ -1,27 +1,26 @@
+local vimade = require('vimade')
 local screenkey = require('screenkey')
-local twilight = require('twilight')
 local truezen = require('true-zen')
 
 local keymap = vim.keymap
 
--- Twilight ————————————————————————————————————————————————————————————————————
-twilight.setup({
-	dimming = {
-		alpha = 0.25, -- amount of dimming
-		-- we try to get the foreground from the highlight groups or fallback color
-		color = { 'Normal', '#ffffff' },
+-- Vimade ——————————————————————————————————————————————————————————————————————
+vimade.setup({
+	recipe = { 'default', { animate = true } },
+	fade_level = 0.4,
+	groupdiff = true,
+	groupscrollbind = true,
+	tint = {
+		fg = {
+			rgb = require('lxs.crepuscular.colours').dim.background.rgb,
+			intensity = 0.2,
+		},
+		bg = {
+			rgb = require('lxs.crepuscular.colours').bright.background.rgb,
+			intensity = 0.4,
+		},
 	},
-	context = 30, -- amount of lines we will try to show around the current line
-	treesitter = true, -- use treesitter when available for the filetype
-	-- treesitter is used to automatically expand the visible text,
-	-- but you can further control the types of nodes that should always be fully expanded
-	expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
-		'function',
-		'method',
-		'table',
-		'if_statement',
-	},
-	exclude = {}, -- exclude these filetypes
+	enablefocusfading = true,
 })
 
 -- Zen Mode ————————————————————————————————————————————————————————————————————
@@ -46,8 +45,14 @@ function callbacks.open_pre()
 	end)
 end
 
-callbacks.open_pos = screenkey.toggle
-callbacks.close_pre = screenkey.toggle
+callbacks.open_pos = function()
+	vim.cmd.Screenkey('toggle')
+	vim.cmd.VimadeFocus()
+end
+callbacks.close_pre = function()
+	vim.cmd.Screenkey('toggle')
+	vim.cmd.VimadeFocus()
+end
 
 callbacks.close_pos = function()
 	vim.system({
@@ -90,7 +95,6 @@ truezen.setup({
 			font = '+4',
 		},
 		tmux = true,
-		twilight = true,
 	},
 })
 
