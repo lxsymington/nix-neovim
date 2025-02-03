@@ -5,6 +5,8 @@ local defer_fn = vim.defer_fn
 local iter = vim.iter
 local split = vim.split
 
+local pane_relief_namespace = api.nvim_create_namespace('pane_relief')
+
 M.icons = {
 	debug = 'Ⓓ ',
 	error = 'Ⓔ ',
@@ -27,7 +29,7 @@ function M.create_notification_pane()
 
 	api.nvim_buf_set_lines(buf, 0, -1, true, M.lines)
 
-	local win_handle = api.nvim_open_win(buf, false, {
+	local win_handle = vim.schedule_wrap(api.nvim_open_win)(buf, false, {
 		anchor = 'SE',
 		border = 'rounded',
 		col = M.ui.width - 1,
@@ -147,9 +149,9 @@ function M.identify_tab_panes()
 		local buf = api.nvim_create_buf(false, true)
 		api.nvim_buf_set_lines(buf, 0, -1, true, split(M.numbers[i], '\n'))
 
-		local win_handle = api.nvim_open_win(buf, false, {
+		local win_handle = vim.schedule_wrap(api.nvim_open_win)(buf, false, {
 			relative = 'win',
-			border = 'rounded',
+			border = 'shadow',
 			focusable = false,
 			fixed = true,
 			height = glyph_dimensions.row,
@@ -160,10 +162,13 @@ function M.identify_tab_panes()
 			row = api.nvim_win_get_height(win) / 2 - glyph_dimensions.row,
 		})
 
-		vim.defer_fn(function()
-			api.nvim_win_close(win_handle, true)
-			api.nvim_buf_delete(buf, { force = true })
-		end, 30000)
+		vim.defer_fn(
+			vim.schedule_wrap(function()
+				api.nvim_win_close(win_handle, true)
+				api.nvim_buf_delete(buf, { force = true })
+			end),
+			5000
+		)
 	end)
 end
 
@@ -181,7 +186,7 @@ function M.register()
 		end
 
 		M.identify_tab_panes()
-	end)
+	end, pane_relief_namespace)
 end
 
-return M
+return

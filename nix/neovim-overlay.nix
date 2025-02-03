@@ -259,6 +259,13 @@ let
     pname = "vimade";
     src = inputs.vimade;
   };
+  dial = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "dial";
+    src = inputs.dial;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -342,6 +349,7 @@ let
     mini-surround # Surround operator | https://github.com/echasnovski/mini.surround/
     demicolon # Semicolon helper | https://github.com/mawkler/demicolon.nvim/
     eyeliner # Visual cues | https://github.com/jinh0/eyeliner.nvim/
+    dial # Increment/Decrement enhancement | https://github.com/monaqa/dial.nvim/
     # ^ navigation/editing enhancement plugins
     # Code running
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/

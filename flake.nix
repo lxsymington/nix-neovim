@@ -61,6 +61,11 @@
       flake = false;
     };
 
+    dial = {
+      url = "github:monaqa/dial.nvim";
+      flake = false;
+    };
+
     eyeliner = {
       url = "github:jinh0/eyeliner.nvim";
       flake = false;

@@ -150,6 +150,22 @@
         "type": "github"
       }
     },
+    "dial": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736849449,
+        "narHash": "sha256-ph7ULitd6PZctCic700s1ITlni9XM6awbhQRDocCAng=",
+        "owner": "monaqa",
+        "repo": "dial.nvim",
+        "rev": "34bbd9c387c358190e61ce71017faad3dffa7a74",
+        "type": "github"
+      },
+      "original": {
+        "owner": "monaqa",
+        "repo": "dial.nvim",
+        "type": "github"
+      }
+    },
     "eyeliner": {
       "flake": false,
       "locked": {
@@ -995,6 +1011,7 @@
         "csvview": "csvview",
         "dbee-binary": "dbee-binary",
         "demicolon": "demicolon",
+        "dial": "dial",
         "eyeliner": "eyeliner",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",

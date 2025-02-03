@@ -1,9 +1,10 @@
---[[ package.loaded['pane-relief'] = nil
-local pane_relief = require('pane-relief')
+--[[ local pane_relief = require('pane-relief')
 pane_relief.register() ]]
 
 local wk = require('which-key')
 local symbol_usage = require('symbol-usage')
+
+local api = vim.api
 
 wk.setup({
 	preset = 'modern',
@@ -43,27 +44,23 @@ wk.setup({
 })
 
 local function h(name)
-	return vim.api.nvim_get_hl(0, { name = name })
+	return api.nvim_get_hl(0, { name = name })
 end
 
 -- hl-groups can have any name
-vim.api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
-vim.api.nvim_set_hl(
+api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
+api.nvim_set_hl(
 	0,
 	'SymbolUsageContent',
 	{ bg = h('CursorLine').bg, fg = h('Comment').fg, italic = true }
 )
-vim.api.nvim_set_hl(
+api.nvim_set_hl(
 	0,
 	'SymbolUsageRef',
 	{ fg = h('Function').fg, bg = h('CursorLine').bg, italic = true }
 )
-vim.api.nvim_set_hl(
-	0,
-	'SymbolUsageDef',
-	{ fg = h('Type').fg, bg = h('CursorLine').bg, italic = true }
-)
-vim.api.nvim_set_hl(
+api.nvim_set_hl(0, 'SymbolUsageDef', { fg = h('Type').fg, bg = h('CursorLine').bg, italic = true })
+api.nvim_set_hl(
 	0,
 	'SymbolUsageImpl',
 	{ fg = h('@keyword').fg, bg = h('CursorLine').bg, italic = true }
