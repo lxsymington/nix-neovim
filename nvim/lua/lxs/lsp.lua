@@ -306,7 +306,7 @@ function M.setup()
 						expr = 'import <nixpkgs> { }',
 					},
 					formatting = {
-						command = { 'nixfmt' },
+						command = { 'alejandra' },
 					},
 				},
 			},

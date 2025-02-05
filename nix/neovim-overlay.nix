@@ -1,5 +1,8 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{ inputs, system }: final: prev:
+{ inputs
+, system
+,
+}: final: prev:
 let
   inherit (builtins) elem;
 
@@ -9,13 +12,17 @@ let
 
   # Use this to create a plugin from a flake input
   mkNvimPlugin =
-    { dependencies ? [ ]
+    { buildInputs ? [ ]
+    , dependencies ? [ ]
     , nvimSkipModule ? [ ]
+    , passthru ? { }
+    , propagatedBuildInputs ? [ ]
     , pname
     , src
+    ,
     }:
     pkgs.vimUtils.buildVimPlugin {
-      inherit dependencies nvimSkipModule pname src;
+      inherit buildInputs dependencies nvimSkipModule passthru propagatedBuildInputs pname src;
       version = src.lastModifiedDate;
     };
 
@@ -26,6 +33,38 @@ let
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
 
+  /*
+     dbee = pkgs.buildGoModule {
+    name = "dbee";
+    src = inputs.nvim-dbee;
+    sourceRoot = "source/dbee";
+    buildInputs = with pkgs; [ duckdb arrow-cpp postgresql ];
+    vendorHash = "sha256-gOkducSoIurxbLMumRjyA4jmamkWkfH/WSrnypzftu8=";
+    };
+  */
+
+  nui = mkNvimPlugin {
+    pname = "nui";
+    src = inputs.nui-nvim;
+  };
+  nui-components = mkNvimPlugin {
+    dependencies = [
+      nui
+    ];
+    pname = "nui-components";
+    src = inputs.nui-components;
+  };
+  /*
+       nvim-dbee = mkNvimPlugin {
+    propagatedBuildInputs = [ dbee ];
+    passthru = {
+      inherit dbee;
+    };
+    dependencies = [ nui ];
+    pname = "nvim-dbee";
+    src = inputs.nvim-dbee;
+    };
+  */
   luasnip = mkNvimPlugin {
     pname = "luasnip";
     src = inputs.luasnip;
@@ -178,10 +217,6 @@ let
     pname = "mini-icons";
     src = inputs.mini-icons;
   };
-  nui = mkNvimPlugin {
-    pname = "nui";
-    src = inputs.nui-nvim;
-  };
   bqf = mkNvimPlugin {
     pname = "bqf";
     src = inputs.bqf;
@@ -265,6 +300,15 @@ let
     ];
     pname = "dial";
     src = inputs.dial;
+  };
+  jirac = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+      nui
+      nui-components
+    ];
+    pname = "jirac";
+    src = inputs.jirac;
   };
 
   # A plugin can either be a package or an attrset, such as
@@ -399,12 +443,16 @@ let
     hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
     rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/
     # TODO:  reinstate neorg
-    # neorg # Note taking | https://github.com/nvim-neorg/neorg/
-    # neorg-telescope # Neorg telescope integration
+    neorg # Note taking | https://github.com/nvim-neorg/neorg/
+    neorg-telescope # Neorg telescope integration
     # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
     # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
     {
       plugin = csvview; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
+      optional = true;
+    }
+    {
+      plugin = jirac;
       optional = true;
     }
     # ^ Miscellaneous
@@ -472,7 +520,7 @@ let
 
       buildPhase = ''
         runHook preBuild
-           
+
         yarn --offline compile
 
         runHook postBuild

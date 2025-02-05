@@ -1,5 +1,6 @@
 local copilot = require('copilot')
 local codecompanion = require('codecompanion')
+local adapters = require('codecompanion.adapters')
 
 local g = vim.g
 local keymap = vim.keymap
@@ -15,6 +16,17 @@ g.copilot_no_tab_map = true
 g.copilot_hide_during_completion = 0
 g.copilot_proxy_strict_ssl = 0
 codecompanion.setup({
+	adapters = {
+		copilot = function()
+			return adapters.extend('copilot', {
+				schema = {
+					model = {
+						default = 'claude-3.5-sonnet',
+					},
+				},
+			})
+		end,
+	},
 	display = {
 		action_pallete = {
 			width = 80,

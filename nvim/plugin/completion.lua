@@ -171,7 +171,7 @@ local sources = {
 			'lazydev',
 			'lsp',
 			'snippets',
-			-- 'neorg',
+			'neorg',
 			'path',
 		},
 	},
@@ -219,11 +219,11 @@ local sources = {
 			module = 'blink.cmp.sources.snippets',
 			score_offset = 40,
 		},
-		--[[ neorg = {
-				name = 'neorg',
-				module = 'blink.compat.source',
-				enabled = true,
-			}, ]]
+		neorg = {
+			name = 'neorg',
+			module = 'blink.compat.source',
+			enabled = true,
+		},
 		path = {
 			name = 'Path',
 			enabled = true,

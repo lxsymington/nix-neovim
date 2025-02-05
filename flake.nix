@@ -51,8 +51,8 @@
       flake = false;
     };
 
-    dbee-binary = {
-      url = "github:kndndrj/nvim-dbee?dir=dbee";
+    nvim-dbee = {
+      url = "github:kndndrj/nvim-dbee";
       flake = false;
     };
 
@@ -83,6 +83,11 @@
 
     hurl-nvim = {
       url = "github:jellydn/hurl.nvim";
+      flake = false;
+    };
+
+    jirac = {
+      url = "github:janBorowy/jirac.nvim";
       flake = false;
     };
 
@@ -146,10 +151,10 @@
       flake = false;
     };
 
-    /* neorg-overlay = {
+    neorg-overlay = {
       url = "github:nvim-neorg/nixpkgs-neorg-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    }; */
+    };
 
     neotest-mocha = {
       url = "github:adrigzr/neotest-mocha";
@@ -163,6 +168,11 @@
 
     nougat = {
       url = "github:MunifTanjim/nougat.nvim";
+      flake = false;
+    };
+
+    nui-components = {
+      url = "github:grapp-dev/nui-components.nvim";
       flake = false;
     };
 
@@ -252,17 +262,16 @@
     };
   };
 
-  # neorg-overlay
   outputs =
     inputs @ { nixpkgs
     , flake-utils
     , gen-luarc
+    , neorg-overlay
     , ...
     }:
     let
       # This is where the Neovim derivation is built.
-      neovim-overlay = { system ? builtins.currentSystem }:
-        (import ./nix/neovim-overlay.nix { inherit inputs system; });
+      neovim-overlay = { system ? builtins.currentSystem }: (import ./nix/neovim-overlay.nix { inherit inputs system; });
     in
     flake-utils.lib.eachDefaultSystem
       (system:
@@ -277,7 +286,7 @@
             # containing the Neovim API all plugins in the workspace directory.
             # The generated file can be symlinked in the devShell's shellHook.
             gen-luarc.overlays.default
-            # neorg-overlay.overlays.default
+            neorg-overlay.overlays.default
           ];
         };
         shell = pkgs.mkShell {
@@ -297,6 +306,7 @@
         };
       in
       {
+        formatter = pkgs.alejandra;
         devShells = {
           default = shell;
         };
@@ -308,7 +318,7 @@
         overlays = {
           default = pkgs.lib.composeManyExtensions [
             gen-luarc.overlays.default
-            # neorg-overlay.overlays.default
+            neorg-overlay.overlays.default
             (neovim-overlay { inherit system; })
           ];
         };

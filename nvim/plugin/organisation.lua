@@ -1,4 +1,4 @@
---[[ local neorg = require('neorg')
+local neorg = require('neorg')
 local neorg_callbacks = require('neorg.core.callbacks')
 
 local keymap = vim.keymap
@@ -63,4 +63,4 @@ neorg_callbacks.on_event('core.keybinds.events.enable_keybinds', function(_, key
 	})
 end)
 
-keymap.set('n', '<leader>ni', '<Cmd>Neorg index<CR>') ]]
+keymap.set('n', '<leader>ni', '<Cmd>Neorg index<CR>')
