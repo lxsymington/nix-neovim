@@ -162,3 +162,6 @@ keymap.set(
 	'<cmd>s/.*/\\=luaeval(submatch(0))<CR>',
 	{ silent = true, desc = 'Evaluate the current line' }
 )
+
+-- TODO: establish whether this is actually necessary
+keymap.set('i', '<A-3>', '#', { noremap = true, silent = true, desc = 'Insert a literal #' })
