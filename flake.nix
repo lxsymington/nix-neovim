@@ -71,6 +71,11 @@
       flake = false;
     };
 
+    fidget = {
+      url = "github:j-hui/fidget.nvim";
+      flake = false;
+    };
+
     gitsigns = {
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;

@@ -10,7 +10,6 @@ notify.setup({
 		return vim.api.nvim_win_get_height(0)
 	end,
 	stages = 'fade',
-	top_down = false,
 })
 
 vim.notify = notify

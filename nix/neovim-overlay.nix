@@ -310,6 +310,10 @@ let
     pname = "jirac";
     src = inputs.jirac;
   };
+  fidget = mkNvimPlugin {
+    pname = "fidget";
+    src = inputs.fidget;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -372,6 +376,7 @@ let
     mini-hipatterns # highlighting | https://github.com/echasnovski/mini.hipatterns/
     symbol-usage # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
     vimade # Pane focus contrast | https://github.com/TaDaa/vimade/
+    fidget # progress | https://github.com/j-hui/fidget.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/

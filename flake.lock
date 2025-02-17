@@ -186,6 +186,22 @@
         "type": "github"
       }
     },
+    "fidget": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738817426,
+        "narHash": "sha256-AFUx/ZQVWV7s5Wlppjk6N9QXoJKNKqxtf990FFlTEhw=",
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "rev": "d9ba6b7bfe29b3119a610892af67602641da778e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -1252,6 +1268,7 @@
         "demicolon": "demicolon",
         "dial": "dial",
         "eyeliner": "eyeliner",
+        "fidget": "fidget",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "gitsigns": "gitsigns",
