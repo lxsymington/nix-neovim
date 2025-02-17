@@ -16,7 +16,7 @@ conform.setup({
 		-- Use a sub-list to run only the first available formatter
 		javascript = { 'prettierd', 'prettier' },
 		lua = { 'stylua' },
-		nix = { 'nixpkgs_fmt' },
+		nix = { 'alejandra' },
 		tf = { 'terraform_fmt' },
 		terraform = { 'terraform_fmt' },
 		['terraform-vars'] = { 'terraform_fmt' },
