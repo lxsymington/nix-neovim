@@ -161,6 +161,9 @@ let
     src = inputs.markview;
   };
   helpview = mkNvimPlugin {
+    nvimSkipModule = [
+      "definitions.__vimdoc"
+    ];
     pname = "helpview";
     src = inputs.helpview;
   };
