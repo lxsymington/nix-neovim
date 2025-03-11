@@ -6,6 +6,7 @@ local lsp = vim.lsp
 local LSP_Progress = notify_utils.LSP_Progress
 
 notify.setup({
+	background_colour = '#170c21',
 	max_height = function()
 		return vim.api.nvim_win_get_height(0)
 	end,

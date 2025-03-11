@@ -86,6 +86,11 @@
       flake = false;
     };
 
+    hover = {
+      url = "github:lewis6991/hover.nvim";
+      flake = false;
+    };
+
     hurl-nvim = {
       url = "github:jellydn/hurl.nvim";
       flake = false;
@@ -267,65 +272,62 @@
     };
   };
 
-  outputs =
-    inputs @ { nixpkgs
-    , flake-utils
-    , gen-luarc
-    , neorg-overlay
-    , ...
-    }:
-    let
-      # This is where the Neovim derivation is built.
-      neovim-overlay = { system ? builtins.currentSystem }: (import ./nix/neovim-overlay.nix { inherit inputs system; });
-    in
+  outputs = inputs @ {
+    nixpkgs,
+    flake-utils,
+    gen-luarc,
+    neorg-overlay,
+    ...
+  }: let
+    # This is where the Neovim derivation is built.
+    neovim-overlay = {system ? builtins.currentSystem}: (import ./nix/neovim-overlay.nix {inherit inputs system;});
+  in
     flake-utils.lib.eachDefaultSystem
-      (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config = { allowUnfree = true; };
-          overlays = [
-            # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
-            (neovim-overlay { inherit system; })
-            # This adds a function can be used to generate a .luarc.json
-            # containing the Neovim API all plugins in the workspace directory.
-            # The generated file can be symlinked in the devShell's shellHook.
-            gen-luarc.overlays.default
-            neorg-overlay.overlays.default
-          ];
-        };
-        shell = pkgs.mkShell {
-          name = "nvim-devShell";
-          buildInputs = with pkgs; [
-            # Tools for Lua and Nix development, useful for editing files in this repo
-            lua-language-server
-            nixd
-            stylua
-            luajitPackages.luacheck
-            luajitPackages.tiktoken_core
-          ];
-          shellHook = ''
-            # symlink the .luarc.json generated in the overlay
-            ln -fs ${pkgs.nvim-luarc-json} .luarc.json
-          '';
-        };
-      in
-      {
-        formatter = pkgs.alejandra;
-        devShells = {
-          default = shell;
-        };
-        packages = rec {
-          default = nvim;
-          nvim = pkgs.lxs-nvim;
-        };
-        # You can add this overlay to your NixOS configuration
-        overlays = {
-          default = pkgs.lib.composeManyExtensions [
-            gen-luarc.overlays.default
-            neorg-overlay.overlays.default
-            (neovim-overlay { inherit system; })
-          ];
-        };
-      });
+    (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {allowUnfree = true;};
+        overlays = [
+          # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
+          (neovim-overlay {inherit system;})
+          # This adds a function can be used to generate a .luarc.json
+          # containing the Neovim API all plugins in the workspace directory.
+          # The generated file can be symlinked in the devShell's shellHook.
+          gen-luarc.overlays.default
+          neorg-overlay.overlays.default
+        ];
+      };
+      shell = pkgs.mkShell {
+        name = "nvim-devShell";
+        buildInputs = with pkgs; [
+          # Tools for Lua and Nix development, useful for editing files in this repo
+          lua-language-server
+          nixd
+          stylua
+          luajitPackages.luacheck
+          luajitPackages.tiktoken_core
+        ];
+        shellHook = ''
+          # symlink the .luarc.json generated in the overlay
+          ln -fs ${pkgs.nvim-luarc-json} .luarc.json
+        '';
+      };
+    in {
+      formatter = pkgs.alejandra;
+      devShells = {
+        default = shell;
+      };
+      packages = rec {
+        default = nvim;
+        nvim = pkgs.lxs-nvim;
+      };
+      # You can add this overlay to your NixOS configuration
+      overlays = {
+        default = pkgs.lib.composeManyExtensions [
+          gen-luarc.overlays.default
+          neorg-overlay.overlays.default
+          (neovim-overlay {inherit system;})
+        ];
+      };
+    });
 }

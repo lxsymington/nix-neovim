@@ -9,6 +9,8 @@ vim.cmd.packadd({
 })
 local neotest = require('neotest')
 local keymap = vim.keymap
+local fs = vim.fs
+local uv = vim.uv
 
 neotest.setup({
 	adapters = {
@@ -17,7 +19,24 @@ neotest.setup({
 			jest_test_discovery = true,
 		}),
 		require('neotest-mocha')({
-			command = 'volta run npm run --silent test:local --if-present -- ',
+			command = 'volta run npm run --silent test:local --if-present --',
+			command_args = function(context)
+				-- The context contains:
+				--   results_path: The file that json results are written to
+				--   test_name_pattern: The generated pattern for the test
+				--   path: The path to the test file
+				--
+				-- It should return a string array of arguments
+				--
+				-- Not specifying 'command_args' will use the defaults below
+				return {
+					'--full-trace',
+					'--reporter=json',
+					string.format('--reporter-options=output=%s', context.results_path),
+					'--grep=' .. context.test_name_pattern,
+					fs.relpath(uv.cwd(), context.path),
+				}
+			end,
 		}),
 		require('neotest-vim-test')({
 			ignore_filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
@@ -136,28 +155,28 @@ keymap.set('n', '<Leader>ta', neotest.run.attach, {
 	silent = true,
 })
 
-keymap.set('n', ']t', function()
+keymap.set('n', ']T', function()
 	require('neotest').jump.next()
 end, {
 	desc = 'Next » Test',
 	silent = true,
 })
 
-keymap.set('n', ']T', function()
+keymap.set('n', ']t', function()
 	require('neotest').jump.next({ status = 'failed' })
 end, {
 	desc = 'Next » Failing Test',
 	silent = true,
 })
 
-keymap.set('n', '[t', function()
+keymap.set('n', '[T', function()
 	require('neotest').jump.prev()
 end, {
 	desc = 'Previous » Test',
 	silent = true,
 })
 
-keymap.set('n', '[T', function()
+keymap.set('n', '[t', function()
 	require('neotest').jump.prev({ status = 'failed' })
 end, {
 	desc = 'Previous » Failing Test',

@@ -1,9 +1,8 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{ inputs
-, system
-,
-}: final: prev:
-let
+{
+  inputs,
+  system,
+}: final: prev: let
   inherit (builtins) elem;
 
   pkgs = final;
@@ -11,16 +10,15 @@ let
   isDarwin = elem system pkgs.lib.platforms.darwin;
 
   # Use this to create a plugin from a flake input
-  mkNvimPlugin =
-    { buildInputs ? [ ]
-    , dependencies ? [ ]
-    , nvimSkipModule ? [ ]
-    , passthru ? { }
-    , propagatedBuildInputs ? [ ]
-    , pname
-    , src
-    ,
-    }:
+  mkNvimPlugin = {
+    buildInputs ? [],
+    dependencies ? [],
+    nvimSkipModule ? [],
+    passthru ? {},
+    propagatedBuildInputs ? [],
+    pname,
+    src,
+  }:
     pkgs.vimUtils.buildVimPlugin {
       inherit buildInputs dependencies nvimSkipModule passthru propagatedBuildInputs pname src;
       version = src.lastModifiedDate;
@@ -31,16 +29,16 @@ let
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
   # This is the helper function that builds the Neovim derivation.
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
   /*
-     dbee = pkgs.buildGoModule {
-    name = "dbee";
-    src = inputs.nvim-dbee;
-    sourceRoot = "source/dbee";
-    buildInputs = with pkgs; [ duckdb arrow-cpp postgresql ];
-    vendorHash = "sha256-gOkducSoIurxbLMumRjyA4jmamkWkfH/WSrnypzftu8=";
-    };
+   dbee = pkgs.buildGoModule {
+  name = "dbee";
+  src = inputs.nvim-dbee;
+  sourceRoot = "source/dbee";
+  buildInputs = with pkgs; [ duckdb arrow-cpp postgresql ];
+  vendorHash = "sha256-gOkducSoIurxbLMumRjyA4jmamkWkfH/WSrnypzftu8=";
+  };
   */
 
   nui = mkNvimPlugin {
@@ -55,15 +53,15 @@ let
     src = inputs.nui-components;
   };
   /*
-       nvim-dbee = mkNvimPlugin {
-    propagatedBuildInputs = [ dbee ];
-    passthru = {
-      inherit dbee;
-    };
-    dependencies = [ nui ];
-    pname = "nvim-dbee";
-    src = inputs.nvim-dbee;
-    };
+     nvim-dbee = mkNvimPlugin {
+  propagatedBuildInputs = [ dbee ];
+  passthru = {
+    inherit dbee;
+  };
+  dependencies = [ nui ];
+  pname = "nvim-dbee";
+  src = inputs.nvim-dbee;
+  };
   */
   luasnip = mkNvimPlugin {
     pname = "luasnip";
@@ -78,7 +76,7 @@ let
     src = inputs.blink-compat;
   };
   blink-copilot = mkNvimPlugin {
-    dependencies = [ copilot ];
+    dependencies = [copilot];
     pname = "blink-copilot";
     src = inputs.blink-copilot;
   };
@@ -317,6 +315,13 @@ let
     pname = "fidget";
     src = inputs.fidget;
   };
+  hover = mkNvimPlugin {
+    pname = "hover";
+    src = inputs.hover;
+    nvimSkipModule = [
+      "hover.providers.fold_preview"
+    ];
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -380,6 +385,7 @@ let
     symbol-usage # Usage hints | https://github.com/Wansmer/symbol-usage.nvim/
     vimade # Pane focus contrast | https://github.com/TaDaa/vimade/
     fidget # progress | https://github.com/j-hui/fidget.nvim/
+    hover # hover | https://github.com/lewis6991/hover.nvim/
     # ^ UI
     # language support
     nvim-lint # An asynchronous linter plugin | https://github.com/mfussenegger/nvim-lint/
@@ -538,17 +544,16 @@ let
         description = "An extensible linter for the TypeScript language";
         homepage = "https://github.com/palantir/tslint";
         license = licenses.mit;
-        maintainers = with maintainers; [ lxsymington ];
+        maintainers = with maintainers; [lxsymington];
       };
     })
-    (vale.withStyles (s: [ s.write-good s.readability s.proselint ]))
+    (vale.withStyles (s: [s.write-good s.readability s.proselint]))
     vim-vint # Vim linter
     vscode-js-debug
     vscode-langservers-extracted # HTML/CSS/JSON/ESLint LSP
     vtsls
   ];
-in
-{
+in {
   # This is the neovim derivation
   # returned by the overlay
   lxs-nvim = mkNeovim {

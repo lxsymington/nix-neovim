@@ -189,4 +189,4 @@ function M.register()
 	end, pane_relief_namespace)
 end
 
-return
+return M

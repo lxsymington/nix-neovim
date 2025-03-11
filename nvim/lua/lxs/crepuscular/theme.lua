@@ -192,22 +192,21 @@ local theme = setmetatable({}, {
 				CursorLine({ bg = Normal.bg.mix(Normal.fg, 2) }), -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
 				Directory({ fg = bright.blue }), -- Directory names (and other special names in listings)
 				DiffAdd({
-					bg = Normal.bg.hue(bright.green.h).mix(bright.green, 20),
-					gui = BoldUnderdot.gui,
+					bg = bright.green.lightness(Normal.bg.l).abs_lighten(4),
 					sp = bright.green,
 				}), -- Diff mode: Added line |diff.txt|
 				DiffChange({
-					bg = Normal.bg.hue(bright.yellow.h).mix(bright.yellow, 20),
+					bg = bright.yellow.lightness(Normal.bg.l).abs_lighten(16),
 					gui = BoldItalic.gui,
 				}), -- Diff mode: Changed line |diff.txt|
 				DiffDelete({
-					bg = Normal.bg.hue(bright.red.h).mix(bright.red, 20),
-					fg = bright.red,
+					bg = bright.red.lightness(Normal.bg.l),
+					fg = Normal.bg.mix(bright.red, 25),
 					gui = Strikethrough.gui,
 				}), -- Diff mode: Deleted line |diff.txt|
 				DiffText({
-					bg = Normal.bg.hue(bright.cyan.h).mix(bright.cyan, 20),
-					gui = Underdouble.gui,
+					bg = bright.cyan.lightness(Normal.bg.l).abs_lighten(12),
+					gui = Underdot.gui,
 					sp = bright.purple,
 				}), -- Diff mode: Changed text within a changed line |diff.txt|
 				EndOfBuffer({ fg = Normal.bg.mix(dim.grey, 15) }), -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.

@@ -93,12 +93,6 @@ gitsigns.setup({
 			gitsigns.reset_hunk({ fn.line('.'), fn.line('v') })
 		end, { buffer = bufnr, desc = 'Reset hunk' })
 		keymap.set('n', '<leader>hS', gitsigns.stage_buffer, { buffer = bufnr, desc = 'Stage buffer' })
-		keymap.set(
-			'n',
-			'<leader>hu',
-			gitsigns.undo_stage_hunk,
-			{ buffer = bufnr, desc = 'Undo stage hunk' }
-		)
 		keymap.set('n', '<leader>hR', gitsigns.reset_buffer, { buffer = bufnr, desc = 'Reset buffer' })
 		keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { buffer = bufnr, desc = 'Preview hunk' })
 		keymap.set('n', '<leader>hb', function()
@@ -106,9 +100,9 @@ gitsigns.setup({
 		end, { buffer = bufnr, desc = 'Line - full git blame' })
 		keymap.set(
 			'n',
-			'<leader>tb',
+			'<leader>hB',
 			gitsigns.toggle_current_line_blame,
-			{ buffer = bufnr, desc = 'Toggle blame' }
+			{ buffer = bufnr, desc = 'Toggle current line blame' }
 		)
 		keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'Diff this file' })
 		keymap.set('n', '<leader>hD', function()
@@ -116,9 +110,9 @@ gitsigns.setup({
 		end, { buffer = bufnr, desc = 'Diff this file against HEAD~' })
 		keymap.set(
 			'n',
-			'<leader>td',
-			gitsigns.toggle_deleted,
-			{ buffer = bufnr, desc = 'Toggle deleted' }
+			'<leader>hP',
+			gitsigns.preview_hunk_inline,
+			{ buffer = bufnr, desc = 'Preview hunk inline' }
 		)
 
 		-- Text object

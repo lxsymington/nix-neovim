@@ -21,6 +21,15 @@ vimade.setup({
 		},
 	},
 	enablefocusfading = true,
+	blocklist = {
+		buf_name = {
+			'DAP Breakpoints',
+			'DAP Scopes',
+			'DAP Stacks',
+			'DAP Watches',
+			'Neotest Summary',
+		},
+	},
 })
 
 -- Zen Mode ————————————————————————————————————————————————————————————————————
