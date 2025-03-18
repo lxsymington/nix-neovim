@@ -15,11 +15,12 @@ local uv = vim.uv
 neotest.setup({
 	adapters = {
 		require('neotest-jest')({
-			-- jestCommand = 'npm run --silent test:integration --if-present -- ',
+			jestCommand = 'volta run npm run test:integration --if-present --',
+			jestConfigFile = 'integration/jest.config.js',
 			jest_test_discovery = true,
 		}),
 		require('neotest-mocha')({
-			command = 'volta run npm run --silent test:local --if-present --',
+			command = 'volta run npm run test:local --if-present --',
 			command_args = function(context)
 				-- The context contains:
 				--   results_path: The file that json results are written to
