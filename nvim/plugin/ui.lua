@@ -124,3 +124,6 @@ opt.concealcursor = 'nc'
 
 -- Vim cmd line height is only visible during use
 opt.cmdheight = 0
+
+-- Default to using a 'rounded' border for floating windows
+-- opt.winborder = 'rounded'

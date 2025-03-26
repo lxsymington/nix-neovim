@@ -53,7 +53,7 @@ local completion = {
 		draw = {
 			columns = {
 				{ 'kind_icon' },
-				{ 'label', 'label_description', fill = true, gap = 1 },
+				{ 'label', 'label_description', gap = 1 },
 				{ 'kind' },
 				{ 'source_name' },
 			},
@@ -72,13 +72,12 @@ local completion = {
 							string.rep(' ', right_padding)
 						)
 					end,
-					-- Optionally, you may also use the highlights from mini.icons
+					-- (optional) use highlights from mini.icons
 					highlight = function(ctx)
 						local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
 						return hl
 					end,
 				},
-
 				kind = {
 					ellipsis = false,
 					width = { fill = true },
@@ -93,6 +92,7 @@ local completion = {
 							string.rep(' ', right_padding)
 						)
 					end,
+					-- (optional) use highlights from mini.icons
 					highlight = function(ctx)
 						local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
 						return hl
@@ -104,7 +104,7 @@ local completion = {
 				},
 
 				label_description = {
-					width = { max = 30 },
+					width = { fill = true, max = 30 },
 					ellipsis = true,
 				},
 			},
@@ -115,8 +115,15 @@ local completion = {
 
 --- @type blink.cmp.FuzzyConfigPartial
 local fuzzy = {
+	implementation = 'prefer_rust_with_warning',
 	prebuilt_binaries = {
 		download = false,
+	},
+	sorts = {
+		'exact',
+		-- defaults
+		'score',
+		'sort_text',
 	},
 }
 
@@ -229,6 +236,21 @@ local sources = {
 			enabled = true,
 			module = 'blink.cmp.sources.path',
 			score_offset = 10,
+		},
+		cmdline = {
+			module = 'blink.cmp.sources.cmdline',
+		},
+		omni = {
+			module = 'blink.cmp.sources.complete_func',
+			enabled = function()
+				return vim.bo.omnifunc ~= 'v:lua.vim.lsp.omnifunc'
+			end,
+			---@type blink.cmp.CompleteFuncOpts
+			opts = {
+				complete_func = function()
+					return vim.bo.omnifunc
+				end,
+			},
 		},
 	},
 }
