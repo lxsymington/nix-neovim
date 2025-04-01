@@ -91,7 +91,7 @@ opt.pumwidth = 30
 opt.winblend = 10
 
 -- Set completeopt to have a better completion experience
-opt.completeopt = { 'menuone', 'noselect' }
+opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'preinsert' }
 
 -- Set characters to fill the statuslines and vertical separators.
 opt.fillchars = {

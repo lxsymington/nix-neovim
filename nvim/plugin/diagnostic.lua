@@ -30,12 +30,16 @@ local defaults = {
 		style = 'minimal',
 		border = 'rounded',
 		source = 'always',
-		header = '',
+		header = 'Diagnostic',
 		prefix = '',
 	},
 }
 
 vim.diagnostic.config(vim.tbl_deep_extend('force', defaults, {
+	virtual_lines = {
+		current_line = true,
+		hl_mode = 'blend',
+	},
 	virtual_text = {
 		hl_mode = 'blend',
 		prefix = function(diagnostic)

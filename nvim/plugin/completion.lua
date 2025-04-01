@@ -6,7 +6,7 @@ vim.g.did_load_completion_plugin = true
 local blink = require('blink.cmp')
 local lspkind = require('lspkind')
 
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'preinsert' }
 vim.opt.completefunc = 'v:lua.require("blink").show()'
 
 lspkind.init({
