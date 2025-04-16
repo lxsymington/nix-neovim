@@ -33,11 +33,14 @@ local light_palette_metatable = {
 local palette_metatable = {
 	__index = function(self, key)
 		if vim.tbl_contains({ 'light', 'dark' }, key) then
+			vim.print({ key = key })
 			return rawget(self, key)
 		end
 
 		if vim.tbl_contains({ 'bright', 'dim', 'standard' }, key) then
-			return self[vim.opt.background:get()][key]
+			local variant = vim.opt.background:get()
+			vim.print({ variant = variant })
+			return self[variant][key]
 		end
 
 		return self[key]

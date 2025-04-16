@@ -1,5 +1,6 @@
 local M = {}
 
+package.loaded['lxs.crepuscular.colours'] = nil
 local colours = require('lxs.crepuscular.colours')
 local light = colours.light
 

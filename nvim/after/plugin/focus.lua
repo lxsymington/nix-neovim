@@ -1,23 +1,30 @@
 local vimade = require('vimade')
 local screenkey = require('screenkey')
 local truezen = require('true-zen')
+package.loaded['lxs.crepuscular.colours'] = nil
+local colours = require('lxs.crepuscular.colours')
 
 local keymap = vim.keymap
 
 -- Vimade ——————————————————————————————————————————————————————————————————————
 vimade.setup({
 	recipe = { 'default', { animate = true } },
-	fade_level = 0.4,
+	fade_level = 0.5,
+	basebg = colours.bright.background.rgb,
 	groupdiff = true,
 	groupscrollbind = true,
 	tint = {
 		fg = {
-			rgb = require('lxs.crepuscular.colours').dim.background.rgb,
-			intensity = 0.2,
+			rgb = colours.dim.background.rgb,
+			intensity = 0.1,
 		},
 		bg = {
-			rgb = require('lxs.crepuscular.colours').bright.background.rgb,
-			intensity = 0.4,
+			rgb = colours.bright.background.rgb,
+			intensity = 0.1,
+		},
+		sp = {
+			rgb = colours.dim.background.rgb,
+			intensity = 0.1,
 		},
 	},
 	enablefocusfading = true,
@@ -46,7 +53,7 @@ function callbacks.open_pre()
 			'resize-pane',
 			'-Z',
 		}, {}, function()
-			vim.notify_once('enabled', 'info', {
+			vim.notify_once('enabled', vim.log.levels.INFO, {
 				title = 'Focus Mode',
 				timeout = 500,
 			})
@@ -75,7 +82,7 @@ callbacks.close_pos = function()
 			'resize-pane',
 			'-Z',
 		}, {}, function()
-			vim.notify_once('disabled', 'info', {
+			vim.notify_once('disabled', vim.log.levels.INFO, {
 				title = 'Focus Mode',
 				timeout = 500,
 			})

@@ -3,7 +3,7 @@ if vim.g.did_load_statusline_plugin then
 end
 vim.g.did_load_statusline_plugin = true
 
-local nougat = require('nougat')
+--[[ local nougat = require('nougat')
 local color = require('nougat.color').get()
 local core = require('nougat.core')
 local Bar = require('nougat.bar')
@@ -399,4 +399,4 @@ tal:add_item(nut.tab.tablist.tabs({
 	},
 }))
 
-nougat.set_tabline(tal)
+nougat.set_tabline(tal) ]]
