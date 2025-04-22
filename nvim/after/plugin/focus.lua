@@ -6,35 +6,63 @@ local colours = require('lxs.crepuscular.colours')
 
 local keymap = vim.keymap
 
+local dim_foreground_rgb = colours.dim.foreground.rgb
+local dim_background_rgb = colours.dim.background.rgb
+
+vim.print(background_rgb)
+
 -- Vimade ——————————————————————————————————————————————————————————————————————
 vimade.setup({
 	recipe = { 'default', { animate = true } },
-	fade_level = 0.5,
-	basebg = colours.bright.background.rgb,
+	fade_level = 0.3,
+	basebg = {
+		dim_background_rgb.r,
+		dim_background_rgb.g,
+		dim_background_rgb.b,
+	},
 	groupdiff = true,
 	groupscrollbind = true,
 	tint = {
 		fg = {
-			rgb = colours.dim.background.rgb,
+			rgb = {
+				dim_foreground_rgb.r,
+				dim_foreground_rgb.g,
+				dim_foreground_rgb.b,
+			},
 			intensity = 0.1,
 		},
 		bg = {
-			rgb = colours.bright.background.rgb,
-			intensity = 0.1,
+			rgb = {
+				dim_background_rgb.r,
+				dim_background_rgb.g,
+				dim_background_rgb.b,
+			},
+			intensity = 0.5,
 		},
 		sp = {
-			rgb = colours.dim.background.rgb,
+			rgb = {
+				dim_background_rgb.r,
+				dim_background_rgb.g,
+				dim_background_rgb.b,
+			},
 			intensity = 0.1,
 		},
 	},
 	enablefocusfading = true,
 	blocklist = {
-		buf_name = {
-			'DAP Breakpoints',
-			'DAP Scopes',
-			'DAP Stacks',
-			'DAP Watches',
-			'Neotest Summary',
+		default = {
+			buf_name = {
+				'Neotest Summary',
+			},
+		},
+		link = {
+
+			buf_name = {
+				'DAP Breakpoints',
+				'DAP Scopes',
+				'DAP Stacks',
+				'DAP Watches',
+			},
 		},
 	},
 })

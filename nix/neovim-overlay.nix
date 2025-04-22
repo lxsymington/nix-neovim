@@ -322,6 +322,14 @@
       "hover.providers.fold_preview"
     ];
   };
+  nvim-dap-view = mkNvimPlugin {
+    pname = "nvim-dap-view";
+    src = inputs.dap-view;
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+      pkgs.vimPlugins.nvim-dap
+    ];
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -431,7 +439,7 @@
     # Debugging
     # TODO: make these optional dependencies
     nvim-dap
-    nvim-dap-ui
+    nvim-dap-view
     nvim-dap-virtual-text
     # ^ Debugging
     # Useful utilities

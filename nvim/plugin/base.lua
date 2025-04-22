@@ -28,6 +28,9 @@ opt.splitbelow = true
 -- When a new vertical split is opened it is opened to the right
 opt.splitright = true
 
+-- the behaviour when switching between buffers.
+opt.switchbuf = { 'usetab', 'useopen', 'newtab' }
+
 -- Enables line numbers
 opt.number = true
 opt.relativenumber = true

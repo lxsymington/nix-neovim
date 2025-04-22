@@ -6,7 +6,7 @@
 
 local notify_utils = require('lxs.notification_utils')
 local dap_ok, dap = pcall(require, 'dap')
-local dapui_ok, dapui = pcall(require, 'dapui')
+local dap_view_ok, dap_view = pcall(require, 'dap-view')
 local dap_virtual_text_ok, dap_virtual_text = pcall(require, 'dap.virtual_text')
 local api = vim.api
 local fn = vim.fn
@@ -77,49 +77,94 @@ function M.start()
 		notif_data.spinner = nil
 	end
 
-	-- UI ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-	if dapui_ok then
-		dapui.setup({
-			layouts = {
-				{
-					elements = {
-						{ id = 'scopes', size = 0.5 },
-						{ id = 'watches', size = 0.125 },
-						{ id = 'stacks', size = 0.25 },
-						{ id = 'breakpoints', size = 0.125 },
-					},
-					size = 80,
-					position = 'left',
-				},
-				{
-					elements = {
-						'repl',
-						'console',
-					},
-					size = 10,
-					position = 'bottom',
+	vim.fn.sign_define('DapBreakpoint', {
+		text = 'ﱏ',
+		culhl = 'DapBreakpointLine',
+		linehl = 'DapBreakpointLine',
+		numhl = 'DapBreakpointNumber',
+		texthl = 'DapBreakpoint',
+	})
+	vim.fn.sign_define('DapBreakpointCondition', {
+		text = '﯆',
+		culhl = 'DapBreakpointConditionLine',
+		linehl = 'DapBreakpointConditionLine',
+		numhl = 'DapBreakpointConditionNumber',
+		texthl = 'DapBreakpointCondition',
+	})
+	vim.fn.sign_define('DapLogPoint', {
+		text = '',
+		culhl = 'DapLogPointLine',
+		linehl = 'DapLogPointLine',
+		numhl = 'DapLogPointNumber',
+		texthl = 'DapLogPoint',
+	})
+	vim.fn.sign_define('DapStopped', {
+		text = '',
+		culhl = 'DapStoppedLine',
+		linehl = 'DapStoppedLine',
+		numhl = 'DapStoppedNumber',
+		texthl = 'DapStopped',
+	})
+	vim.fn.sign_define('DapBreakpointRejected', {
+		text = '',
+		culhl = 'DapBreakpointRejectedLine',
+		linehl = 'DapBreakpointRejectedLine',
+		numhl = 'DapBreakpointRejectedNumber',
+		texthl = 'DapBreakpointRejected',
+	})
+
+	-- View ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	if dap_view_ok then
+		dap_view.setup({
+			winbar = {
+				show = true,
+				-- You can add a "console" section to merge the terminal with the other views
+				sections = { 'watches', 'scopes', 'exceptions', 'breakpoints', 'threads', 'repl' },
+				-- Must be one of the sections declared above
+				default_section = 'scopes',
+				headers = {
+					breakpoints = 'Breakpoints [B]',
+					scopes = 'Scopes [S]',
+					exceptions = 'Exceptions [E]',
+					watches = 'Watches [W]',
+					threads = 'Threads [T]',
+					repl = 'REPL [R]',
+					console = 'Console [C]',
 				},
 			},
+			windows = {
+				height = 12,
+				terminal = {
+					-- 'left'|'right'|'above'|'below': Terminal position in layout
+					position = 'left',
+					-- List of debug adapters for which the terminal should be ALWAYS hidden
+					hide = {},
+					-- Hide the terminal when starting a new session
+					start_hidden = false,
+				},
+			},
+			-- Controls how to jump when selecting a breakpoint or navigating the stack
+			switchbuf = 'usetab,newtab',
 		})
 
-		dap.listeners.before.attach.dapui_config = function()
-			dapui.open()
+		dap.listeners.before.attach['dap-view-config'] = function()
+			dap_view.open()
 		end
-		dap.listeners.before.launch.dapui_config = function()
-			dapui.open()
+		dap.listeners.before.launch['dap-view-config'] = function()
+			dap_view.open()
 		end
-		dap.listeners.before.event_terminated.dapui_config = function()
-			dapui.close()
+		dap.listeners.before.event_terminated['dap-view-config'] = function()
+			dap_view.close()
 		end
-		dap.listeners.before.event_exited.dapui_config = function()
-			dapui.close()
+		dap.listeners.before.event_exited['dap-view-config'] = function()
+			dap_view.close()
 		end
 
-		keymap.set('n', '<Leader>D', function()
-			require('dapui').toggle({})
+		keymap.set('n', '<Leader>dv', function()
+			require('dap-view').toggle()
 		end, {
 			silent = true,
-			desc = 'DAP » toggle UI',
+			desc = 'DAP » toggle view',
 		})
 	end
 
@@ -177,6 +222,18 @@ function M.keymaps()
 		dap.step_out()
 	end, {
 		desc = 'DAP » Step Out',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>dR', function()
+		dap.restart()
+	end, {
+		desc = 'DAP » Restart',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>d!', function()
+		dap.terminate()
+	end, {
+		desc = 'DAP » Terminate',
 		silent = true,
 	})
 	keymap.set('n', '<Leader>dr', function()

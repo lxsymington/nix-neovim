@@ -51,6 +51,11 @@
       flake = false;
     };
 
+    dap-view = {
+      url = "github:igorlfs/nvim-dap-view";
+      flake = false;
+    };
+
     nvim-dbee = {
       url = "github:kndndrj/nvim-dbee";
       flake = false;

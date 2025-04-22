@@ -40,9 +40,6 @@ local completion = {
 			winblend = 15,
 		},
 	},
-	ghost_text = {
-		enabled = true,
-	},
 	keyword = {
 		range = 'full',
 	},

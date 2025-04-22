@@ -116,6 +116,22 @@
         "type": "github"
       }
     },
+    "dap-view": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1744769216,
+        "narHash": "sha256-QcdlfSQXCLBlDYRGBcH1zczWix64HaYzqF3+0qDuLNE=",
+        "owner": "igorlfs",
+        "repo": "nvim-dap-view",
+        "rev": "aeba18d93cd2f32a5f4a710555c6de72085a0e2e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "igorlfs",
+        "repo": "nvim-dap-view",
+        "type": "github"
+      }
+    },
     "demicolon": {
       "flake": false,
       "locked": {
@@ -1281,6 +1297,7 @@
         "codecompanion": "codecompanion",
         "copilot": "copilot",
         "csvview": "csvview",
+        "dap-view": "dap-view",
         "demicolon": "demicolon",
         "dial": "dial",
         "eyeliner": "eyeliner",
