@@ -78,35 +78,35 @@ function M.start()
 	end
 
 	vim.fn.sign_define('DapBreakpoint', {
-		text = 'ﱏ',
+		text = '⎚',
 		culhl = 'DapBreakpointLine',
 		linehl = 'DapBreakpointLine',
 		numhl = 'DapBreakpointNumber',
 		texthl = 'DapBreakpoint',
 	})
 	vim.fn.sign_define('DapBreakpointCondition', {
-		text = '﯆',
+		text = '⎅',
 		culhl = 'DapBreakpointConditionLine',
 		linehl = 'DapBreakpointConditionLine',
 		numhl = 'DapBreakpointConditionNumber',
 		texthl = 'DapBreakpointCondition',
 	})
 	vim.fn.sign_define('DapLogPoint', {
-		text = '',
+		text = '⎙',
 		culhl = 'DapLogPointLine',
 		linehl = 'DapLogPointLine',
 		numhl = 'DapLogPointNumber',
 		texthl = 'DapLogPoint',
 	})
 	vim.fn.sign_define('DapStopped', {
-		text = '',
+		text = '⌖',
 		culhl = 'DapStoppedLine',
 		linehl = 'DapStoppedLine',
 		numhl = 'DapStoppedNumber',
 		texthl = 'DapStopped',
 	})
 	vim.fn.sign_define('DapBreakpointRejected', {
-		text = '',
+		text = '⌧',
 		culhl = 'DapBreakpointRejectedLine',
 		linehl = 'DapBreakpointRejectedLine',
 		numhl = 'DapBreakpointRejectedNumber',
@@ -144,7 +144,7 @@ function M.start()
 				},
 			},
 			-- Controls how to jump when selecting a breakpoint or navigating the stack
-			switchbuf = 'usetab,newtab',
+			switchbuf = 'usetab,usevisible',
 		})
 
 		dap.listeners.before.attach['dap-view-config'] = function()
@@ -252,6 +252,48 @@ function M.keymaps()
 		dap.step_over({})
 	end, {
 		desc = 'DAP » Step Over',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djb', function()
+		dap_view.jump_to_view('breakpoints')
+	end, {
+		desc = 'DAP » Jump » Breakpoints',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djc', function()
+		dap_view.jump_to_view('console')
+	end, {
+		desc = 'DAP » Jump » Console',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>dje', function()
+		dap_view.jump_to_view('exceptions')
+	end, {
+		desc = 'DAP » Jump » Exceptions',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djr', function()
+		dap_view.jump_to_view('repl')
+	end, {
+		desc = 'DAP » Jump » Repl',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djs', function()
+		dap_view.jump_to_view('scopes')
+	end, {
+		desc = 'DAP » Jump » Scopes',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djt', function()
+		dap_view.jump_to_view('threads')
+	end, {
+		desc = 'DAP » Jump » Threads',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>djw', function()
+		dap_view.jump_to_view('watches')
+	end, {
+		desc = 'DAP » Jump » Watches',
 		silent = true,
 	})
 end

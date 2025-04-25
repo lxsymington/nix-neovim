@@ -9,9 +9,8 @@ local keymap = vim.keymap
 local dim_foreground_rgb = colours.dim.foreground.rgb
 local dim_background_rgb = colours.dim.background.rgb
 
-vim.print(background_rgb)
-
--- Vimade ——————————————————————————————————————————————————————————————————————
+-- Vimade
+-- ——————————————————————————————————————————————————————————————————————
 vimade.setup({
 	recipe = { 'default', { animate = true } },
 	fade_level = 0.3,
