@@ -29,7 +29,7 @@ opt.splitbelow = true
 opt.splitright = true
 
 -- the behaviour when switching between buffers.
-opt.switchbuf = { 'usetab', 'usevisible' }
+opt.switchbuf = { 'usetab', 'uselast', 'vsplit' }
 
 -- Enables line numbers
 opt.number = true
