@@ -500,6 +500,7 @@
     gh
     gojq
     gopls
+    harper
     hurl
     lua-language-server
     (luajit.withPackages (p: [

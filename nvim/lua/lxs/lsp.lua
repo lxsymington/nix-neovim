@@ -65,12 +65,12 @@ local function preview_location_callback(_, result)
 end
 
 local function peek_definition()
-	local params = lsp.util.make_position_params()
+	local params = lsp.util.make_position_params(0, 'utf-8')
 	return lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
 end
 
 local function peek_type_definition()
-	local params = lsp.util.make_position_params()
+	local params = lsp.util.make_position_params(0, 'utf-8')
 	return lsp.buf_request(0, 'textDocument/typeDefinition', params, preview_location_callback)
 end
 
@@ -115,8 +115,8 @@ function M.attach(client, bufnr)
 	keymap.set('n', 'gD', lsp.buf.declaration, desc('[lsp] go to declaration'))
 	keymap.set('n', 'gd', lsp.buf.definition, desc('[lsp] go to definition'))
 	keymap.set('n', 'gT', lsp.buf.type_definition, desc('[lsp] go to type definition'))
-	keymap.set('n', "g'", peek_definition, desc('[lsp] peek definition'))
-	keymap.set('n', 'g"', peek_type_definition, desc('[lsp] peek type definition'))
+	keymap.set('n', 'gp', peek_definition, desc('[lsp] peek definition'))
+	keymap.set('n', 'gP', peek_type_definition, desc('[lsp] peek type definition'))
 	keymap.set('n', 'gI', lsp.buf.implementation, desc('[lsp] go to implementation'))
 	keymap.set('n', 'g%', lsp.buf.references, desc('[lsp] find references'))
 	keymap.set('n', 'gs', lsp.buf.signature_help, desc('[lsp] signature help'))
@@ -332,6 +332,40 @@ function M.setup()
 		require('lspconfig').biome.setup({
 			capabilities = require('lxs.lsp').make_client_capabilities(),
 			on_attach = require('lxs.lsp').attach,
+		})
+	end
+
+	if fn.executable('harper-ls') == 1 then
+		lspconfig.harper_ls.setup({
+			capabilities = require('lxs.lsp').make_client_capabilities(),
+			on_attach = require('lxs.lsp').attach,
+			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
+			settings = {
+				['harper-ls'] = {
+					linters = {
+						SpellCheck = true,
+						SpelledNumbers = false,
+						AnA = true,
+						SentenceCapitalization = true,
+						UnclosedQuotes = true,
+						WrongQuotes = false,
+						LongSentences = true,
+						RepeatedWords = true,
+						Spaces = true,
+						Matcher = true,
+						CorrectNumberSuffix = true,
+					},
+					codeActions = {
+						ForceStable = false,
+					},
+					markdown = {
+						IgnoreLinkTitle = false,
+					},
+					diagnosticSeverity = 'hint',
+					isolateEnglish = false,
+					dialect = 'British',
+				},
+			},
 		})
 	end
 end
