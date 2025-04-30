@@ -78,35 +78,35 @@ function M.start()
 	end
 
 	vim.fn.sign_define('DapBreakpoint', {
-		text = '⎚',
+		text = '⭓',
 		culhl = 'DapBreakpointLine',
 		linehl = 'DapBreakpointLine',
 		numhl = 'DapBreakpointNumber',
 		texthl = 'DapBreakpoint',
 	})
 	vim.fn.sign_define('DapBreakpointCondition', {
-		text = '⎅',
+		text = '⬔',
 		culhl = 'DapBreakpointConditionLine',
 		linehl = 'DapBreakpointConditionLine',
 		numhl = 'DapBreakpointConditionNumber',
 		texthl = 'DapBreakpointCondition',
 	})
 	vim.fn.sign_define('DapLogPoint', {
-		text = '⎙',
+		text = '⃝⃝⃝⃝⭔',
 		culhl = 'DapLogPointLine',
 		linehl = 'DapLogPointLine',
 		numhl = 'DapLogPointNumber',
 		texthl = 'DapLogPoint',
 	})
 	vim.fn.sign_define('DapStopped', {
-		text = '⌖',
+		text = '⮕',
 		culhl = 'DapStoppedLine',
 		linehl = 'DapStoppedLine',
 		numhl = 'DapStoppedNumber',
 		texthl = 'DapStopped',
 	})
 	vim.fn.sign_define('DapBreakpointRejected', {
-		text = '⌧',
+		text = '⭕',
 		culhl = 'DapBreakpointRejectedLine',
 		linehl = 'DapBreakpointRejectedLine',
 		numhl = 'DapBreakpointRejectedNumber',
@@ -131,9 +131,12 @@ function M.start()
 					repl = 'REPL [R]',
 					console = 'Console [C]',
 				},
+				controls = {
+					enabled = true,
+				},
 			},
 			windows = {
-				height = 12,
+				height = 15,
 				terminal = {
 					-- 'left'|'right'|'above'|'below': Terminal position in layout
 					position = 'left',

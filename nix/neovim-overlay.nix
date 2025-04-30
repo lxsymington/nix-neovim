@@ -31,16 +31,6 @@
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
-  /*
-   dbee = pkgs.buildGoModule {
-  name = "dbee";
-  src = inputs.nvim-dbee;
-  sourceRoot = "source/dbee";
-  buildInputs = with pkgs; [ duckdb arrow-cpp postgresql ];
-  vendorHash = "sha256-gOkducSoIurxbLMumRjyA4jmamkWkfH/WSrnypzftu8=";
-  };
-  */
-
   nui = mkNvimPlugin {
     pname = "nui";
     src = inputs.nui-nvim;
@@ -52,17 +42,6 @@
     pname = "nui-components";
     src = inputs.nui-components;
   };
-  /*
-     nvim-dbee = mkNvimPlugin {
-  propagatedBuildInputs = [ dbee ];
-  passthru = {
-    inherit dbee;
-  };
-  dependencies = [ nui ];
-  pname = "nvim-dbee";
-  src = inputs.nvim-dbee;
-  };
-  */
   luasnip = mkNvimPlugin {
     pname = "luasnip";
     src = inputs.luasnip;
@@ -464,11 +443,9 @@
     # Miscellaneous
     hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
     rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/
-    # TODO:  reinstate neorg
     neorg # Note taking | https://github.com/nvim-neorg/neorg/
     neorg-telescope # Neorg telescope integration
-    # The `nvim-dbee` package in `nixpkgs` does not list darwin as a supported platform
-    # nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
+    nvim-dbee # Database client | https://github.com/kndndrj/nvim-dbee/
     {
       plugin = csvview; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
       optional = true;
@@ -484,16 +461,6 @@
     # language servers, etc.
     actionlint
     biome
-    # NOTE: it looks as if the nvim-dbee package in `nixpkgs` includes the binary so we don't need
-    # to include it as an extra package here.
-    # (buildGoModule {
-    #   name = "dbee";
-    #   version = "v0.0.0";
-    #   src = inputs.dbee-binary.outPath;
-    #   sourceRoot = "source/dbee";
-    #   vendorHash = "sha256-AItvgOehVskGLARJWDnJLtWM5YHKN/zn/FnZQ0evAtI=";
-    #   buildInputs = [ mongodb mongodb-tools mongosh ];
-    # })
     deno
     fd
     fzf
