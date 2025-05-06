@@ -110,10 +110,13 @@ opt.shortmess:append('c')
 
 -- Improve mergetool and diff experience by using git's built in diff
 opt.diffopt = {
-	'indent-heuristic',
-	'algorithm:patience',
+	'algorithm:histogram',
+	'closeoff',
 	'filler',
+	'followwrap',
 	'iblank',
+	'indent-heuristic',
+	'inline:char',
 	'internal',
 	'iwhiteall',
 	'linematch:20',

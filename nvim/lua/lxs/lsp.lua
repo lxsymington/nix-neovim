@@ -6,16 +6,13 @@
 
 local api = vim.api
 local bo = vim.bo
-local env = vim.env
 local fn = vim.fn
 local log = vim.log
 local keymap = vim.keymap
 local lsp = vim.lsp
 local notify = vim.notify
 local opt_local = vim.opt_local
-local tbl_deep_extend = vim.tbl_deep_extend
 local tbl_isempty = vim.tbl_isempty
-local uv = vim.uv
 
 local M = {}
 
@@ -102,6 +99,16 @@ local function refresh_codeLens(bufnr, client)
 	end
 end
 
+local function show_references(command, ctx)
+	local locations = command.arguments[3]
+	local client = lsp.get_client_by_id(ctx.client_id)
+	if locations and #locations > 0 then
+		local items = lsp.util.locations_to_items(locations, client.offset_encoding)
+		fn.setloclist(0, {}, ' ', { title = 'References', items = items, context = ctx })
+		api.nvim_command('lopen')
+	end
+end
+
 function M.attach(client, bufnr)
 	opt_local.signcolumn = 'yes'
 	bo[bufnr].bufhidden = 'hide'
@@ -128,8 +135,6 @@ function M.attach(client, bufnr)
 			title = 'LSP Workspaces',
 		})
 	end, desc('[lsp] list workspace folders'))
-	keymap.set('n', 'gR', lsp.buf.rename, desc('[lsp] rename'))
-	keymap.set('n', 'g#', lsp.buf.document_symbol, desc('[lsp] document symbol'))
 	keymap.set('n', 'g.', lsp.buf.code_action, desc('[lsp] code action'))
 	keymap.set('n', 'gl', lsp.codelens.run, desc('[lsp] run code lens'))
 	keymap.set('n', 'gL', lsp.codelens.refresh, desc('[lsp] refresh code lenses'))
@@ -149,224 +154,54 @@ function M.attach(client, bufnr)
 	document_highlight(bufnr, client)
 
 	lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+	lsp.commands['editor.action.showReferences'] = show_references
 end
 
--- `lspconfig` does not support `ftplugin` files 😢
 function M.setup()
-	local lspconfig = require('lspconfig')
-	local schemastore = require('schemastore')
-
 	-- Check if lua-language-server is available
 	if fn.executable('lua-language-server') == 1 then
-		lspconfig.lua_ls.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			on_init = function(client)
-				local path = client.workspace_folders[1].name
-				if uv.fs_stat(path .. '/.luarc.json') or uv.fs_stat(path .. '/.luarc.jsonc') then
-					return
-				end
-
-				client.config.settings.Lua = tbl_deep_extend('force', client.config.settings.Lua, {
-					runtime = {
-						-- Tell the language server which version of Lua you're using
-						-- (most likely LuaJIT in the case of Neovim)
-						version = 'LuaJIT',
-					},
-					-- Make the server aware of Neovim runtime files
-					workspace = {
-						checkThirdParty = false,
-						library = {
-							env.VIMRUNTIME,
-							-- Depending on the usage, you might want to add additional paths here.
-							'${3rd}/luv/library',
-							'${3rd}/busted/library',
-						},
-					},
-				})
-			end,
-			settings = {
-				Lua = {
-					runtime = {
-						version = 'LuaJIT',
-					},
-					completion = {
-						callSnippet = 'Replace',
-					},
-					diagnostics = {
-						-- Get the language server to recognize the `vim` global, etc.
-						globals = {
-							'vim',
-							'describe',
-							'it',
-							'assert',
-							'stub',
-						},
-						disable = {
-							'duplicate-set-field',
-						},
-					},
-					telemetry = {
-						enable = false,
-					},
-					hint = { -- inlay hints (supported in Neovim >= 0.10)
-						enable = true,
-					},
-				},
-			},
-		})
+		vim.lsp.enable('lua_ls')
 	end
 
 	if fn.executable('vscode-eslint-language-server') == 1 then
-		lspconfig.eslint.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-		})
+		vim.lsp.enable('eslint')
 	end
 
 	if fn.executable('deno') == 1 then
-		lspconfig.denols.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
-		})
+		vim.lsp.enable('denols')
 	end
 
 	if fn.executable('tsserver') == 1 and fn.executable('vtsls') == 1 then
-		require('lspconfig.configs').vtsls = require('vtsls').lspconfig -- set default server config, optional but recommended
-
-		-- If the lsp setup is taken over by other plugin, it is the same to call the counterpart setup function
-		require('lspconfig').vtsls.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			settings = {
-				typescript = {
-					inlayHints = {
-						parameterNames = { enabled = 'literals' },
-						parameterTypes = { enabled = true },
-						variableTypes = { enabled = true },
-						propertyDeclarationTypes = { enabled = true },
-						functionLikeReturnTypes = { enabled = true },
-						enumMemberValues = { enabled = true },
-					},
-				},
-			},
-		})
-
-		-- TODO: establish if this is best placed elsewhere
-		lsp.commands['editor.action.showReferences'] = function(command, ctx)
-			local locations = command.arguments[3]
-			local client = lsp.get_client_by_id(ctx.client_id)
-			if locations and #locations > 0 then
-				local items = lsp.util.locations_to_items(locations, client.offset_encoding)
-				fn.setloclist(0, {}, ' ', { title = 'References', items = items, context = ctx })
-				api.nvim_command('lopen')
-			end
-		end
+		vim.lsp.enable('vtsls')
 	end
 
 	if fn.executable('terraform') == 1 then
-		lspconfig.terraform_lsp.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-		})
+		vim.lsp.enable('terraform_lsp')
 	end
 
 	if fn.executable('yaml-language-server') == 1 then
-		lspconfig.yamlls.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			settings = {
-				yaml = {
-					schemaStore = {
-						-- You must disable built-in schemaStore support if you want to use
-						-- this plugin and its advanced options like `ignore`.
-						enable = false,
-						-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-						url = '',
-					},
-					schemas = schemastore.yaml.schemas(),
-				},
-			},
-		})
+		vim.lsp.enable('yamlls')
 	end
 
 	if fn.executable('nixd') == 1 then
-		lspconfig.nixd.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			settings = {
-				nixd = {
-					nixpkgs = {
-						expr = 'import <nixpkgs> { }',
-					},
-					formatting = {
-						command = { 'alejandra' },
-					},
-				},
-			},
-		})
+		vim.lsp.enable('nixd')
 	end
 
 	if fn.executable('vscode-json-language-server') == 1 then
-		lspconfig.jsonls.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			settings = {
-				json = {
-					schemas = schemastore.json.schemas(),
-					validate = { enable = true },
-				},
-			},
-		})
+		vim.lsp.enable('jsonls')
 	end
 
 	if fn.executable('ast-grep') == 1 then
-		lspconfig.ast_grep.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-		})
+		vim.lsp.enable('ast_grep')
 	end
 
 	if fn.executable('biome') == 1 then
-		require('lspconfig').biome.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-		})
+		vim.lsp.enable('biome')
 	end
 
 	if fn.executable('harper-ls') == 1 then
-		lspconfig.harper_ls.setup({
-			capabilities = require('lxs.lsp').make_client_capabilities(),
-			on_attach = require('lxs.lsp').attach,
-			root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
-			settings = {
-				['harper-ls'] = {
-					linters = {
-						SpellCheck = true,
-						SpelledNumbers = false,
-						AnA = true,
-						SentenceCapitalization = true,
-						UnclosedQuotes = true,
-						WrongQuotes = false,
-						LongSentences = true,
-						RepeatedWords = true,
-						Spaces = true,
-						Matcher = true,
-						CorrectNumberSuffix = true,
-					},
-					codeActions = {
-						ForceStable = false,
-					},
-					markdown = {
-						IgnoreLinkTitle = false,
-					},
-					diagnosticSeverity = 'hint',
-					isolateEnglish = false,
-					dialect = 'British',
-				},
-			},
-		})
+		vim.lsp.enable('harper_ls')
 	end
 end
 

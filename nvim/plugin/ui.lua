@@ -87,11 +87,11 @@ opt.pumblend = 10
 -- minimum width of the popup menu
 opt.pumwidth = 30
 
+-- maximum width of the popup menu
+opt.pummaxwidth = 80
+
 -- Enable pseudo-transparency for floating windows
 opt.winblend = 10
-
--- Set completeopt to have a better completion experience
-opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'preinsert' }
 
 -- Set characters to fill the statuslines and vertical separators.
 opt.fillchars = {
