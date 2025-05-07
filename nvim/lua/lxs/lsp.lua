@@ -16,17 +16,6 @@ local tbl_isempty = vim.tbl_isempty
 
 local M = {}
 
----Gets a 'ClientCapabilities' object, describing the LSP client capabilities
----Extends the object with capabilities provided by plugins.
----@return lsp.ClientCapabilities
-function M.make_client_capabilities()
-	local capabilities = lsp.protocol.make_client_capabilities()
-	-- Add any additional plugin capabilities here.
-	capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-	-- Make sure to follow the instructions provided in the plugin's docs.
-	return capabilities
-end
-
 local function document_highlight(bufnr, client)
 	if not client then
 		return

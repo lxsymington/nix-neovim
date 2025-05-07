@@ -1,4 +1,5 @@
 vim.lsp.config('biome', {
-	capabilities = require('lxs.lsp').make_client_capabilities(),
 	on_attach = require('lxs.lsp').attach,
+	root_markers = { { 'biome.json', 'biome.jsonc' } },
+	workspace_required = true,
 })

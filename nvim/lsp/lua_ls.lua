@@ -3,7 +3,6 @@ local tbl_deep_extend = vim.tbl_deep_extend
 local uv = vim.uv
 
 vim.lsp.config('lua_ls', {
-	capabilities = require('lxs.lsp').make_client_capabilities(),
 	on_attach = require('lxs.lsp').attach,
 	on_init = function(client)
 		local path = client.workspace_folders[1].name
