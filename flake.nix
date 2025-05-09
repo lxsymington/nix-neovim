@@ -111,6 +111,11 @@
       flake = false;
     };
 
+    lualine = {
+      url = "github:nvim-lualine/lualine.nvim";
+      flake = false;
+    };
+
     luasnip = {
       url = "github:L3MON4D3/LuaSnip?ref=v2.3.0";
       flake = false;
@@ -178,11 +183,6 @@
 
     neotest-vim-test = {
       url = "github:nvim-neotest/neotest-vim-test";
-      flake = false;
-    };
-
-    nougat = {
-      url = "github:MunifTanjim/nougat.nvim";
       flake = false;
     };
 

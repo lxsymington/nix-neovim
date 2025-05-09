@@ -212,6 +212,11 @@ local theme = setmetatable({}, {
 					gui = Underdot.gui,
 					sp = bright.purple,
 				}), -- Diff mode: Changed text within a changed line |diff.txt|
+				DiffTextAdd({
+					bg = standard.green.lightness(Normal.bg.l),
+					gui = BoldUnderdouble.gui,
+					sp = standard.green,
+				}), -- Diff mode: Added text within a changed line |diff.txt|
 				EndOfBuffer({ fg = Normal.bg.mix(dim.grey, 15) }), -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
 				TermCursor({ gui = Reverse.gui }), -- Cursor in a focused terminal
 				TermCursorNC({ bg = Normal.bg.mix(Normal.fg, 15) }), -- Cursor in an unfocused terminal

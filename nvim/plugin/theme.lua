@@ -32,7 +32,6 @@ api.nvim_create_autocmd('BufWritePost', {
 })
 --
 -- Sets the background to be dark - Latest versions of neovim may be able to detect this
-opt.background = 'light'
 local function colourscheme_variant()
 	local variant = opt.background:get() == 'dark' and 'crepuscular_dusk' or 'crepuscular_dawn'
 

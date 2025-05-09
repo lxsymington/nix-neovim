@@ -16,13 +16,40 @@ local log_level = vim.log.levels
 
 local M = {}
 
--- DAP Configuration ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+-- DAP Configuration ――――――――――――――――――――――――――――――――――――――――――――――――――――
 function M.start()
 	if not dap_ok then
 		return
 	end
 
-	-- Adapters ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	-- Configurations ―――――――――――――――――――――――――――――――――――――――――――――――――――――
+	local js_configuration = {
+		{
+			type = 'pwa-node',
+			request = 'launch',
+			name = 'Launch file',
+			program = '${file}',
+			cwd = '${workspaceFolder}',
+			outFiles = {
+				'${workspaceFolder}/**/*.(m|c|)js',
+				'!**/node_modules/**',
+				'**/node_modules/@seccl/**/*.(m|c|)js',
+				'!**/node_modules/@seccl/**/node_modules/**',
+			},
+			resolveSourceMapLocations = {
+				'**',
+				'!**/node_modules/**',
+				'**/node_modules/@seccl/**',
+				'!**/node_modules/@seccl/**/node_modules/**',
+			},
+			skipFiles = { '<node_internals>/**', '**/node_modules/**', '!**/node_modules/@seccl/**' },
+		},
+	}
+
+	dap.configurations['pwa-node'] = js_configuration
+	dap.configurations.javascript = js_configuration
+
+	-- Adapters ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	local js_adapter = {
 		type = 'server',
 		host = 'localhost',
@@ -36,10 +63,10 @@ function M.start()
 	dap.adapters['pwa-node'] = js_adapter
 	dap.adapters.javascript = js_adapter
 
-	-- Display ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	-- Display ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	dap.defaults.fallback.terminal_win_cmd = '80vsplit new'
 	--
-	-- Events ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	-- Events ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
 		local notif_data = notify_utils.get_notif_data('dap', body.progressId)
 

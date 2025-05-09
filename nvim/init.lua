@@ -1,14 +1,14 @@
 local cmd = vim.cmd
 local opt = vim.o
 
--- Builtin –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Builtin ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 cmd.runtime('ftplugin/man.vim')
 cmd.runtime('macros/matchit.vim')
 cmd.filetype('plugin', 'indent', 'on')
 cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 
--- Compatible ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Compatible ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 opt.compatible = false
 
--- LSP –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-require('lxs.lsp').setup()
+-- Theme ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+opt.background = 'light'

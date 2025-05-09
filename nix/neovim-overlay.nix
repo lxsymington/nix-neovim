@@ -125,9 +125,9 @@
     pname = "mini-starter";
     src = inputs.mini-starter;
   };
-  nougat = mkNvimPlugin {
-    pname = "nougat";
-    src = inputs.nougat;
+  lualine = mkNvimPlugin {
+    pname = "lualine";
+    src = inputs.lualine;
   };
   markview = mkNvimPlugin {
     dependencies = [
@@ -253,9 +253,10 @@
       pkgs.vimPlugins.telescope-nvim
     ];
     nvimSkipModule = [
-      "codecompanion.providers.actions.mini_pick"
-      "codecompanion.actions.static"
       "codecompanion.actions.init"
+      "codecompanion.actions.static"
+      "codecompanion.providers.actions.mini_pick"
+      "codecompanion.providers.actions.snacks"
       "minimal"
     ];
     pname = "codecompanion";
@@ -365,7 +366,7 @@
     screenkey # Screenkey | https://github.com/NStefan002/screenkey.nvim/
     true-zen # Zen mode | https://github.com/Pocco81/true-zen.nvim/
     mini-starter # Dashboard | https://github.com/echasnovski/mini.starter/
-    nougat # Statusline & Tabline | https://github.com/MunifTanjim/nougat.nvim/
+    lualine # Statusline & Tabline | https://github.com/nvim-lualine/lualine.nvim/
     markview # Mark view | https://github.com/OXY2DEV/markview.nvim/
     helpview # help view | https://github.com/OXY2DEV/helpview.nvim/
     mini-hipatterns # highlighting | https://github.com/echasnovski/mini.hipatterns/

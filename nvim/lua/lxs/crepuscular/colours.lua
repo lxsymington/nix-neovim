@@ -30,18 +30,24 @@ local light_palette_metatable = {
 	end,
 }
 
+local variant_metatable = {
+	__index = function(self, key)
+		if vim.tbl_contains({ 'bright', 'dim', 'standard' }, key) then
+			return rawget(self, key)
+		end
+
+		return rawget(self, 'standard')[key]
+	end,
+}
+
 local palette_metatable = {
 	__index = function(self, key)
 		if vim.tbl_contains({ 'light', 'dark' }, key) then
 			return rawget(self, key)
 		end
 
-		if vim.tbl_contains({ 'bright', 'dim', 'standard' }, key) then
-			local variant = vim.opt.background:get()
-			return self[variant][key]
-		end
-
-		return self[key]
+		local variant = vim.opt.background:get()
+		return rawget(self, variant)[key]
 	end,
 }
 
@@ -56,7 +62,7 @@ local colours = setmetatable({
 	-- standard Palette
 	-- https://accessiblepalette.com/?lightness=95,74,67,60,53,46,39,32,25,5&a3293d=1,0&df6020=1,0&EBCCAD=1,0&E69900=1,0&36633D=1,0&6BC7BF=1,0&1d64C9=1,0&561DC9=1,0&50494E=1,0
 
-	dark = {
+	dark = setmetatable({
 		bright = setmetatable({
 			black = hsluv('#131016'),
 			blue = hsluv('#9CB6F0'),
@@ -95,9 +101,9 @@ local colours = setmetatable({
 			white = hsluv('#FAEFE5'),
 			yellow = hsluv('#EEA83E'),
 		}, dark_palette_metatable),
-	},
+	}, variant_metatable),
 
-	light = {
+	light = setmetatable({
 		bright = setmetatable({
 			black = hsluv('#131016'),
 			blue = hsluv('#406DB1'),
@@ -136,7 +142,7 @@ local colours = setmetatable({
 			white = hsluv('#FAEFE5'),
 			yellow = hsluv('#946312'),
 		}, light_palette_metatable),
-	},
+	}, variant_metatable),
 }, palette_metatable)
 
 return colours
