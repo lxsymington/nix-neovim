@@ -187,7 +187,7 @@ local theme = setmetatable({}, {
 
 				ColorColumn({ bg = Normal.bg.mix(Normal.fg, 2) }), -- Columns set with 'colorcolumn'
 				Conceal({ fg = Normal.bg.mix(dim.grey, 15) }), -- Placeholder characters substituted for concealed text (see 'conceallevel')
-				Cursor({ gui = Reverse.gui }), -- Character under the cursor
+				Cursor({ fg = bright.orange, bg = Normal.bg.mix(bright.orange, 15), gui = BoldReverse.gui }), -- Character under the cursor
 				CurSearch({ bg = Normal.bg.mix(Normal.fg, 15) }), -- Highlighting a search pattern under the cursor (see 'hlsearch')
 				lCursor({ Cursor }), -- Character under the cursor when |language-mapping| is used (see 'guicursor')
 				CursorIM({ Cursor }), -- Like Cursor, but used when in IME mode |CursorIM|

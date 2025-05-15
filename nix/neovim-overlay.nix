@@ -310,6 +310,10 @@
       pkgs.vimPlugins.nvim-dap
     ];
   };
+  faster = mkNvimPlugin {
+    pname = "faster";
+    src = inputs.faster;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -442,6 +446,7 @@
     lazydev
     # ^ Vim utilities
     # Miscellaneous
+    faster # Performance | https://github.com/pteroctopus/faster.nvim
     hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
     rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/
     neorg # Note taking | https://github.com/nvim-neorg/neorg/

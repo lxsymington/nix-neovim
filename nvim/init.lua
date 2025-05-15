@@ -11,4 +11,4 @@ cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 opt.compatible = false
 
 -- Theme ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-opt.background = 'light'
+-- opt.background = 'light'

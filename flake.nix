@@ -76,6 +76,11 @@
       flake = false;
     };
 
+    faster = {
+      url = "github:pteroctopus/faster.nvim";
+      flake = false;
+    };
+
     fidget = {
       url = "github:j-hui/fidget.nvim";
       flake = false;
