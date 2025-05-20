@@ -206,6 +206,11 @@
       flake = false;
     };
 
+    nvim-recorder = {
+      url = "github:chrisgrieser/nvim-recorder";
+      flake = false;
+    };
+
     quicker = {
       url = "github:stevearc/quicker.nvim";
       flake = false;

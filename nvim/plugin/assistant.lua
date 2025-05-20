@@ -144,7 +144,9 @@ keymap.set(
 )
 keymap.set('v', 'gaa', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
 
--- Expand 'chat' into 'CodeCompanion' in the command line
-vim.cmd([[cab chat CodeCompanion]])
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
+vim.cmd([[cab cca CodeCompanionActions]])
+vim.cmd([[cab ccc CodeCompanionChat]])
 
 assistant_progress:init()

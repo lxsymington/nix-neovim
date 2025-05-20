@@ -4,6 +4,7 @@ end
 vim.g.did_load_statusline_plugin = true
 
 local lualine = require('lualine')
+local recorder = require('recorder')
 package.loaded['lxs.crepuscular.colours'] = nil
 local colours = require('lxs.crepuscular.colours')
 
@@ -53,17 +54,6 @@ local function search()
 		return string.format('%d∕%d %s', search_data.current, search_data.total, visibility)
 	end
 
-	return ''
-end
-
-local function macros()
-	local recording = vim.fn.reg_recording()
-	local executing = vim.fn.reg_executing()
-	if recording ~= '' then
-		return '@' .. recording
-	elseif executing ~= '' then
-		return '@' .. executing
-	end
 	return ''
 end
 
@@ -201,13 +191,12 @@ lualine.setup({
 		},
 		lualine_x = {
 			{
-				macros,
-				icon = function()
-					return vim.fn.reg_recording() ~= '󰄀' or vim.fn.reg_executing() ~= '󱉺'
-				end,
-				cond = function()
-					return vim.fn.reg_recording() ~= '' or vim.fn.reg_executing() ~= ''
-				end,
+				recorder.displaySlots(),
+				color = { fg = colours.dim.blue.hex },
+			},
+			{
+				recorder.recordingStatus(),
+				color = { fg = colours.dim.orange.hex },
 			},
 			{
 				'o:encoding', -- option component same as &encoding in viml

@@ -255,6 +255,7 @@
     nvimSkipModule = [
       "codecompanion.actions.init"
       "codecompanion.actions.static"
+      "codecompanion.providers.actions.fzf_lua"
       "codecompanion.providers.actions.mini_pick"
       "codecompanion.providers.actions.snacks"
       "minimal"
@@ -313,6 +314,10 @@
   faster = mkNvimPlugin {
     pname = "faster";
     src = inputs.faster;
+  };
+  recorder = mkNvimPlugin {
+    pname = "recorder";
+    src = inputs.nvim-recorder;
   };
 
   # A plugin can either be a package or an attrset, such as
@@ -446,6 +451,7 @@
     lazydev
     # ^ Vim utilities
     # Miscellaneous
+    recorder # Macro recorder | https://github.com/chrisgrieser/nvim-recorder
     faster # Performance | https://github.com/pteroctopus/faster.nvim
     hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
     rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/
