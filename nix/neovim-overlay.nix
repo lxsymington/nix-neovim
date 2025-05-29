@@ -319,6 +319,10 @@
     pname = "recorder";
     src = inputs.nvim-recorder;
   };
+  recall = mkNvimPlugin {
+    pname = "recall";
+    src = inputs.recall;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -452,6 +456,7 @@
     # ^ Vim utilities
     # Miscellaneous
     recorder # Macro recorder | https://github.com/chrisgrieser/nvim-recorder
+    recall # Marks enhancement | https://github.com/fnune/recall.nvim
     faster # Performance | https://github.com/pteroctopus/faster.nvim
     hurl-nvim # Rest testing suite | https://github.com/jellydn/hurl.nvim/
     rest-nvim # Rest Client | https://github.com/rest-nvim/rest.nvim/

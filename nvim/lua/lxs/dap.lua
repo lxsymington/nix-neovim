@@ -22,32 +22,14 @@ function M.start()
 		return
 	end
 
-	-- Configurations ―――――――――――――――――――――――――――――――――――――――――――――――――――――
-	local js_configuration = {
-		{
-			type = 'pwa-node',
-			request = 'launch',
-			name = 'Launch file',
-			program = '${file}',
-			cwd = '${workspaceFolder}',
-			outFiles = {
-				'${workspaceFolder}/**/*.(m|c|)js',
-				'!**/node_modules/**',
-				'**/node_modules/@seccl/**/*.(m|c|)js',
-				'!**/node_modules/@seccl/**/node_modules/**',
-			},
-			resolveSourceMapLocations = {
-				'**',
-				'!**/node_modules/**',
-				'**/node_modules/@seccl/**',
-				'!**/node_modules/@seccl/**/node_modules/**',
-			},
-			skipFiles = { '<node_internals>/**', '**/node_modules/**', '!**/node_modules/@seccl/**' },
-		},
+	-- Defaults ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+	dap.defaults.stepping_granularity = 'statement'
+	dap.defaults.terminal_win_cmd = '80vsplit new'
+	dap.defaults.switchbuf = 'usevisible,usetab,uselast'
+	dap.defaults.fallback.external_terminal = {
+		command = '/usr/bin/alacritty',
+		args = { '-e' },
 	}
-
-	dap.configurations['pwa-node'] = js_configuration
-	dap.configurations.javascript = js_configuration
 
 	-- Adapters ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	local js_adapter = {
@@ -55,17 +37,109 @@ function M.start()
 		host = 'localhost',
 		port = '${port}',
 		executable = {
-			command = 'js-debug',
-			args = { '${port}' },
+			command = 'node',
+			args = { 'js-debug', '${port}' },
 		},
 	}
 
 	dap.adapters['pwa-node'] = js_adapter
 	dap.adapters.javascript = js_adapter
+	dap.adapters.node = js_adapter
 
-	-- Display ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-	dap.defaults.fallback.terminal_win_cmd = '80vsplit new'
-	--
+	-- Configurations ―――――――――――――――――――――――――――――――――――――――――――――――――――――
+	local outFiles = {
+		'${workspaceFolder}/**/*.[mc]?[jt]s',
+		'!**/node_modules/**',
+		'**/node_modules/@seccl/**/*.[mc]?[jt]s',
+		'!**/node_modules/@seccl/**/node_modules/**',
+	}
+	local resolveSourceMapLocations = {
+		'**',
+		'!**/node_modules/**',
+		'**/node_modules/@seccl/**',
+		'!**/node_modules/@seccl/**/node_modules/**',
+	}
+	local skipFiles = {
+		'<node_internals>/**',
+		'${workspaceFolder}/node_modules/**',
+		'!${workspaceFolder}/node_modules/@seccl/**',
+	}
+
+	local js_configuration = {
+		{
+			type = 'pwa-node',
+			request = 'launch',
+			name = 'Launch file',
+			program = '${file}',
+			cwd = '${workspaceFolder}',
+			outFiles = outFiles,
+			resolveSourceMapLocations = resolveSourceMapLocations,
+			skipFiles = skipFiles,
+		},
+		{
+			type = 'pwa-node',
+			request = 'attach',
+			name = 'Attach to process',
+			processId = require('dap.utils').pick_process,
+			cwd = '${workspaceFolder}',
+			outFiles = outFiles,
+			resolveSourceMapLocations = resolveSourceMapLocations,
+			skipFiles = skipFiles,
+		},
+	}
+
+	dap.configurations['pwa-node'] = js_configuration
+	dap.configurations.javascript = js_configuration
+	dap.configurations.typescript = js_configuration
+	dap.configurations.npm = {
+		type = 'node-terminal',
+		request = 'launch',
+		name = 'Launch npm script',
+		command = function()
+			return coroutine.create(function(dap_run_coroutine)
+				local npm_project_directory = vim.fs.root(0, 'package.json')
+
+				if not npm_project_directory then
+					notify('package.json not found', log_level.ERROR)
+					coroutine.resume(dap_run_coroutine, dap.ABORT)
+					return
+				end
+
+				local package_json_content =
+					fn.readfile(vim.fs.joinpath(npm_project_directory, 'package.json'))
+				local package_data = vim.json.decode(table.concat(package_json_content, '\n'))
+
+				if not package_data.scripts then
+					notify('No scripts found in package.json', log_level.ERROR)
+					coroutine.resume(dap_run_coroutine, dap.ABORT)
+					return
+				end
+
+				local scripts = vim.tbl_keys(package_data.scripts)
+
+				vim.ui.select(
+					scripts,
+					{ prompt = 'Select an npm script to debug:' },
+					function(selected_script)
+						if not selected_script then
+							notify('No script selected', log_level.WARN)
+							coroutine.resume(dap_run_coroutine, dap.ABORT)
+							return
+						end
+
+						coroutine.resume(dap_run_coroutine, string.format('npm run-script %s', selected_script))
+					end
+				)
+			end)
+		end,
+		smartStep = true,
+		sourceMap = true,
+		cwd = '${workspaceFolder}',
+		outFiles = outFiles,
+		resolveSourceMapLocations = resolveSourceMapLocations,
+		skipFiles = skipFiles,
+	}
+
 	-- Events ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 	dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
 		local notif_data = notify_utils.get_notif_data('dap', body.progressId)
@@ -119,7 +193,7 @@ function M.start()
 		texthl = 'DapBreakpointCondition',
 	})
 	vim.fn.sign_define('DapLogPoint', {
-		text = '⃝⃝⃝⃝⭔',
+		text = '⭔',
 		culhl = 'DapLogPointLine',
 		linehl = 'DapLogPointLine',
 		numhl = 'DapLogPointNumber',
@@ -324,6 +398,12 @@ function M.keymaps()
 		dap_view.jump_to_view('watches')
 	end, {
 		desc = 'DAP » Jump » Watches',
+		silent = true,
+	})
+	keymap.set('n', '<Leader>dt', function()
+		dap.run(dap.configurations.npm, { new = true })
+	end, {
+		desc = 'DAP » Tasks',
 		silent = true,
 	})
 end

@@ -221,6 +221,11 @@
       flake = false;
     };
 
+    recall = {
+      url = "github:fnune/recall.nvim";
+      flake = false;
+    };
+
     resession = {
       url = "github:stevearc/resession.nvim";
       flake = false;

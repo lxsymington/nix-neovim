@@ -169,6 +169,7 @@ opt.virtualedit = 'block'
 
 -- Enable project specific settings
 opt.exrc = true
+opt.secure = true
 
 -- Keep the text on the same screen line when opening, closing or resizing horizontal splits
 opt.splitkeep = 'screen'
