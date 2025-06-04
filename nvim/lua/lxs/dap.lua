@@ -37,8 +37,8 @@ function M.start()
 		host = 'localhost',
 		port = '${port}',
 		executable = {
-			command = 'node',
-			args = { 'js-debug', '${port}' },
+			command = 'js-debug',
+			args = { '${port}' },
 		},
 	}
 

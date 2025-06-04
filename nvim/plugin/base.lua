@@ -2,7 +2,7 @@ local opt = vim.opt
 local g = vim.g
 local fn = vim.fn
 
--- General ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- General —————————————————————————————————————————————————————————————————————
 -- Sets encoding to UTF-8
 opt.fileencoding = 'utf-8'
 

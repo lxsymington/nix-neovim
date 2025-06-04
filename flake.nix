@@ -3,9 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
+
     gen-luarc = {
       url = "github:mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -131,9 +133,22 @@
       flake = false;
     };
 
+    marks = {
+      url = "github:chentoast/marks.nvim";
+      flake = false;
+    };
+
     markview = {
       url = "github:OXY2DEV/markview.nvim";
       flake = false;
+    };
+
+    mcp-hub = {
+      url = "github:ravitemer/mcp-hub";
+    };
+
+    mcp-hub-nvim = {
+      url = "github:ravitemer/mcphub.nvim";
     };
 
     mini-diff = {

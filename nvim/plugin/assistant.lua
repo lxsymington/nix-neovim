@@ -3,18 +3,36 @@ local codecompanion = require('codecompanion')
 local adapters = require('codecompanion.adapters')
 local config = require('codecompanion.config')
 local constants = config.config.constants
+local mcp_hub = require('mcphub')
 local assistant_progress = require('lxs.assistant_progress')
 
 local g = vim.g
 local keymap = vim.keymap
 
--- Copilot –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+-- Copilot –————————————————————————————————————————————————————————————————————
 copilot.setup({
 	suggestion = { enabled = true, auto_trigger = false },
 	panel = { enabled = true },
 })
 
--- Copilot Auto Suggestions –––––––––––––––––––––––––––––––––––––––––––––
+-- MCP Hub –————————————————————————————————————————————————————————————————————
+mcp_hub.setup({
+	ui = {
+		window = {
+			width = 120, -- 0-1 (ratio); "50%" (percentage); 50 (raw number)
+			height = 60, -- 0-1 (ratio); "50%" (percentage); 50 (raw number)
+			align = 'center', -- "center", "top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "left", "right"
+			relative = 'editor',
+			zindex = 50,
+			border = 'rounded', -- "none", "single", "double", "rounded", "solid", "shadow"
+		},
+		wo = { -- window-scoped options (vim.wo)
+			winhl = 'Normal:MCPHubNormal,FloatBorder:MCPHubBorder',
+		},
+	},
+})
+
+-- Copilot Auto Suggestions –———————————————————————————————————————————————————
 g.copilot_no_tab_map = true
 g.copilot_hide_during_completion = 0
 g.copilot_proxy_strict_ssl = 0
@@ -32,8 +50,8 @@ codecompanion.setup({
 	},
 	display = {
 		action_pallete = {
-			width = 80,
-			height = 15,
+			width = 100,
+			height = 30,
 			prompt = 'Prompt ', -- Prompt used for interactive LLM calls
 			provider = 'telescope', -- default|telescope|mini_pick
 			opts = {
@@ -59,6 +77,16 @@ codecompanion.setup({
 					spell = false,
 					wrap = true,
 				},
+			},
+		},
+	},
+	extensions = {
+		mcp_hub = {
+			callback = 'mcphub.extensions.codecompanion',
+			opts = {
+				show_result_in_chat = true, -- Show mcp tool results in chat
+				make_vars = true, -- Convert resources to #variables
+				make_slash_commands = true, -- Add prompts as /slash commands
 			},
 		},
 	},

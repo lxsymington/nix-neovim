@@ -4,6 +4,7 @@
   system,
 }: final: prev: let
   inherit (builtins) elem;
+  inherit (inputs.blink-cmp.packages.${system}) blink-cmp;
 
   pkgs = final;
 
@@ -247,6 +248,7 @@
   };
   codecompanion = mkNvimPlugin {
     dependencies = [
+      blink-cmp
       mini-diff
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       pkgs.vimPlugins.plenary-nvim
@@ -258,6 +260,7 @@
       "codecompanion.providers.actions.fzf_lua"
       "codecompanion.providers.actions.mini_pick"
       "codecompanion.providers.actions.snacks"
+      "codecompanion.providers.completion.cmp.setup"
       "minimal"
     ];
     pname = "codecompanion";
@@ -323,6 +326,22 @@
     pname = "recall";
     src = inputs.recall;
   };
+  mcp-hub = mkNvimPlugin {
+    pname = "mcp-hub";
+    src = inputs.mcp-hub-nvim;
+    dependencies = [
+      pkgs.vimPlugins.plenary-nvim
+      codecompanion
+      lualine
+    ];
+    nvimSkipModule = [
+      "bundled_build"
+    ];
+  };
+  marks = mkNvimPlugin {
+    pname = "marks";
+    src = inputs.marks;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -340,7 +359,7 @@
     nvim-lspconfig # LSP client configs | https://github.com/neovim/nvim-lspconfig/
     # Autocompletion and extensions
     # nvim-cmp # https://github.com/hrsh7th/nvim-cmp
-    inputs.blink-cmp.packages.${system}.blink-cmp # Performant, batteries-included completion plugin for Neovim | https://github.com/Saghen/blink.cmp
+    blink-cmp # Performant, batteries-included completion plugin for Neovim | https://github.com/Saghen/blink.cmp
     blink-copilot # Copilot source for blink-cmp | htttps://github.com/giuxtaposition/blink-cmp-copilot
     blink-compat # Compatibility layer for blink-cmp | htttps://github.com/Saghen/blink-compat
     lspkind-nvim # vscode-like LSP pictograms | https://github.com/onsails/lspkind.nvim/
@@ -348,6 +367,7 @@
     # ^ Autocompletion and extensions
     copilot # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     codecompanion # Assistant Chat | https://github.com/olimorris/codecompanion.nvim
+    mcp-hub # MCP Hub | https://github.com/ravitemer/mcp-hub.nvim
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
     neogit # Git Client | https://github.com/TimUntersberger/neogit/
@@ -455,6 +475,7 @@
     lazydev
     # ^ Vim utilities
     # Miscellaneous
+    marks # Marks enhancement | https://github.com/chentoast/marks.nvim
     recorder # Macro recorder | https://github.com/chrisgrieser/nvim-recorder
     recall # Marks enhancement | https://github.com/fnune/recall.nvim
     faster # Performance | https://github.com/pteroctopus/faster.nvim
@@ -486,6 +507,7 @@
     gopls
     harper
     hurl
+    inputs.mcp-hub.packages.${system}.default
     lua-language-server
     (luajit.withPackages (p: [
       p.luarocks
