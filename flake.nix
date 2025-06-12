@@ -256,6 +256,11 @@
       flake = false;
     };
 
+    sonarqube = {
+      url = "github:iamkarasik/sonarqube.nvim";
+      flake = false;
+    };
+
     statuscol = {
       url = "github:luukvbaal/statuscol.nvim";
       flake = false;

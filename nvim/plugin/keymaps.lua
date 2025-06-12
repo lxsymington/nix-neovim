@@ -89,19 +89,33 @@ keymap.set('n', ']w', function()
 	})
 end, { noremap = true, silent = true, desc = 'next [w]arning diagnostic' })
 
-keymap.set('n', '[?', function()
+keymap.set('n', '[i', function()
+	diagnostic.jump({
+		count = -1,
+		severity = severity.INFO,
+	})
+end, { noremap = true, silent = true, desc = 'previous [i]nfo diagnostic' })
+
+keymap.set('n', ']i', function()
+	diagnostic.jump({
+		count = 1,
+		severity = severity.INFO,
+	})
+end, { noremap = true, silent = true, desc = 'next [i]nfo diagnostic' })
+
+keymap.set('n', '[h', function()
 	diagnostic.jump({
 		count = -1,
 		severity = severity.HINT,
 	})
-end, { noremap = true, silent = true, desc = 'previous hint[?] diagnostic' })
+end, { noremap = true, silent = true, desc = 'previous [h]int diagnostic' })
 
-keymap.set('n', ']?', function()
+keymap.set('n', ']h', function()
 	diagnostic.jump({
 		count = 1,
 		severity = severity.HINT,
 	})
-end, { noremap = true, silent = true, desc = 'next hint[?] diagnostic' })
+end, { noremap = true, silent = true, desc = 'next [h]int diagnostic' })
 
 local function toggle_spell_check()
 	---@diagnostic disable-next-line: param-type-mismatch

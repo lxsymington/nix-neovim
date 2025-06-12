@@ -342,6 +342,10 @@
     pname = "marks";
     src = inputs.marks;
   };
+  sonarqube = {
+    pname = "soarnqube";
+    src = inputs.sonarqube;
+  };
 
   # A plugin can either be a package or an attrset, such as
   # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
@@ -416,7 +420,8 @@
     trouble-nvim # diagnostic aggregator panel | https://github.com/folke/trouble.nvim/
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
-    nvim-vtsls # VTSLS | httpe://github.com/yioneko/nvim-vtsls/
+    nvim-vtsls # VTSLS | https://github.com/yioneko/nvim-vtsls/
+    sonarqube # Code quality analysis | https://github.com/iamkarasik/sonarqube.nvim/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
