@@ -342,8 +342,8 @@
     pname = "marks";
     src = inputs.marks;
   };
-  sonarqube = {
-    pname = "soarnqube";
+  sonarqube = mkNvimPlugin {
+    pname = "sonarqube";
     src = inputs.sonarqube;
   };
 
