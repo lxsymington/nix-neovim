@@ -2,312 +2,312 @@
   description = "Neovim derivation";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "git+ssh://git@github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable";
 
     flake-utils = {
-      url = "github:numtide/flake-utils";
+      url = "git+ssh://git@github.com/numtide/flake-utils";
     };
 
     gen-luarc = {
-      url = "github:mrcjkb/nix-gen-luarc-json";
+      url = "git+ssh://git@github.com/mrcjkb/nix-gen-luarc-json";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
+      url = "git+ssh://git@github.com/nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     blink-cmp = {
-      url = "github:Saghen/blink.cmp";
+      url = "git+ssh://git@github.com/Saghen/blink.cmp";
       flake = true;
     };
 
     blink-copilot = {
-      url = "github:fang2hou/blink-copilot";
+      url = "git+ssh://git@github.com/fang2hou/blink-copilot";
       flake = false;
     };
 
     blink-compat = {
-      url = "github:Saghen/blink.compat";
+      url = "git+ssh://git@github.com/Saghen/blink.compat";
       flake = false;
     };
 
     bqf = {
-      url = "github:kevinhwang91/nvim-bqf";
+      url = "git+ssh://git@github.com/kevinhwang91/nvim-bqf";
       flake = false;
     };
 
     copilot = {
-      url = "github:zbirenbaum/copilot.lua";
+      url = "git+ssh://git@github.com/zbirenbaum/copilot.lua";
       flake = false;
     };
 
     codecompanion = {
-      url = "github:olimorris/codecompanion.nvim";
+      url = "git+ssh://git@github.com/olimorris/codecompanion.nvim";
       flake = false;
     };
 
     csvview = {
-      url = "github:hat0uma/csvview.nvim";
+      url = "git+ssh://git@github.com/hat0uma/csvview.nvim";
       flake = false;
     };
 
     dap-view = {
-      url = "github:igorlfs/nvim-dap-view";
+      url = "git+ssh://git@github.com/igorlfs/nvim-dap-view";
       flake = false;
     };
 
     nvim-dbee = {
-      url = "github:kndndrj/nvim-dbee";
+      url = "git+ssh://git@github.com/kndndrj/nvim-dbee";
       flake = false;
     };
 
     demicolon = {
-      url = "github:mawkler/demicolon.nvim";
+      url = "git+ssh://git@github.com/mawkler/demicolon.nvim";
       flake = false;
     };
 
     dial = {
-      url = "github:monaqa/dial.nvim";
+      url = "git+ssh://git@github.com/monaqa/dial.nvim";
       flake = false;
     };
 
     eyeliner = {
-      url = "github:jinh0/eyeliner.nvim";
+      url = "git+ssh://git@github.com/jinh0/eyeliner.nvim";
       flake = false;
     };
 
     faster = {
-      url = "github:pteroctopus/faster.nvim";
+      url = "git+ssh://git@github.com/pteroctopus/faster.nvim";
       flake = false;
     };
 
     fidget = {
-      url = "github:j-hui/fidget.nvim";
+      url = "git+ssh://git@github.com/j-hui/fidget.nvim";
       flake = false;
     };
 
     gitsigns = {
-      url = "github:lewis6991/gitsigns.nvim";
+      url = "git+ssh://git@github.com/lewis6991/gitsigns.nvim";
       flake = false;
     };
 
     helpview = {
-      url = "github:OXY2DEV/helpview.nvim";
+      url = "git+ssh://git@github.com/OXY2DEV/helpview.nvim";
       flake = false;
     };
 
     hover = {
-      url = "github:lewis6991/hover.nvim";
+      url = "git+ssh://git@github.com/lewis6991/hover.nvim";
       flake = false;
     };
 
     hurl-nvim = {
-      url = "github:jellydn/hurl.nvim";
+      url = "git+ssh://git@github.com/jellydn/hurl.nvim";
       flake = false;
     };
 
     jirac = {
-      url = "github:janBorowy/jirac.nvim";
+      url = "git+ssh://git@github.com/janBorowy/jirac.nvim";
       flake = false;
     };
 
     lazydev = {
-      url = "github:folke/lazydev.nvim";
+      url = "git+ssh://git@github.com/folke/lazydev.nvim";
       flake = false;
     };
 
     lualine = {
-      url = "github:nvim-lualine/lualine.nvim";
+      url = "git+ssh://git@github.com/nvim-lualine/lualine.nvim";
       flake = false;
     };
 
     luasnip = {
-      url = "github:L3MON4D3/LuaSnip?ref=v2.3.0";
+      url = "git+ssh://git@github.com/L3MON4D3/LuaSnip.git?ref=refs/tags/v2.4.0";
       flake = false;
     };
 
     luvit-meta = {
-      url = "github:Bilal2453/luvit-meta";
+      url = "git+ssh://git@github.com/Bilal2453/luvit-meta";
       flake = false;
     };
 
     marks = {
-      url = "github:chentoast/marks.nvim";
+      url = "git+ssh://git@github.com/chentoast/marks.nvim";
       flake = false;
     };
 
     markview = {
-      url = "github:OXY2DEV/markview.nvim";
+      url = "git+ssh://git@github.com/OXY2DEV/markview.nvim";
       flake = false;
     };
 
     mcp-hub = {
-      url = "github:ravitemer/mcp-hub";
+      url = "git+ssh://git@github.com/ravitemer/mcp-hub";
     };
 
     mcp-hub-nvim = {
-      url = "github:ravitemer/mcphub.nvim";
+      url = "git+ssh://git@github.com/ravitemer/mcphub.nvim";
     };
 
     mini-diff = {
-      url = "github:echasnovski/mini.diff";
+      url = "git+ssh://git@github.com/echasnovski/mini.diff";
       flake = false;
     };
 
     mini-git = {
-      url = "github:echasnovski/mini-git";
+      url = "git+ssh://git@github.com/echasnovski/mini-git";
       flake = false;
     };
 
     mini-hipatterns = {
-      url = "github:echasnovski/mini.hipatterns";
+      url = "git+ssh://git@github.com/echasnovski/mini.hipatterns";
       flake = false;
     };
 
     mini-icons = {
-      url = "github:echasnovski/mini.icons";
+      url = "git+ssh://git@github.com/echasnovski/mini.icons";
       flake = false;
     };
 
     mini-pairs = {
-      url = "github:echasnovski/mini.pairs";
+      url = "git+ssh://git@github.com/echasnovski/mini.pairs";
       flake = false;
     };
 
     mini-starter = {
-      url = "github:echasnovski/mini.starter";
+      url = "git+ssh://git@github.com/echasnovski/mini.starter";
       flake = false;
     };
 
     mini-surround = {
-      url = "github:echasnovski/mini.surround";
+      url = "git+ssh://git@github.com/echasnovski/mini.surround";
       flake = false;
     };
 
     neogit = {
-      url = "github:NeogitOrg/neogit?ref=master";
+      url = "git+ssh://git@github.com/NeogitOrg/neogit?ref=master";
       flake = false;
     };
 
     neorg-overlay = {
-      url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+      url = "git+ssh://git@github.com/nvim-neorg/nixpkgs-neorg-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neotest-mocha = {
-      url = "github:adrigzr/neotest-mocha";
+      url = "git+ssh://git@github.com/adrigzr/neotest-mocha";
       flake = false;
     };
 
     neotest-vim-test = {
-      url = "github:nvim-neotest/neotest-vim-test";
+      url = "git+ssh://git@github.com/nvim-neotest/neotest-vim-test";
       flake = false;
     };
 
     nui-components = {
-      url = "github:grapp-dev/nui-components.nvim";
+      url = "git+ssh://git@github.com/grapp-dev/nui-components.nvim";
       flake = false;
     };
 
     nui-nvim = {
-      url = "github:MunifTanjim/nui.nvim";
+      url = "git+ssh://git@github.com/MunifTanjim/nui.nvim";
       flake = false;
     };
 
     nvim-luaref = {
-      url = "github:milisims/nvim-luaref";
+      url = "git+ssh://git@github.com/milisims/nvim-luaref";
       flake = false;
     };
 
     nvim-recorder = {
-      url = "github:chrisgrieser/nvim-recorder";
+      url = "git+ssh://git@github.com/chrisgrieser/nvim-recorder";
       flake = false;
     };
 
     quicker = {
-      url = "github:stevearc/quicker.nvim";
+      url = "git+ssh://git@github.com/stevearc/quicker.nvim";
       flake = false;
     };
 
     reactive = {
-      url = "github:rasulomaroff/reactive.nvim";
+      url = "git+ssh://git@github.com/rasulomaroff/reactive.nvim";
       flake = false;
     };
 
     recall = {
-      url = "github:fnune/recall.nvim";
+      url = "git+ssh://git@github.com/fnune/recall.nvim";
       flake = false;
     };
 
     resession = {
-      url = "github:stevearc/resession.nvim";
+      url = "git+ssh://git@github.com/stevearc/resession.nvim";
       flake = false;
     };
 
     screenkey = {
-      url = "github:NStefan002/screenkey.nvim";
+      url = "git+ssh://git@github.com/NStefan002/screenkey.nvim";
       flake = false;
     };
 
     shipwright = {
-      url = "github:rktjmp/shipwright.nvim";
+      url = "git+ssh://git@github.com/rktjmp/shipwright.nvim";
       flake = false;
     };
 
     sonarqube = {
-      url = "github:iamkarasik/sonarqube.nvim";
+      url = "git+ssh://git@github.com/iamkarasik/sonarqube.nvim";
       flake = false;
     };
 
     statuscol = {
-      url = "github:luukvbaal/statuscol.nvim";
+      url = "git+ssh://git@github.com/luukvbaal/statuscol.nvim";
       flake = false;
     };
 
     symbol-usage = {
-      url = "github:Wansmer/symbol-usage.nvim";
+      url = "git+ssh://git@github.com/Wansmer/symbol-usage.nvim";
       flake = false;
     };
 
     telescope-frecency = {
-      url = "github:nvim-telescope/telescope-frecency.nvim";
+      url = "git+ssh://git@github.com/nvim-telescope/telescope-frecency.nvim";
       flake = false;
     };
 
     treesj = {
-      url = "github:Wansmer/treesj";
+      url = "git+ssh://git@github.com/Wansmer/treesj";
       flake = false;
     };
 
     true-zen = {
-      url = "github:Pocco81/true-zen.nvim";
+      url = "git+ssh://git@github.com/Pocco81/true-zen.nvim";
       flake = false;
     };
 
     tsc-nvim = {
-      url = "github:dmmulroy/tsc.nvim";
+      url = "git+ssh://git@github.com/dmmulroy/tsc.nvim";
       flake = false;
     };
 
     tslint = {
-      url = "github:palantir/tslint";
+      url = "git+ssh://git@github.com/palantir/tslint";
       flake = false;
     };
 
     nvim-vtsls = {
-      url = "github:yioneko/nvim-vtsls";
+      url = "git+ssh://git@github.com/yioneko/nvim-vtsls";
       flake = false;
     };
 
     vimade = {
-      url = "github:TaDaa/vimade";
+      url = "git+ssh://git@github.com/TaDaa/vimade";
       flake = false;
     };
 
     which-key = {
-      url = "github:folke/which-key.nvim";
+      url = "git+ssh://git@github.com/folke/which-key.nvim";
       flake = false;
     };
   };
