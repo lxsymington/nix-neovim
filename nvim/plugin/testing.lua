@@ -39,9 +39,7 @@ neotest.setup({
 				}
 			end,
 		}),
-		require('neotest-vim-test')({
-			ignore_filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-		}),
+		require('neotest-vitest'),
 	},
 	consumers = {
 		overseer = require('neotest.consumers.overseer'),

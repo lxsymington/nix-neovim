@@ -201,8 +201,8 @@
       flake = false;
     };
 
-    neotest-vim-test = {
-      url = "git+ssh://git@github.com/nvim-neotest/neotest-vim-test";
+    neotest-vitest = {
+      url = "git+ssh://git@github.com/marilari88/neotest-vitest";
       flake = false;
     };
 

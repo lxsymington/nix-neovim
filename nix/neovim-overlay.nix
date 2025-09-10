@@ -185,14 +185,17 @@
     pname = "neotest-mocha";
     src = inputs.neotest-mocha;
   };
-  neotest-vim-test = mkNvimPlugin {
+  neotest-vitest = mkNvimPlugin {
     dependencies = [
       pkgs.vimPlugins.neotest
       pkgs.vimPlugins.nvim-nio
       pkgs.vimPlugins.plenary-nvim
     ];
-    pname = "neotest-vim-test";
-    src = inputs.neotest-vim-test;
+    pname = "neotest-vitest";
+    src = inputs.neotest-vitest;
+    nvimSkipModule = [
+      "neotest-vitest-assertions"
+    ];
   };
   mini-icons = mkNvimPlugin {
     pname = "mini-icons";
@@ -443,8 +446,7 @@
       plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
       optional = true;
     }
-    vim-test # Testing framework | https://github.com/vim-test/vim-test/
-    neotest-vim-test # Test adapter | https://github.com/nvim-neotest/neotest-vim-test/
+    neotest-vitest # Test adapter | https://github.com/marilari88/neotest-vitest
     {
       plugin = overseer-nvim; # task management | https://github.com/stevearc/overseer.nvim/
       optional = true;
