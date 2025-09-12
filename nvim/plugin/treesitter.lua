@@ -116,4 +116,10 @@ require('treesitter-context').setup({
 
 require('treesj').setup({})
 
+vim.keymap.set('n', '[C', function()
+	require('treesitter-context').go_to_context(vim.v.count1)
+end, { desc = 'Previous git hunk', silent = true })
+
+vim.keymap.set('n', '<leader>ct', '<Cmd>TSContext toggle<CR>', { desc = 'Context Toggle' })
+
 pcall(vim.treesitter.language.register, 'terraform', 'terraform-vars')

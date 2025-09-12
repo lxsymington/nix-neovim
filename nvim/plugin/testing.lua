@@ -26,17 +26,17 @@ neotest.setup({
 				--   results_path: The file that json results are written to
 				--   test_name_pattern: The generated pattern for the test
 				--   path: The path to the test file
-				--
-				-- It should return a string array of arguments
-				--
-				-- Not specifying 'command_args' will use the defaults below
 				return {
 					'--full-trace',
 					'--reporter=json',
-					string.format('--reporter-options=output=%s', context.results_path),
+					string.format('--reporter-options=output="%s"', context.results_path),
 					'--grep=' .. context.test_name_pattern,
-					fs.relpath(uv.cwd(), context.path),
+					string.format('"%s"', fs.relpath(uv.cwd(), context.path)),
 				}
+			end,
+			env = { CI = true },
+			cwd = function(path)
+				return vim.fn.getcwd()
 			end,
 		}),
 		require('neotest-vitest'),

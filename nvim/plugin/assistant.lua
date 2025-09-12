@@ -38,15 +38,17 @@ g.copilot_hide_during_completion = 0
 g.copilot_proxy_strict_ssl = 0
 codecompanion.setup({
 	adapters = {
-		copilot = function()
-			return adapters.extend('copilot', {
-				schema = {
-					model = {
-						default = 'claude-3.7-sonnet',
+		http = {
+			copilot = function()
+				return adapters.extend('copilot', {
+					schema = {
+						model = {
+							default = 'claude-3.7-sonnet',
+						},
 					},
-				},
-			})
-		end,
+				})
+			end,
+		},
 	},
 	display = {
 		action_pallete = {
