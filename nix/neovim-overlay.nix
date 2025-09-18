@@ -176,9 +176,29 @@
     pname = "mini-surround";
     src = inputs.mini-surround;
   };
+  neotest = mkNvimPlugin {
+    dependencies = [
+      pkgs.vimPlugins.nvim-nio
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "neotest";
+    src = inputs.neotest;
+  };
+  neotest-jest = mkNvimPlugin {
+    dependencies = [
+      neotest
+      pkgs.vimPlugins.nvim-nio
+      pkgs.vimPlugins.plenary-nvim
+    ];
+    pname = "neotest-jest";
+    src = inputs.neotest-jest;
+    nvimSkipModule = [
+      "neotest-jest-assertions"
+    ];
+  };
   neotest-mocha = mkNvimPlugin {
     dependencies = [
-      pkgs.vimPlugins.neotest
+      neotest
       pkgs.vimPlugins.nvim-nio
       pkgs.vimPlugins.plenary-nvim
     ];
@@ -187,7 +207,7 @@
   };
   neotest-vitest = mkNvimPlugin {
     dependencies = [
-      pkgs.vimPlugins.neotest
+      neotest
       pkgs.vimPlugins.nvim-nio
       pkgs.vimPlugins.plenary-nvim
     ];
@@ -442,11 +462,11 @@
     neotest # Testing framework | https://github.com/nvim-neotest/neotest/
     neotest-jest # Jest support | https://github.com/nvim-neotest/neotest-jest/
     neotest-mocha # Mocha support | https://github.com/nvim-neotest/neotest-mocha/
+    neotest-vitest # Test adapter | https://github.com/marilari88/neotest-vitest
     {
       plugin = sniprun; # Repl | https://github.com/michaelb/sniprun
       optional = true;
     }
-    neotest-vitest # Test adapter | https://github.com/marilari88/neotest-vitest
     {
       plugin = overseer-nvim; # task management | https://github.com/stevearc/overseer.nvim/
       optional = true;

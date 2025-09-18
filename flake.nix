@@ -196,6 +196,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    neotest = {
+      url = "git+ssh://git@github.com/nvim-neotest/neotest?ref=52fca6717ef972113ddd6ca223e30ad0abb2800c";
+      flake = false;
+    };
+
+    neotest-jest = {
+      url = "git+ssh://git@github.com/nvim-neotest/neotest-jest";
+      flake = false;
+    };
+
     neotest-mocha = {
       url = "git+ssh://git@github.com/adrigzr/neotest-mocha";
       flake = false;
