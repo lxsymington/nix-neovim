@@ -9,12 +9,28 @@ if fn.executable('vscode-eslint-language-server') == 1 then
 	lsp.enable('eslint')
 end
 
+if fn.executable('vscode-css-language-server') == 1 then
+	lsp.enable('cssls')
+end
+
+if fn.executable('vscode-html-language-server') == 1 then
+	lsp.enable('html')
+end
+
+if fn.executable('vscode-json-language-server') == 1 then
+	lsp.enable('jsonls')
+end
+
 if fn.executable('deno') == 1 then
 	lsp.enable('denols')
 end
 
 if fn.executable('tsserver') == 1 and fn.executable('vtsls') == 1 then
 	lsp.enable('vtsls')
+end
+
+if fn.executable('gopls') == 1 then
+	lsp.enable('gopls')
 end
 
 if fn.executable('terraform') == 1 then
@@ -27,10 +43,6 @@ end
 
 if fn.executable('nixd') == 1 then
 	lsp.enable('nixd')
-end
-
-if fn.executable('vscode-json-language-server') == 1 then
-	lsp.enable('jsonls')
 end
 
 if fn.executable('ast-grep') == 1 then
