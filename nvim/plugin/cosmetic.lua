@@ -29,3 +29,5 @@ hipatterns.setup({
 satellite.setup({
 	current_only = true,
 })
+
+vim.cmd('SatelliteDisable')

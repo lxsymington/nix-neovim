@@ -99,7 +99,7 @@
     };
 
     hover = {
-      url = "git+ssh://git@github.com/lewis6991/hover.nvim";
+      url = "git+ssh://git@github.com/lewis6991/hover.nvim?ref=24a43e0eda924f1f32361c76ee9a1f0e8cc25650";
       flake = false;
     };
 

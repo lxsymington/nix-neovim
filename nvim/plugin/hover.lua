@@ -1,7 +1,6 @@
 local hover = require('hover')
 
 local keymap = vim.keymap
-local api = vim.api
 local o = vim.o
 
 hover.setup({
@@ -16,10 +15,23 @@ hover.setup({
 		require('hover.providers.diagnostic')
 		require('hover.providers.man')
 		require('hover.providers.dictionary')
+		require('hover.providers.highlight')
 	end,
 	preview_opts = {
-		border = 'single',
+		border = 'rounded',
 	},
+	--[[ providers = {
+		-- Require providers
+		'hover.providers.lsp',
+		'hover.providers.gh',
+		'hover.providers.gh_user',
+		-- 'hover.providers.jira',
+		'hover.providers.dap',
+		'hover.providers.fold_preview',
+		'hover.providers.diagnostic',
+		'hover.providers.man',
+		'hover.providers.dictionary',
+	}, ]]
 	-- Whether the contents of a currently open hover window should be moved
 	-- to a :h preview-window when pressing the hover keymap.
 	preview_window = false,
@@ -31,28 +43,14 @@ hover.setup({
 })
 
 -- Setup keymaps
-vim.keymap.set('n', 'K', function()
-	local hover_win = vim.b.hover_preview
-	if hover_win and api.nvim_win_is_valid(hover_win) then
-		api.nvim_set_current_win(hover_win)
-	else
-		hover.hover()
-	end
-end, { desc = 'hover.nvim' })
-
-keymap.set('n', 'gK', hover.hover_select, {
-	desc = 'hover.nvim (select)',
-})
-keymap.set('n', '<C-p>', function()
+vim.keymap.set('n', 'K', hover.hover, { desc = 'hover.nvim' })
+vim.keymap.set('n', 'gK', hover.hover_select, { desc = 'hover.nvim (select)' })
+vim.keymap.set('n', '<C-p>', function()
 	hover.hover_switch('previous')
-end, {
-	desc = 'hover.nvim (previous source)',
-})
-keymap.set('n', '<C-n>', function()
+end, { desc = 'hover.nvim (previous source)' })
+vim.keymap.set('n', '<C-n>', function()
 	hover.hover_switch('next')
-end, {
-	desc = 'hover.nvim (next source)',
-})
+end, { desc = 'hover.nvim (next source)' })
 
 -- Mouse support
 keymap.set('n', '<MouseMove>', hover.hover_mouse, {
