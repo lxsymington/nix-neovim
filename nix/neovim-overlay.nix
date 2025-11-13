@@ -547,7 +547,6 @@
     nodePackages_latest.jsonlint
     nodePackages_latest.nodejs
     nodePackages_latest.prettier
-    nodePackages_latest.ts-node
     nodePackages_latest.yaml-language-server
     prettierd
     rust-analyzer # Rust LSP
