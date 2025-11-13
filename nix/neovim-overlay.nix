@@ -555,38 +555,6 @@
     terraform
     terraform-ls
     typescript
-    (mkYarnPackage {
-      name = "tslint";
-      version = "6.1.3";
-
-      src = inputs.tslint.outPath;
-      packageJson = "${inputs.tslint.outPath}/package.json";
-      yarnLock = "${inputs.tslint.outPath}/yarn.lock";
-
-      offlineCache = fetchYarnDeps {
-        yarnLock = inputs.tslint.outPath + "/yarn.lock";
-        hash = "sha256-xfN1nZXPspHtQnCxNtGBVRrX7I3X8H20gXbslqzp9Io=";
-      };
-
-      packageResolutions = {
-        "tslint-test-config-non-relative" = "${inputs.tslint.outPath}/test/external/tslint-test-config-non-relative";
-      };
-
-      buildPhase = ''
-        runHook preBuild
-
-        yarn --offline compile
-
-        runHook postBuild
-      '';
-
-      meta = with pkgs.lib; {
-        description = "An extensible linter for the TypeScript language";
-        homepage = "https://github.com/palantir/tslint";
-        license = licenses.mit;
-        maintainers = with maintainers; [lxsymington];
-      };
-    })
     (vale.withStyles (s: [s.write-good s.readability s.proselint]))
     vim-vint # Vim linter
     vscode-js-debug
