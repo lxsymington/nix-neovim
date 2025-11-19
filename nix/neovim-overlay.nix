@@ -1,10 +1,11 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
 {
   inputs,
+  inputs',
   system,
 }: final: prev: let
   inherit (builtins) elem;
-  inherit (inputs.blink-cmp.packages.${system}) blink-cmp;
+  inherit (inputs'.blink-cmp.packages) blink-cmp;
 
   pkgs = final;
 
