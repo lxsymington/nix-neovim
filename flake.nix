@@ -6,6 +6,7 @@
 
     flake-parts = {
       url = "git+ssh://git@github.com/hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
     gen-luarc = {
@@ -301,11 +302,6 @@
       flake = false;
     };
 
-    tslint = {
-      url = "git+ssh://git@github.com/palantir/tslint";
-      flake = false;
-    };
-
     nvim-vtsls = {
       url = "git+ssh://git@github.com/yioneko/nvim-vtsls";
       flake = false;
@@ -332,10 +328,15 @@
     flake-parts.lib.mkFlake {inherit inputs;} (
       top @ {
         config,
+        flake-parts-lib,
         withSystem,
         moduleWithSystem,
         ...
       }: {
+        imports = [
+          inputs.flake-parts.flakeModules.easyOverlay
+        ];
+
         systems = [
           "x86_64-linux"
           "aarch64-darwin"
@@ -344,14 +345,15 @@
 
         perSystem = {
           config,
+          inputs',
           pkgs,
           system,
           ...
         }: let
           # This is where the Neovim derivation is built.
-          neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs system;};
+          neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs inputs' system;};
         in {
-          _module.args.pkgs = import inputs.nixpkgs {
+          _module.args.pkgs = import nixpkgs {
             inherit system;
             config = {allowUnfree = true;};
             overlays = [
@@ -385,13 +387,12 @@
             };
           };
 
-          packages = rec {
-            default = nvim;
+          packages = {
+            default = pkgs.lxs-nvim;
             nvim = pkgs.lxs-nvim;
           };
 
-          # You can add this overlay to your NixOS configuration
-          overlays = {
+          overlayAttrs = {
             default = pkgs.lib.composeManyExtensions [
               gen-luarc.overlays.default
               neorg-overlay.overlays.default

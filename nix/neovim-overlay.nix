@@ -28,7 +28,7 @@
 
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
-  pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
+  pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${system};
 
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
@@ -533,6 +533,7 @@
     gh
     gojq
     gopls
+    gotools
     harper
     hurl
     inputs.mcp-hub.packages.${system}.default

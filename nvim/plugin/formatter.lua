@@ -14,6 +14,7 @@ local slow_format_filetypes = {}
 conform.setup({
 	formatters_by_ft = {
 		-- Use a sub-list to run only the first available formatter
+		go = { 'goimports', 'gofmt' },
 		javascript = { 'prettierd', 'prettier' },
 		lua = { 'stylua' },
 		nix = { 'alejandra' },

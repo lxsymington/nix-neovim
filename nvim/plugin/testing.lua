@@ -9,15 +9,29 @@ vim.cmd.packadd({
 })
 local neotest = require('neotest')
 local keymap = vim.keymap
+local fn = vim.fn
 local fs = vim.fs
 local uv = vim.uv
 
 neotest.setup({
 	adapters = {
 		require('neotest-jest')({
-			jestCommand = 'volta run npm run test:integration --if-present --',
-			jestConfigFile = 'integration/jest.config.js',
-			jest_test_discovery = true,
+			cwd = function(file)
+				if file:find('/packages/') then
+					local match = file:match('(.*/)integration')
+
+					if match then
+						vim.print(string.format('Found package: %s', match))
+
+						return match
+					end
+				end
+
+				vim.print('Using root directory')
+
+				return vim.fn.getcwd()
+			end,
+			jest_test_discovery = false,
 		}),
 		require('neotest-mocha')({
 			command = 'volta run npm run test:local --if-present --',
@@ -29,9 +43,9 @@ neotest.setup({
 				return {
 					'--full-trace',
 					'--reporter=json',
-					string.format('--reporter-options=output="%s"', context.results_path),
+					string.format('--reporter-options output=%s', context.results_path),
 					'--grep=' .. context.test_name_pattern,
-					string.format('"%s"', fs.relpath(uv.cwd(), context.path)),
+					string.format('%s', fs.relpath(uv.cwd(), context.path)),
 				}
 			end,
 			env = { CI = true },
@@ -116,14 +130,14 @@ keymap.set('n', '<Leader>tl', neotest.run.run_last, {
 })
 
 keymap.set('n', '<Leader>tf', function()
-	require('neotest').run.run(vim.fn.expand('%'))
+	neotest.run.run(vim.fn.expand('%'))
 end, {
 	desc = 'Test » Current File',
 	silent = true,
 })
 
 keymap.set('n', '<Leader>td', function()
-	require('neotest').run.run({ strategy = 'dap' })
+	neotest.run.run({ strategy = 'dap' })
 end, {
 	desc = 'Test » Debug Nearest',
 	silent = true,
@@ -155,28 +169,28 @@ keymap.set('n', '<Leader>ta', neotest.run.attach, {
 })
 
 keymap.set('n', ']T', function()
-	require('neotest').jump.next()
+	neotest.jump.next()
 end, {
 	desc = 'Next » Test',
 	silent = true,
 })
 
 keymap.set('n', ']t', function()
-	require('neotest').jump.next({ status = 'failed' })
+	neotest.jump.next({ status = 'failed' })
 end, {
 	desc = 'Next » Failing Test',
 	silent = true,
 })
 
 keymap.set('n', '[T', function()
-	require('neotest').jump.prev()
+	neotest.jump.prev()
 end, {
 	desc = 'Previous » Test',
 	silent = true,
 })
 
 keymap.set('n', '[t', function()
-	require('neotest').jump.prev({ status = 'failed' })
+	neotest.jump.prev({ status = 'failed' })
 end, {
 	desc = 'Previous » Failing Test',
 	silent = true,
