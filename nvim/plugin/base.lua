@@ -114,7 +114,6 @@ opt.diffopt = {
 	'closeoff',
 	'filler',
 	'followwrap',
-	'iblank',
 	'indent-heuristic',
 	'inline:char',
 	'internal',

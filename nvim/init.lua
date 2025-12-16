@@ -4,6 +4,7 @@ local opt = vim.o
 -- Builtin ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 cmd.runtime('ftplugin/man.vim')
 cmd.runtime('macros/matchit.vim')
+cmd.packadd('nvim.undotree')
 cmd.filetype('plugin', 'indent', 'on')
 cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 

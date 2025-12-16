@@ -90,6 +90,9 @@ opt.pumwidth = 30
 -- maximum width of the popup menu
 opt.pummaxwidth = 80
 
+-- border style for the popup menu
+opt.pumborder = 'rounded'
+
 -- Enable pseudo-transparency for floating windows
 opt.winblend = 10
 

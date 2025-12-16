@@ -18,6 +18,7 @@ session.setup({
 	},
 	extensions = {
 		aerial = {},
+		quickfix = {},
 		overseer = {},
 	},
 })
