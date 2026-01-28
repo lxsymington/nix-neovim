@@ -104,16 +104,6 @@
       flake = false;
     };
 
-    hurl-nvim = {
-      url = "git+ssh://git@github.com/jellydn/hurl.nvim";
-      flake = false;
-    };
-
-    jirac = {
-      url = "git+ssh://git@github.com/janBorowy/jirac.nvim";
-      flake = false;
-    };
-
     lazydev = {
       url = "git+ssh://git@github.com/folke/lazydev.nvim";
       flake = false;
@@ -217,16 +207,6 @@
       flake = false;
     };
 
-    nui-components = {
-      url = "git+ssh://git@github.com/grapp-dev/nui-components.nvim";
-      flake = false;
-    };
-
-    nui-nvim = {
-      url = "git+ssh://git@github.com/MunifTanjim/nui.nvim";
-      flake = false;
-    };
-
     nvim-luaref = {
       url = "git+ssh://git@github.com/milisims/nvim-luaref";
       flake = false;
@@ -264,11 +244,6 @@
 
     shipwright = {
       url = "git+ssh://git@github.com/rktjmp/shipwright.nvim";
-      flake = false;
-    };
-
-    sonarqube = {
-      url = "git+ssh://git@github.com/iamkarasik/sonarqube.nvim";
       flake = false;
     };
 

@@ -33,17 +33,6 @@
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
-  nui = mkNvimPlugin {
-    pname = "nui";
-    src = inputs.nui-nvim;
-  };
-  nui-components = mkNvimPlugin {
-    dependencies = [
-      nui
-    ];
-    pname = "nui-components";
-    src = inputs.nui-components;
-  };
   luasnip = mkNvimPlugin {
     pname = "luasnip";
     src = inputs.luasnip;
@@ -242,18 +231,6 @@
     pname = "lazydev";
     src = inputs.lazydev;
   };
-  hurl-nvim = mkNvimPlugin {
-    dependencies = [
-      pkgs.vimPlugins.plenary-nvim
-      nui
-    ];
-    nvimSkipModule = [
-      "hurl.popup"
-      "hurl.split"
-    ];
-    pname = "hurl-nvim";
-    src = inputs.hurl-nvim;
-  };
   csvview = mkNvimPlugin {
     pname = "csvview";
     src = inputs.csvview;
@@ -310,15 +287,6 @@
     pname = "dial";
     src = inputs.dial;
   };
-  jirac = mkNvimPlugin {
-    dependencies = [
-      pkgs.vimPlugins.plenary-nvim
-      nui
-      nui-components
-    ];
-    pname = "jirac";
-    src = inputs.jirac;
-  };
   fidget = mkNvimPlugin {
     pname = "fidget";
     src = inputs.fidget;
@@ -365,10 +333,6 @@
   marks = mkNvimPlugin {
     pname = "marks";
     src = inputs.marks;
-  };
-  sonarqube = mkNvimPlugin {
-    pname = "sonarqube";
-    src = inputs.sonarqube;
   };
 
   # A plugin can either be a package or an attrset, such as
@@ -445,7 +409,6 @@
     comment-nvim # Comment helper | https://github.com/numtostr/comment.nvim
     neogen # Doc comment helper | https://github.com/danymat/neogen/
     nvim-vtsls # VTSLS | https://github.com/yioneko/nvim-vtsls/
-    sonarqube # Code quality analysis | https://github.com/iamkarasik/sonarqube.nvim/
     # ^ language support
     # navigation/editing enhancement plugins
     oil-nvim # A vim-vinegar like file explorer | https://github.com/stevearc/oil.nvim/
@@ -493,7 +456,6 @@
     nvim-web-devicons
     mini-icons # Additional icons | https://github.com/echasnovski/mini.icons/
     vim-repeat
-    nui # Nvim UI component library| https://github.com/MunifTanjim/nui.nvim/
     bqf
     quicker
     # ^ libraries that other plugins depend on
@@ -516,10 +478,6 @@
       plugin = csvview; # CSV Display | https://github.com/hat0uma/csvview.nvim ;
       optional = true;
     }
-    {
-      plugin = jirac;
-      optional = true;
-    }
     # ^ Miscellaneous
   ];
 
@@ -535,7 +493,6 @@
     gopls
     gotools
     harper
-    hurl
     inputs.mcp-hub.packages.${system}.default
     lua-language-server
     (luajit.withPackages (p: [

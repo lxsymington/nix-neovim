@@ -567,38 +567,6 @@
         "url": "ssh://git@github.com/lewis6991/hover.nvim"
       }
     },
-    "hurl-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758024912,
-        "narHash": "sha256-DODoHIcBcgZAMCgrReidDS4HsvwHvsKdpvNILvlrtts=",
-        "ref": "refs/heads/main",
-        "rev": "0e5430d5130fe95fc1b8b015491b50274aa2e796",
-        "revCount": 354,
-        "type": "git",
-        "url": "ssh://git@github.com/jellydn/hurl.nvim"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/jellydn/hurl.nvim"
-      }
-    },
-    "jirac": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1738790294,
-        "narHash": "sha256-fm+83fEcIve4tROVfSfSBldcOIFgEa3phiIOeDVSwDo=",
-        "ref": "refs/heads/main",
-        "rev": "566b12c6981042abaa5596aa26b941e6d852775d",
-        "revCount": 71,
-        "type": "git",
-        "url": "ssh://git@github.com/janBorowy/jirac.nvim"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/janBorowy/jirac.nvim"
-      }
-    },
     "lazydev": {
       "flake": false,
       "locked": {
@@ -1216,38 +1184,6 @@
         "type": "github"
       }
     },
-    "nui-components": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1742063284,
-        "narHash": "sha256-dq/HZ2EEbGu4uHEJQ4tJPSgIn72wga6Bf3ku3XvjKkY=",
-        "ref": "refs/heads/main",
-        "rev": "1654dd709f13874089eefc80d82e0eb667f7fdfb",
-        "revCount": 139,
-        "type": "git",
-        "url": "ssh://git@github.com/grapp-dev/nui-components.nvim"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/grapp-dev/nui-components.nvim"
-      }
-    },
-    "nui-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1749392788,
-        "narHash": "sha256-41slmnvt1z7sCxvpiVuFmQ9g7eCaxQi1dDCL3AxSL1A=",
-        "ref": "refs/heads/main",
-        "rev": "de740991c12411b663994b2860f1a4fd0937c130",
-        "revCount": 547,
-        "type": "git",
-        "url": "ssh://git@github.com/MunifTanjim/nui.nvim"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/MunifTanjim/nui.nvim"
-      }
-    },
     "nvim-dbee": {
       "flake": false,
       "locked": {
@@ -1396,8 +1332,6 @@
         "gitsigns": "gitsigns",
         "helpview": "helpview",
         "hover": "hover",
-        "hurl-nvim": "hurl-nvim",
-        "jirac": "jirac",
         "lazydev": "lazydev",
         "lualine": "lualine",
         "luasnip": "luasnip",
@@ -1421,8 +1355,6 @@
         "neotest-vitest": "neotest-vitest",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs_6",
-        "nui-components": "nui-components",
-        "nui-nvim": "nui-nvim",
         "nvim-dbee": "nvim-dbee",
         "nvim-luaref": "nvim-luaref",
         "nvim-recorder": "nvim-recorder",
@@ -1433,7 +1365,6 @@
         "resession": "resession",
         "screenkey": "screenkey",
         "shipwright": "shipwright",
-        "sonarqube": "sonarqube",
         "statuscol": "statuscol",
         "symbol-usage": "symbol-usage",
         "telescope-frecency": "telescope-frecency",
@@ -1491,22 +1422,6 @@
       "original": {
         "type": "git",
         "url": "ssh://git@github.com/rktjmp/shipwright.nvim"
-      }
-    },
-    "sonarqube": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1750725310,
-        "narHash": "sha256-GxXnfw+iKvcunFn+gM5zcknmc6KD5uDfbZEgDQ9bceY=",
-        "ref": "refs/heads/master",
-        "rev": "811bf8f46e0aa5ed9c9b5783aaf6f87640df553a",
-        "revCount": 55,
-        "type": "git",
-        "url": "ssh://git@github.com/iamkarasik/sonarqube.nvim"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/iamkarasik/sonarqube.nvim"
       }
     },
     "statuscol": {
