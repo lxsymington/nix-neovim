@@ -1,5 +1,5 @@
+---@type vim.lsp.Config
 return {
-	cmd = 'nixd',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		nixd = {

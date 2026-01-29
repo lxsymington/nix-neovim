@@ -1,7 +1,7 @@
 local schemastore = require('schemastore')
 
+---@type vim.lsp.Config
 return {
-	cmd = 'jsonls',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		json = {

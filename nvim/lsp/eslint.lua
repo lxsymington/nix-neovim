@@ -1,5 +1,5 @@
+---@type vim.lsp.Config
 return {
-	cmd = 'eslint',
 	on_attach = require('lxs.lsp').attach,
 	root_markers = {
 		{

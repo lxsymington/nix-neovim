@@ -1,5 +1,5 @@
+---@type vim.lsp.Config
 return {
-	cmd = 'vtsls',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		typescript = {

@@ -2,8 +2,8 @@ local env = vim.env
 local tbl_deep_extend = vim.tbl_deep_extend
 local uv = vim.uv
 
+---@type vim.lsp.Config
 return {
-	cmd = 'lua_ls',
 	on_attach = require('lxs.lsp').attach,
 	on_init = function(client)
 		local path = client.workspace_folders[1].name

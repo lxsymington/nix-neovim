@@ -1,5 +1,5 @@
+---@type vim.lsp.Config
 return {
-	cmd = 'harper_ls',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		['harper-ls'] = {

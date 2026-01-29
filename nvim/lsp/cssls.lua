@@ -1,4 +1,4 @@
+---@type vim.lsp.Config
 return {
-	cmd = 'cssls',
 	on_attach = require('lxs.lsp').attach,
 }
