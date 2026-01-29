@@ -1,4 +1,5 @@
-vim.lsp.config('eslint', {
+return {
+	cmd = 'eslint',
 	on_attach = require('lxs.lsp').attach,
 	root_markers = {
 		{
@@ -14,4 +15,4 @@ vim.lsp.config('eslint', {
 		'.eslintrc.json',
 	},
 	workspace_required = true,
-})
+}

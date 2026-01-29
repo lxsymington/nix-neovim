@@ -100,7 +100,7 @@
     };
 
     hover = {
-      url = "git+ssh://git@github.com/lewis6991/hover.nvim?ref=24a43e0eda924f1f32361c76ee9a1f0e8cc25650";
+      url = "git+ssh://git@github.com/lewis6991/hover.nvim?rev=24a43e0eda924f1f32361c76ee9a1f0e8cc25650";
       flake = false;
     };
 
@@ -188,7 +188,7 @@
     };
 
     neotest = {
-      url = "git+ssh://git@github.com/nvim-neotest/neotest?ref=52fca6717ef972113ddd6ca223e30ad0abb2800c";
+      url = "git+ssh://git@github.com/nvim-neotest/neotest?rev=52fca6717ef972113ddd6ca223e30ad0abb2800c";
       flake = false;
     };
 

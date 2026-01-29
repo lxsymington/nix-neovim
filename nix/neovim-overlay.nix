@@ -67,6 +67,7 @@
   gitsigns = mkNvimPlugin {
     nvimSkipModule = [
       "lualsreport"
+      "gen_help"
     ];
     pname = "gitsigns";
     src = inputs.gitsigns;

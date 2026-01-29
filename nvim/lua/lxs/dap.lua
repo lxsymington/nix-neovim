@@ -225,13 +225,7 @@ function M.start()
 				},
 			},
 			windows = {
-				height = 15,
-				terminal = {
-					-- 'left'|'right'|'above'|'below': Terminal position in layout
-					position = 'left',
-					-- Hide the terminal when starting a new session
-					start_hidden = false,
-				},
+				size = 15,
 			},
 			-- Controls how to jump when selecting a breakpoint or navigating the stack
 			switchbuf = 'usetab,usevisible',

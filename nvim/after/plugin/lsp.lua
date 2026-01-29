@@ -1,10 +1,6 @@
 local fn = vim.fn
 local lsp = vim.lsp
 
-if fn.executable('lua-language-server') == 1 then
-	lsp.enable('lua_ls')
-end
-
 if fn.executable('vscode-eslint-language-server') == 1 then
 	lsp.enable('eslint')
 end
@@ -55,4 +51,8 @@ end
 
 if fn.executable('harper-ls') == 1 then
 	lsp.enable('harper_ls')
+end
+
+if fn.executable('lua-language-server') == 1 then
+	lsp.enable('lua_ls')
 end

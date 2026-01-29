@@ -14,7 +14,6 @@ vim.opt.completeopt = {
 	'preinsert',
 	'preview',
 }
-vim.opt.completefuzzycollect = { 'keyword', 'files', 'whole_line' }
 vim.opt.completefunc = 'v:lua.require("blink").show()'
 
 lspkind.init({

@@ -1,6 +1,7 @@
 local schemastore = require('schemastore')
 
-vim.lsp.config('yamlls', {
+return {
+	cmd = 'yamlls',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		yaml = {
@@ -14,4 +15,4 @@ vim.lsp.config('yamlls', {
 			schemas = schemastore.yaml.schemas(),
 		},
 	},
-})
+}

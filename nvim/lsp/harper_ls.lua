@@ -1,4 +1,5 @@
-vim.lsp.config('harper_ls', {
+return {
+	cmd = 'harper_ls',
 	on_attach = require('lxs.lsp').attach,
 	settings = {
 		['harper-ls'] = {
@@ -26,4 +27,4 @@ vim.lsp.config('harper_ls', {
 			dialect = 'British',
 		},
 	},
-})
+}
