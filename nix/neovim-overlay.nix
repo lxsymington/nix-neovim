@@ -1,11 +1,14 @@
 # This overlay, when applied to nixpkgs, adds the final neovim derivation to nixpkgs.
-{
-  inputs,
-  inputs',
-  system,
-}: final: prev: let
+{inputs}: final: prev: let
   inherit (builtins) elem;
-  inherit (inputs'.blink-cmp.packages) blink-cmp;
+
+  # Derive system from the pkgs being overlaid
+  inherit (final.stdenv.hostPlatform) system;
+
+  # Resolve flake inputs for this system
+  blink-cmp = inputs.blink-cmp.packages.${system}.blink-cmp;
+  neovim-unwrapped = inputs.neovim-nightly.packages.${system}.default;
+  mcp-hub-pkg = inputs.mcp-hub.packages.${system}.default;
 
   pkgs = final;
 
@@ -494,7 +497,7 @@
     gopls
     gotools
     harper
-    inputs.mcp-hub.packages.${system}.default
+    mcp-hub-pkg
     lua-language-server
     (luajit.withPackages (p: [
       p.luarocks
@@ -525,8 +528,7 @@ in {
   # This is the neovim derivation
   # returned by the overlay
   lxs-nvim = mkNeovim {
-    inherit extraPackages isDarwin;
-    neovim-unwrapped = inputs.neovim-nightly.packages.${system}.default;
+    inherit extraPackages isDarwin neovim-unwrapped;
     plugins = all-plugins;
     withNodeJs = true;
   };

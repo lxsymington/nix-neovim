@@ -301,16 +301,12 @@
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} (
-      top @ {
-        config,
-        flake-parts-lib,
-        withSystem,
-        moduleWithSystem,
-        ...
-      }: {
-        imports = [
-          inputs.flake-parts.flakeModules.easyOverlay
-        ];
+      top @ {...}: {
+        flake = {
+          overlays = {
+            default = import ./nix/neovim-overlay.nix {inherit inputs;};
+          };
+        };
 
         systems = [
           "x86_64-linux"
@@ -325,8 +321,7 @@
           system,
           ...
         }: let
-          # This is where the Neovim derivation is built.
-          neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs inputs' system;};
+          neovim-overlay = top.config.flake.overlays.default;
         in {
           _module.args.pkgs = import nixpkgs {
             inherit system;
@@ -364,15 +359,7 @@
 
           packages = {
             default = pkgs.lxs-nvim;
-            nvim = pkgs.lxs-nvim;
-          };
-
-          overlayAttrs = {
-            default = pkgs.lib.composeManyExtensions [
-              gen-luarc.overlays.default
-              neorg-overlay.overlays.default
-              neovim-overlay
-            ];
+            lxs-nvim = pkgs.lxs-nvim;
           };
         };
       }
