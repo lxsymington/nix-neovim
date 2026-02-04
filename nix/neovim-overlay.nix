@@ -518,6 +518,8 @@
     terraform
     terraform-ls
     typescript
+    tree-sitter
+    uv
     (vale.withStyles (s: [s.write-good s.readability s.proselint]))
     vim-vint # Vim linter
     vscode-js-debug

@@ -37,19 +37,6 @@ g.copilot_no_tab_map = true
 g.copilot_hide_during_completion = 0
 g.copilot_proxy_strict_ssl = 0
 codecompanion.setup({
-	adapters = {
-		http = {
-			copilot = function()
-				return adapters.extend('copilot', {
-					schema = {
-						model = {
-							default = 'claude-3.7-sonnet',
-						},
-					},
-				})
-			end,
-		},
-	},
 	display = {
 		action_pallete = {
 			width = 100,

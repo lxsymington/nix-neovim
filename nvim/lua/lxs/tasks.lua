@@ -14,7 +14,7 @@ Tasks.instance = setmetatable({}, {
 		end
 
 		if key == 'overseer' then
-			vim.cmd.packadd({
+			cmd.packadd({
 				args = { 'overseer.nvim' },
 				bang = true,
 			})
@@ -25,8 +25,6 @@ Tasks.instance = setmetatable({}, {
 			overseer.setup({
 				component_aliases = {
 					default = {
-						{ 'display_duration', detail_level = 2 },
-						'on_output_summarize',
 						'on_exit_set_status',
 						{ 'on_complete_notify', system = 'always' },
 						{ 'on_complete_dispose', require_view = { 'SUCCESS', 'FAILURE' } },
@@ -35,14 +33,15 @@ Tasks.instance = setmetatable({}, {
 						'on_complete_dispose',
 						'on_complete_notify',
 						'on_exit_set_status',
-						'on_output_quickfix',
 						'on_output_summarize',
 					},
 				},
+				dap = true,
 				task_list = {
 					default_detail = 2,
 					separator = '▰▰▰▰▰▰▰▰▰▰',
 					min_width = { 60, 0.15 },
+					max_width = { 100, 0.4 },
 					max_height = { 20, 0.2 },
 					min_height = 12,
 				},
@@ -54,7 +53,7 @@ Tasks.instance = setmetatable({}, {
 		end
 
 		if key == 'compiler' then
-			vim.cmd.packadd({
+			cmd.packadd({
 				args = { 'compiler.nvim' },
 				bang = true,
 			})
@@ -75,15 +74,7 @@ Tasks.toggle = function(self)
 	local overseer = self.instance.overseer
 
 	if overseer ~= nil then
-		cmd.OverseerToggle()
-	end
-end
-
-Tasks.build = function(self)
-	local overseer = self.instance.overseer
-
-	if overseer ~= nil then
-		cmd.OverseerBuild()
+		overseer.toggle()
 	end
 end
 
@@ -92,14 +83,6 @@ Tasks.action = function(self)
 
 	if overseer ~= nil then
 		cmd.OverseerTaskAction()
-	end
-end
-
-Tasks.quick_action = function(self)
-	local overseer = self.instance.overseer
-
-	if overseer ~= nil then
-		cmd.OverseerQuickAction()
 	end
 end
 
@@ -118,5 +101,54 @@ Tasks.compile = function(self)
 		cmd.CompilerOpen()
 	end
 end
+
+vim.api.nvim_create_user_command('Make', function(params)
+	-- Insert args at the '$*' in the makeprg
+	local cmd, num_subs = vim.o.makeprg:gsub('%$%*', params.args)
+	if num_subs == 0 then
+		cmd = cmd .. ' ' .. params.args
+	end
+	local task = Tasks.instance.overseer.new_task({
+		cmd = vim.fn.expandcmd(cmd),
+		components = {
+			{
+				'on_output_quickfix',
+				open = not params.bang,
+				open_height = 8,
+				errorformat = vim.o.errorformat,
+			},
+			'default',
+		},
+	})
+	task:start()
+end, {
+	desc = 'Run your makeprg as an Overseer task',
+	nargs = '*',
+	bang = true,
+})
+
+vim.api.nvim_create_user_command('Grep', function(params)
+	-- Insert args at the '$*' in the grepprg
+	local cmd, num_subs = vim.o.grepprg:gsub('%$%*', params.args)
+	if num_subs == 0 then
+		cmd = cmd .. ' ' .. params.args
+	end
+	local task = Tasks.instance.overseer.new_task({
+		cmd = vim.fn.expandcmd(cmd),
+		components = {
+			{
+				'on_output_quickfix',
+				errorformat = vim.o.grepformat,
+				open = not params.bang,
+				open_height = 8,
+				items_only = true,
+			},
+			-- We don't care to keep this around as long as most tasks
+			{ 'on_complete_dispose', timeout = 30 },
+			'default',
+		},
+	})
+	task:start()
+end, { nargs = '*', bang = true, complete = 'file' })
 
 return Tasks

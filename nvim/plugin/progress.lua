@@ -4,7 +4,7 @@ fidget.setup({
 	-- Options related to LSP progress subsystem
 	progress = {
 		display = {
-			progress_icon = { 'meter' },
+			progress_icon = { 'zip' },
 		},
 	},
 	-- Options related to notification subsystem
