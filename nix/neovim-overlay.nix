@@ -251,6 +251,10 @@
     pname = "eyeliner";
     src = inputs.eyeliner;
   };
+  codecompanion-spinner = mkNvimPlugin {
+    pname = "codecompanion-spinner";
+    src = inputs.codecompanion-spinner;
+  };
   codecompanion = mkNvimPlugin {
     dependencies = [
       blink-cmp
@@ -258,6 +262,7 @@
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       pkgs.vimPlugins.plenary-nvim
       pkgs.vimPlugins.telescope-nvim
+      codecompanion-spinner
     ];
     nvimSkipModule = [
       "codecompanion.actions.init"
@@ -363,6 +368,7 @@
     # ^ Autocompletion and extensions
     copilot # AI coding assistance | https://github.com/zbirenbaum/copilot.lua
     codecompanion # Assistant Chat | https://github.com/olimorris/codecompanion.nvim
+    codecompanion-spinner # Assistant UI | https://github.com/franco-ruggeri/codecompanion-spinner.nvim
     mcp-hub # MCP Hub | https://github.com/ravitemer/mcp-hub.nvim
     # git integration plugins
     diffview-nvim # Rich Diffing | https://github.com/sindrets/diffview.nvim/
@@ -507,9 +513,9 @@
       p.xml2lua
     ]))
     nixd
-    nodePackages_latest.nodejs
-    nodePackages_latest.prettier
-    nodePackages_latest.yaml-language-server
+    nodejs
+    prettier
+    yaml-language-server
     prettierd
     rust-analyzer # Rust LSP
     selene # Lua linter

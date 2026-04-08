@@ -49,6 +49,11 @@
       flake = false;
     };
 
+    codecompanion-spinner = {
+      url = "git+ssh://git@github.com/franco-ruggeri/codecompanion-spinner.nvim";
+      flake = false;
+    };
+
     csvview = {
       url = "git+ssh://git@github.com/hat0uma/csvview.nvim";
       flake = false;
