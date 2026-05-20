@@ -31,10 +31,12 @@
 
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
-  pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${system};
+  pkgs-locked = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
   # This is the helper function that builds the Neovim derivation.
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix {
+    inherit (pkgs-locked) wrapNeovimUnstable neovimUtils;
+  };
 
   luasnip = mkNvimPlugin {
     pname = "luasnip";
@@ -539,6 +541,16 @@ in {
     inherit extraPackages isDarwin neovim-unwrapped;
     plugins = all-plugins;
     withNodeJs = true;
+  };
+
+  # This is meant to be used within a devshell.
+  # Instead of loading the lua Neovim configuration from
+  # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
+  nvim-dev = mkNeovim {
+    plugins = all-plugins;
+    inherit extraPackages;
+    appName = "nvim-dev";
+    wrapRc = false;
   };
 
   # This can be symlinked in the devShell's shellHook
