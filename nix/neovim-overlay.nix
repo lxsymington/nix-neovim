@@ -269,9 +269,10 @@
     nvimSkipModule = [
       "codecompanion.actions.init"
       "codecompanion.actions.static"
-      "codecompanion.providers.actions.fzf_lua"
-      "codecompanion.providers.actions.mini_pick"
-      "codecompanion.providers.actions.snacks"
+      "codecompanion.providers.action_palette.fzf_lua"
+      "codecompanion.providers.action_palette.mini_pick"
+      "codecompanion.providers.action_palette.snacks"
+      "codecompanion.providers.completion.blink.setup"
       "codecompanion.providers.completion.cmp.setup"
       "minimal"
     ];
