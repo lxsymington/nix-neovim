@@ -120,9 +120,6 @@ local completion = {
 --- @type blink.cmp.FuzzyConfigPartial
 local fuzzy = {
 	implementation = 'prefer_rust_with_warning',
-	prebuilt_binaries = {
-		download = false,
-	},
 	sorts = {
 		'exact',
 		-- defaults

@@ -120,7 +120,7 @@
     };
 
     luasnip = {
-      url = "git+ssh://git@github.com/L3MON4D3/LuaSnip.git?ref=refs/tags/v2.4.0";
+      url = "git+ssh://git@github.com/L3MON4D3/LuaSnip.git?ref=refs/tags/v2.5.0";
       flake = false;
     };
 

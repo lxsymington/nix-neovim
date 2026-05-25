@@ -60,34 +60,6 @@ local function peek_type_definition()
 	return lsp.buf_request(0, 'textDocument/typeDefinition', params, preview_location_callback)
 end
 
-local function refresh_codeLens(bufnr, client)
-	if not client then
-		return
-	end
-
-	local group = api.nvim_create_augroup(string.format('lsp-%s-%s', bufnr, client.id), {})
-
-	if
-		(
-			type(client.server_capabilities.codeLensProvider) == 'boolean'
-			and client.server_capabilities.codeLensProvider == true
-		)
-		or (
-			type(client.server_capabilities.codeLensProvider) == 'table'
-			and client.server_capabilities.codeLensProvider.resolveProvider
-		)
-	then
-		api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost', 'TextChanged' }, {
-			group = group,
-			callback = function()
-				lsp.codelens.refresh({ bufnr = bufnr })
-			end,
-			buffer = bufnr,
-		})
-		lsp.codelens.refresh({ bufnr = bufnr })
-	end
-end
-
 local function show_references(command, ctx)
 	local locations = command.arguments[3]
 	local client = lsp.get_client_by_id(ctx.client_id)
@@ -126,7 +98,6 @@ function M.attach(client, bufnr)
 	end, desc('[lsp] list workspace folders'))
 	keymap.set('n', 'g.', lsp.buf.code_action, desc('[lsp] code action'))
 	keymap.set('n', 'gl', lsp.codelens.run, desc('[lsp] run code lens'))
-	keymap.set('n', 'gL', lsp.codelens.refresh, desc('[lsp] refresh code lenses'))
 	keymap.set('n', 'gF', function()
 		lsp.buf.format({ async = true })
 	end, desc('[lsp] format buffer'))
@@ -137,12 +108,10 @@ function M.attach(client, bufnr)
 		lsp.buf.typehierarchy('subtypes')
 	end, desc('[lsp] type hierarchy subtypes'))
 
-	-- Auto-refresh code lenses
-	refresh_codeLens(bufnr, client)
-
 	document_highlight(bufnr, client)
 
 	lsp.inlay_hint.enable(true, { bufnr = bufnr })
+	lsp.codelens.enable(true)
 
 	lsp.commands['editor.action.showReferences'] = show_references
 end

@@ -56,7 +56,17 @@ api.nvim_create_autocmd('TextYankPost', {
 	pattern = '*',
 	group = highlight_yank,
 	callback = function()
-		vim.hl.on_yank({
+		vim.hl.hl_op({
+			higroup = 'IncSearch',
+			timeout = 330,
+		})
+	end,
+})
+api.nvim_create_autocmd('TextPutPost', {
+	pattern = '*',
+	group = highlight_yank,
+	callback = function()
+		vim.hl.hl_op({
 			higroup = 'IncSearch',
 			timeout = 330,
 		})
