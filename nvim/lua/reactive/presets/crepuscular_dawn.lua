@@ -10,9 +10,7 @@ return {
 	name = 'crepuscular_dawn',
 	init = function()
 		-- making our cursor to use `MyCursor` highlight group
-		vim.opt_local.guicursor:append({
-			['a'] = 'MyCursor/MylCursor',
-		})
+		vim.opt_local.guicursor:append('a:MyCursor/MylCursor')
 	end,
 	lazy = true,
 	modes = modes,

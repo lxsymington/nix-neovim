@@ -321,6 +321,9 @@
   faster = mkNvimPlugin {
     pname = "faster";
     src = inputs.faster;
+    nvimSkipModule = [
+      "faster.commands"
+    ];
   };
   recorder = mkNvimPlugin {
     pname = "recorder";
